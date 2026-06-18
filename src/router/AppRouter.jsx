@@ -4,6 +4,7 @@ import AppLayout from "../layouts/AppLayout";
 import ResultsPage from "../pages/ResultsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import JobDetailsPage from "../pages/JobDetailsPage";
+import AccountsPage from "../pages/AccountsPage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const AppRoutes = createBrowserRouter([
       {
         path: "results",
         element: <ResultsPage />,
+      },
+      {
+        path: "account",
+        element: <AccountsPage />,
       },
       {
         path: "*",

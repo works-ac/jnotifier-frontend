@@ -20,14 +20,21 @@ import { NavLink as RouterLink } from "react-router-dom";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { AppNavData } from "../data/HeaderData";
 import { Close } from "@mui/icons-material";
+import useHeader from "../hooks/useHeader";
 
 function Header() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { appConnectivity, isLoading } = useHeader();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const getConnectivityText = (appConnectivity) => {
+    if (appConnectivity === "pong") return "ONLINE";
+    return "Offline";
   };
 
   return (
@@ -111,8 +118,25 @@ function Header() {
               </Stack>
             )}
           </Toolbar>
+
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Typography variant="caption" sx={{ fontWeight: 700 }}>
+              Connectivity:{" "}
+              {isLoading
+                ? "Ensuring Connectivity..."
+                : getConnectivityText(appConnectivity)}
+            </Typography>
+          </Box>
         </Container>
       </AppBar>
+
       <Box component="nav">
         <Drawer
           anchor="right"
@@ -127,11 +151,13 @@ function Header() {
             "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
           }}
         >
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", py: 2 }}>
+          <Toolbar sx={{ my: 2 }} />
+          {/* <Box onClick={handleDrawerToggle} sx={{ textAlign: "center", py: 2 }}>
             <Typography variant="h6" sx={{ fontWeight: 700 }}>
               Job Notifier
             </Typography>
-          </Box>
+          </Box> */}
+
           <List>
             {AppNavData.map((element) => (
               <ListItem key={element.id} disablePadding>
