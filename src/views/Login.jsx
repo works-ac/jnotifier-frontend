@@ -1,7 +1,4 @@
-import React from "react";
-import Captcha from "../components/Captcha";
 import {
-  Box,
   Button,
   Container,
   Divider,
@@ -11,20 +8,19 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import React from "react";
+import useLogin from "../hooks/useLogin";
+import useAppCss from "../hooks/useAppCss";
 import {
   AccountCircle,
-  Create,
-  Login,
   Password,
   Security,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
-import useLogin from "../hooks/useLogin";
 import Notes from "../components/Notes";
-import useAppCss from "../hooks/useAppCss";
 
-function AccountsPage() {
+function Login() {
   const theme = useTheme();
   const { isPwdVisible, togglePwdVisibility, textfieldType } = useLogin();
   const { RequiredFieldCss } = useAppCss();
@@ -182,12 +178,7 @@ function AccountsPage() {
             justifyContent: "center",
           }}
         >
-          <Button
-            variant="contained"
-            color="success"
-            startIcon={<Create />}
-            href="/register"
-          >
+          <Button variant="contained" color="success" startIcon={<Create />}>
             Register yourself
           </Button>
         </Box>
@@ -196,4 +187,4 @@ function AccountsPage() {
   );
 }
 
-export default React.memo(AccountsPage);
+export default React.memo(Login);

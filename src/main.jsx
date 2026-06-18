@@ -6,12 +6,16 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import AppTheme from "./app/AppTheme.js";
 import { Provider } from "react-redux";
 import AppStore from "./redux/index.js";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 createRoot(document.getElementById("root")).render(
-  <Provider store={AppStore}>
-    <ThemeProvider theme={AppTheme}>
-      <CssBaseline />
-      <RouterProvider router={AppRoutes} />
-    </ThemeProvider>
-  </Provider>,
+  <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Provider store={AppStore}>
+      <ThemeProvider theme={AppTheme}>
+        <CssBaseline />
+        <RouterProvider router={AppRoutes} />
+      </ThemeProvider>
+    </Provider>
+  </LocalizationProvider>,
 );

@@ -3,10 +3,11 @@ import useCaptcha from "../hooks/useCaptcha";
 import { Box, CircularProgress, IconButton } from "@mui/material";
 import AppAlert from "./AppAlert";
 import { RotateLeft } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 function Captcha() {
-  const { alert, captchaUri, handleAlertOnClose, isLoading, reloadCaptcha } =
-    useCaptcha();
+  const { alert, handleAlertOnClose, isLoading, reloadCaptcha } = useCaptcha();
+  const { captchaId, captchaImage } = useSelector((state) => state.captcha);
 
   return (
     <Box
@@ -48,7 +49,7 @@ function Captcha() {
         >
           <Box
             component="img"
-            src={captchaUri}
+            src={captchaImage}
             alt="Captcha"
             sx={{ height: 50, width: 150, objectFit: "contain" }}
           />

@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { getCaptcha } from "../services/SignupService";
 import useAppAlert from "./useAppAlert";
+import { useDispatch } from "react-redux";
+import { setCaptcha } from "../redux/slices/CaptchaSlice";
 
 function useCaptcha() {
   const [captchaUri, setCaptchaUri] = useState();
+  const [captchaId, setCaptchaId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { showErrorMsg, reset, alert, handleAlertOnClose } = useAppAlert();
+  const dispatch = useDispatch();
 
   const loadCaptcha = useCallback(async function () {
     reset();
@@ -15,6 +19,7 @@ function useCaptcha() {
       const uri = response.data?.data?.captchaImage;
 
       setCaptchaUri(uri);
+      setCaptchaId(response.data?.data?.captchaId);
     } catch (error) {
       showErrorMsg(error);
     } finally {
@@ -46,7 +51,16 @@ function useCaptcha() {
     loadCaptcha();
   }, []);
 
-  return { isLoading, captchaUri, alert, handleAlertOnClose, reloadCaptcha };
+  useEffect(() => {
+    dispatch(setCaptcha({ captchaId, captchaImage: captchaUri }));
+  }, [captchaId, captchaUri]);
+
+  return {
+    isLoading,
+    alert,
+    handleAlertOnClose,
+    reloadCaptcha,
+  };
 }
 
 export default useCaptcha;
