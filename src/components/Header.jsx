@@ -72,17 +72,20 @@ function Header() {
                 <Typography
                   variant="h5"
                   component="span"
-                  sx={{ fontWeight: 700, lineHeight: 1.2 }}
+                  sx={{ fontWeight: 700, lineHeight: 1.2, mt: 2 }}
                 >
                   Job Notifier
                 </Typography>
 
                 <Typography
                   variant="caption"
-                  color="text.secondary"
-                  sx={{ fontWeight: 500, fontStyle: "oblique" }}
+                  color="secondary"
+                  sx={{
+                    fontWeight: 500,
+                    maxWidth: "200px",
+                  }}
                 >
-                  Your gateway to success
+                  your one-stop solution for government and private job updates
                 </Typography>
               </Box>
             </Box>

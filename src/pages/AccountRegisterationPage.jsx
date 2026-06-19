@@ -20,7 +20,6 @@ import {
 import React from "react";
 import useAppCss from "../hooks/useAppCss";
 import {
-  AccountCircle,
   Badge,
   Create,
   Email,
@@ -170,7 +169,11 @@ function AccountRegisterationPage() {
                 </InputAdornment>
               ),
               endAdornment: (
-                <InputAdornment position="end" onClick={togglePwdVisibility}>
+                <InputAdornment
+                  position="end"
+                  onClick={togglePwdVisibility}
+                  sx={{ cursor: "pointer" }}
+                >
                   {isPwdVisible ? (
                     <VisibilityOff fontSize="large" color="success" />
                   ) : (
@@ -201,7 +204,7 @@ function AccountRegisterationPage() {
             size={{ xs: 12, md: 4 }}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <FormControl fullWidth>
+            <FormControl fullWidth required sx={RequiredFieldCss}>
               <InputLabel id="category">Category</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -210,8 +213,6 @@ function AccountRegisterationPage() {
                 label="Category"
                 onChange={handleTextBoxOnChange}
                 name="category"
-                required
-                sx={RequiredFieldCss}
               >
                 <MenuItem value="GEN">General</MenuItem>
                 <MenuItem value="SC">Schedule Caste</MenuItem>
@@ -226,7 +227,7 @@ function AccountRegisterationPage() {
             size={{ xs: 12, md: 4 }}
             sx={{ display: "flex", alignItems: "center" }}
           >
-            <FormControl fullWidth>
+            <FormControl fullWidth required sx={RequiredFieldCss}>
               <InputLabel id="gender">Gender</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -235,8 +236,6 @@ function AccountRegisterationPage() {
                 label="Gender"
                 onChange={handleTextBoxOnChange}
                 name="gender"
-                required
-                sx={RequiredFieldCss}
               >
                 <MenuItem value="M">Male</MenuItem>
                 <MenuItem value="F">Female</MenuItem>

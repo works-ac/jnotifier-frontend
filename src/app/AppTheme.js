@@ -4,6 +4,15 @@ const AppTheme = createTheme({
   typography: {
     fontFamily: "Inter, sans-serif",
     fontSize: "16px",
+    caption: {
+      fontSize: "12px",
+    },
+    body1: {
+      fontSize: "14px",
+    },
+    body2: {
+      fontSize: "13px",
+    },
   },
   palette: {
     primary: { main: "#000080", A700: "#2563eb", hover: "#000066" },

@@ -62,14 +62,12 @@ function AccountsPage() {
           fullWidth
           helperText="Please enter your username here."
           sx={{ mb: 2, ...RequiredFieldCss }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <AccountCircle fontSize="large" color="primary" />
-                </InputAdornment>
-              ),
-            },
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <AccountCircle fontSize="large" color="primary" />
+              </InputAdornment>
+            ),
           }}
           required
           type="text"
@@ -82,23 +80,21 @@ function AccountsPage() {
           fullWidth
           helperText="Please enter your password here."
           sx={{ mb: 2, ...RequiredFieldCss }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Password fontSize="large" color="primary" />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end" onClick={togglePwdVisibility}>
-                  {isPwdVisible ? (
-                    <VisibilityOff fontSize="large" color="success" />
-                  ) : (
-                    <Visibility fontSize="large" color="success" />
-                  )}
-                </InputAdornment>
-              ),
-            },
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Password fontSize="large" color="primary" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end" onClick={togglePwdVisibility}>
+                {isPwdVisible ? (
+                  <VisibilityOff fontSize="large" color="success" />
+                ) : (
+                  <Visibility fontSize="large" color="success" />
+                )}
+              </InputAdornment>
+            ),
           }}
           required
           type={textfieldType}
@@ -121,14 +117,12 @@ function AccountsPage() {
             fullWidth
             helperText="Please enter your captcha text here."
             sx={{ mb: 2, ...RequiredFieldCss }}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Security fontSize="large" color="primary" />
-                  </InputAdornment>
-                ),
-              },
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Security fontSize="large" color="primary" />
+                </InputAdornment>
+              ),
             }}
             required
             type="text"

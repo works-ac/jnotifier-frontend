@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 
 function Captcha() {
   const { alert, handleAlertOnClose, isLoading, reloadCaptcha } = useCaptcha();
-  const { captchaId, captchaImage } = useSelector((state) => state.captcha);
+  const { captchaImage } = useSelector((state) => state.captcha);
 
   return (
     <Box
@@ -24,7 +24,7 @@ function Captcha() {
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}
-        type={alert.type}
+        type={alert?.type}
       />
 
       {isLoading ? (

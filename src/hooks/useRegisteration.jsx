@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { UserRegisterSchema } from "../data/schema/UserRegisterationSchema";
 import useAppAlert from "./useAppAlert";
 import { register } from "../services/SignupService";
+import useCaptcha from "./useCaptcha";
 
 function useRegisteration() {
   const [isPwdVisible, setIsPwdVisible] = useState(false);
@@ -15,6 +16,7 @@ function useRegisteration() {
   const { alert, handleAlertOnClose, reset, setAlert, showErrorMsg } =
     useAppAlert();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { reloadCaptcha } = useCaptcha();
 
   const togglePwdVisibility = useCallback(
     function () {
@@ -66,10 +68,11 @@ function useRegisteration() {
         ...userRegPayload,
         captchaId,
         dob: dayjs(dob).format("YYYY-MM-DD"),
+        mobile: userRegPayload.phone,
       };
-      setIsSubmitting(true);
 
-      console.log(payload, "payload");
+      delete payload.phone;
+      setIsSubmitting(true);
 
       try {
         await register(payload);
@@ -79,6 +82,9 @@ function useRegisteration() {
           message: "Account created successfully",
           type: "success",
         }));
+
+        await reloadCaptcha();
+        setUserRegPayload(UserRegisteration);
       } catch (error) {
         showErrorMsg(error);
       } finally {
