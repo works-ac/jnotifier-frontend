@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Container,
   Divider,
@@ -13,12 +14,15 @@ import useLogin from "../hooks/useLogin";
 import useAppCss from "../hooks/useAppCss";
 import {
   AccountCircle,
+  Create,
+  Login as LoginIcon,
   Password,
   Security,
   Visibility,
   VisibilityOff,
 } from "@mui/icons-material";
 import Notes from "../components/Notes";
+import Captcha from "../components/Captcha";
 
 function Login() {
   const theme = useTheme();
@@ -38,7 +42,7 @@ function Login() {
         })}
       >
         <Typography
-          variant="h2"
+          variant="h4"
           sx={{
             my: 2,
             mb: 4,
@@ -62,7 +66,7 @@ function Login() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <AccountCircle fontSize="large" color="primary" />
+                  <AccountCircle fontSize="small" color="primary" />
                 </InputAdornment>
               ),
             },
@@ -82,15 +86,15 @@ function Login() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Password fontSize="large" color="primary" />
+                  <Password fontSize="small" color="primary" />
                 </InputAdornment>
               ),
               endAdornment: (
                 <InputAdornment position="end" onClick={togglePwdVisibility}>
                   {isPwdVisible ? (
-                    <VisibilityOff fontSize="large" color="success" />
+                    <VisibilityOff fontSize="small" color="success" />
                   ) : (
-                    <Visibility fontSize="large" color="success" />
+                    <Visibility fontSize="small" color="success" />
                   )}
                 </InputAdornment>
               ),
@@ -121,7 +125,7 @@ function Login() {
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Security fontSize="large" color="primary" />
+                    <Security fontSize="small" color="primary" />
                   </InputAdornment>
                 ),
               },
@@ -141,7 +145,7 @@ function Login() {
             justifyContent: "flex-end",
           }}
         >
-          <Button variant="text" startIcon={<Password fontSize="large" />}>
+          <Button variant="text" startIcon={<Password fontSize="small" />}>
             Forgot your password?
           </Button>
         </Box>
@@ -149,7 +153,7 @@ function Login() {
         <Button
           variant="contained"
           color="success"
-          startIcon={<Login />}
+          startIcon={<LoginIcon />}
           sx={{ mb: 2 }}
         >
           Login
@@ -178,7 +182,11 @@ function Login() {
             justifyContent: "center",
           }}
         >
-          <Button variant="contained" color="success" startIcon={<Create />}>
+          <Button
+            variant="contained"
+            color="success"
+            startIcon={<Create fontSize="small" />}
+          >
             Register yourself
           </Button>
         </Box>

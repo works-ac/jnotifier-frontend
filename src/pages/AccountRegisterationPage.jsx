@@ -66,7 +66,7 @@ function AccountRegisterationPage() {
       >
         <Box component="div" sx={{ my: 2 }}>
           <Typography
-            variant="h2"
+            variant="h4"
             sx={{
               fontWeight: 700,
               textTransform: "uppercase",
@@ -99,7 +99,7 @@ function AccountRegisterationPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Badge fontSize="large" color="primary" />
+                  <Badge fontSize="small" color="primary" />
                 </InputAdornment>
               ),
             },
@@ -122,7 +122,7 @@ function AccountRegisterationPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Email fontSize="large" color="primary" />
+                  <Email fontSize="small" color="primary" />
                 </InputAdornment>
               ),
             },
@@ -144,7 +144,7 @@ function AccountRegisterationPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Phone fontSize="large" color="primary" />
+                  <Phone fontSize="small" color="primary" />
                 </InputAdornment>
               ),
             },
@@ -165,7 +165,7 @@ function AccountRegisterationPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <Password fontSize="large" color="primary" />
+                  <Password fontSize="small" color="primary" />
                 </InputAdornment>
               ),
               endAdornment: (
@@ -175,9 +175,9 @@ function AccountRegisterationPage() {
                   sx={{ cursor: "pointer" }}
                 >
                   {isPwdVisible ? (
-                    <VisibilityOff fontSize="large" color="success" />
+                    <VisibilityOff fontSize="small" color="success" />
                   ) : (
-                    <Visibility fontSize="large" color="success" />
+                    <Visibility fontSize="small" color="success" />
                   )}
                 </InputAdornment>
               ),
@@ -277,7 +277,7 @@ function AccountRegisterationPage() {
               input: {
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Security fontSize="large" color="primary" />
+                    <Security fontSize="small" color="primary" />
                   </InputAdornment>
                 ),
               },

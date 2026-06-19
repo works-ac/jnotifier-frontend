@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  IconButton,
   Typography,
   useMediaQuery,
   useTheme,
@@ -145,7 +146,6 @@ function Footer() {
             display: "flex",
             alignItems: "center",
             justifyContent: "flex-end",
-            gap: 1,
           }}
         >
           <Typography
@@ -157,15 +157,13 @@ function Footer() {
             Follow us on:
           </Typography>
 
-          <WhatsAppIcon
-            sx={{ fontSize: "32px" }}
-            onClick={handleWhatsAppBtnClick}
-          />
+          <IconButton onClick={handleWhatsAppBtnClick}>
+            <WhatsAppIcon sx={{ fontSize: "24px" }} />
+          </IconButton>
 
-          <TelegramIcon
-            sx={{ fontSize: "32px" }}
-            onClick={handleTelegramBtnClick}
-          />
+          <IconButton onClick={handleTelegramBtnClick}>
+            <TelegramIcon sx={{ fontSize: "24px" }} />
+          </IconButton>
         </Box>
       </Container>
     </Box>

@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material";
 const AppTheme = createTheme({
   typography: {
     fontFamily: "Inter, sans-serif",
-    fontSize: "16px",
+    fontSize: 16,
     caption: {
       fontSize: "12px",
     },
@@ -12,6 +12,12 @@ const AppTheme = createTheme({
     },
     body2: {
       fontSize: "13px",
+    },
+    h4: {
+      fontSize: "24px",
+    },
+    h6: {
+      fontSize: "16px",
     },
   },
   palette: {
@@ -33,11 +39,7 @@ const AppTheme = createTheme({
       hover: "#1d4ed8",
       hoverBackground: "#eff6ff",
     },
-    edit: {
-      main: "#eab308",
-      hover: "#a16207",
-      hoverBackground: "#fffbeb",
-    },
+    edit: { main: "#eab308", hover: "#a16207", hoverBackground: "#fffbeb" },
     addRevoke: {
       main: "#ef4444",
       hover: "#dc2626",
@@ -57,6 +59,7 @@ const AppTheme = createTheme({
           fontFamily: "Inter, sans-serif",
           fontWeight: "bold",
           padding: "0.50rem 1.5rem",
+          textTransform: "none", // Keeps your button text from forcing UPPERCASE
           transition: "all 0.35s ease-in-out",
           "&:active": {
             transform: "scale(1.02)",
@@ -96,10 +99,15 @@ const AppTheme = createTheme({
         },
       },
     },
-    muiTableHeadCellProps: {
-      sx: {
-        fontWeight: "bold",
-        color: "#000080",
+    // Fixed: Properly nested the custom Table Head Cell property target if using standard MUI tables
+    MuiTableHead: {
+      styleOverrides: {
+        root: {
+          "& .MuiTableCell-root": {
+            fontWeight: "bold",
+            color: "#000080",
+          },
+        },
       },
     },
     MuiCssBaseline: {

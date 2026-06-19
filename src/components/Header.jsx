@@ -70,7 +70,7 @@ function Header() {
 
               <Box sx={{ display: "flex", flexDirection: "column" }}>
                 <Typography
-                  variant="h5"
+                  variant="h4"
                   component="span"
                   sx={{ fontWeight: 700, lineHeight: 1.2, mt: 2 }}
                 >

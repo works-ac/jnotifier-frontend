@@ -16,12 +16,13 @@ function AppAlert({
   const severity = type || "error";
 
   useEffect(() => {
-    if (alert && severity?.trim() === "error")
+    if (alert?.isOpen) {
       alertBoxRef?.current?.scrollIntoView({
-        behaviour: "smooth",
+        behavior: "smooth",
         block: "start",
       });
-  }, [alert]);
+    }
+  }, [alert?.isOpen]);
 
   if (!alert.isOpen) return <></>;
   return (

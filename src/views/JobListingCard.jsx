@@ -33,7 +33,7 @@ function JobListingCard({
     >
       <Card variant="elevation" elevation={4}>
         <CardContent>
-          <Typography variant="h2" sx={{ fontWeight: 700 }} color="primary">
+          <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
             {title}
           </Typography>
 
