@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react";
 import { UserRegisteration } from "../data/UserRegisteration";
 import dayjs from "dayjs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserRegisterSchema } from "../data/schema/UserRegisterationSchema";
 import useAppAlert from "./useAppAlert";
 import { register } from "../services/SignupService";
 import useCaptcha from "./useCaptcha";
+import { setSignupReply } from "../redux/slices/AuthSlice";
 
 function useRegisteration() {
   const [isPwdVisible, setIsPwdVisible] = useState(false);
@@ -16,7 +17,9 @@ function useRegisteration() {
   const { alert, handleAlertOnClose, reset, setAlert, showErrorMsg } =
     useAppAlert();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showOTPComponent, setShowOTPComponent] = useState(false);
   const { reloadCaptcha } = useCaptcha();
+  const dispatch = useDispatch();
 
   const togglePwdVisibility = useCallback(
     function () {
@@ -75,16 +78,16 @@ function useRegisteration() {
       setIsSubmitting(true);
 
       try {
-        await register(payload);
-        setAlert((prev) => ({
-          ...prev,
-          isOpen: true,
-          message: "Account created successfully",
-          type: "success",
-        }));
+        const response = await register(payload);
+        const reply = response.data?.data;
+
+        console.log(reply, "reply");
 
         await reloadCaptcha();
+        setDob(dayjs());
         setUserRegPayload(UserRegisteration);
+        dispatch(setSignupReply(reply));
+        setShowOTPComponent(true);
       } catch (error) {
         showErrorMsg(error);
       } finally {
@@ -101,6 +104,7 @@ function useRegisteration() {
     dob,
     alert,
     isSubmitting,
+    showOTPComponent,
     handleAlertOnClose,
     togglePwdVisibility,
     handleTextBoxOnChange,

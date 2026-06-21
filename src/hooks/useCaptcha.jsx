@@ -37,6 +37,7 @@ function useCaptcha() {
         const uri = response.data?.data?.captchaImage;
 
         setCaptchaUri(uri);
+        setCaptchaId(response.data?.data?.captchaId);
       } catch (error) {
         showErrorMsg(error);
       } finally {

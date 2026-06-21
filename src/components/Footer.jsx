@@ -11,7 +11,6 @@ import IndianFlag from "../assets/ind-flag.svg";
 import CWLogo from "../assets/cw.jpeg";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import { AppVariables } from "../app/AppVariables";
 import useFooter from "../hooks/useFooter";
 
 function Footer() {

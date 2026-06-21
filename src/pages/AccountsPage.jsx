@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Typography, useTheme } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import useAccounts from "../hooks/useAccounts";
 import useAppCss from "../hooks/useAppCss";
 import { useSelector } from "react-redux";
@@ -7,15 +7,13 @@ import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { AppConstants } from "../app/AppConstants";
 import Login from "../views/Login";
+import { Logout } from "@mui/icons-material";
 
 function AccountsPage() {
-  const theme = useTheme();
-  const { alert, checkUserAuthStatus, handleAlertOnClose, isLoading } =
+  const { alert, handleAlertOnClose, isLoading, isProfileLoading, profile } =
     useAccounts();
   const { GlobalPaperCss } = useAppCss();
   const { userAuthStatus } = useSelector((state) => state.auth);
-
-  console.log("hello hui...");
 
   if (isLoading)
     return (
@@ -30,13 +28,40 @@ function AccountsPage() {
 
   return (
     <Paper variant="elevation" elevation={4} sx={GlobalPaperCss}>
-      <Typography>User Profile</Typography>
+      <Typography variant="h4" sx={{ fontWeight: 700 }}>
+        User Profile
+      </Typography>
 
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}
         type={alert?.type}
       />
+
+      {isProfileLoading && (
+        <CircluarProgressLoader text="We're loading your profile please wait..." />
+      )}
+
+      <Box>
+        <TextField value={profile?.fullName} disabled />
+      </Box>
+
+      <Box
+        component="div"
+        sx={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          variant="outlined"
+          color="error"
+          startIcon={<Logout fontSize="small" />}
+        >
+          Logout
+        </Button>
+      </Box>
     </Paper>
   );
 }

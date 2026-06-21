@@ -34,6 +34,7 @@ import useRegisteration from "../hooks/useRegisteration";
 import Captcha from "../components/Captcha";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import AppAlert from "../components/AppAlert";
+import OTPVerification from "../components/OTPVerification";
 
 function AccountRegisterationPage() {
   const theme = useTheme();
@@ -49,8 +50,28 @@ function AccountRegisterationPage() {
     handleAlertOnClose,
     handleFormSubmit,
     isSubmitting,
+    showOTPComponent,
   } = useRegisteration();
   const { RequiredFieldCss } = useAppCss();
+
+  if (showOTPComponent) {
+    return (
+      <Container maxWidth="md" sx={{ mx: "auto" }}>
+        <Paper
+          variant="elevation"
+          elevation={4}
+          sx={(theme) => ({
+            padding: { xs: "1.5rem", md: "2.5rem" },
+            borderRadius: "16px",
+            width: "100%",
+            border: `1px solid ${theme.palette.secondary["A50"]}`,
+          })}
+        >
+          <OTPVerification />
+        </Paper>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="md" sx={{ mx: "auto" }}>

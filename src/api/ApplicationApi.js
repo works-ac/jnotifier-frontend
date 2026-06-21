@@ -1,27 +1,33 @@
 import axios from "axios";
 import { AppVariables } from "../app/AppVariables";
-import AppStore from "../redux";
 
 const apiClient = axios.create({
   baseURL: AppVariables.API_BASE_URL,
   timeout: 10000,
   timeoutErrorMessage:
     "Sorry, there's a problem connecting to our server right now, please try again!!!",
+  withCredentials: true,
 });
 
-apiClient.interceptors.request.use(
-  function (config) {
-    const state = AppStore.getState();
-    const { user } = state.auth || {};
-    const { accessToken } = user || {};
+// apiClient.interceptors.response.use(
+//   (response) => response,
+//   async (error) => {
+//     const originalRequest = error.config;
+//     const status = error?.response?.status;
 
-    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+//     if (status === 401 && !originalRequest._retry) {
+//       // originalRequest._retry = true;
 
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
-  },
-);
+//       try {
+//         await apiClient.post("/api/v1/auth/refresh-token");
+//         return apiClient(originalRequest);
+//       } catch (refreshError) {
+//         return Promise.reject(refreshError);
+//       }
+//     }
+
+//     return Promise.reject(error);
+//   },
+// );
 
 export default apiClient;

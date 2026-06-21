@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   Container,
   Divider,
   InputAdornment,
@@ -23,11 +24,54 @@ import {
 } from "@mui/icons-material";
 import Notes from "../components/Notes";
 import Captcha from "../components/Captcha";
+import { useSelector } from "react-redux";
+import AppAlert from "../components/AppAlert";
+import OTPVerification from "../components/OTPVerification";
 
 function Login() {
   const theme = useTheme();
-  const { isPwdVisible, togglePwdVisibility, textfieldType } = useLogin();
+  const {
+    isPwdVisible,
+    togglePwdVisibility,
+    textfieldType,
+    handleLoginTextBox,
+    loginData,
+    alert,
+    handleAlertOnClose,
+    handleLogin,
+    isLogging,
+    showOTPPanel,
+  } = useLogin();
   const { RequiredFieldCss } = useAppCss();
+  const { signupReply } = useSelector((state) => state.auth);
+  const { captchaId } = useSelector((state) => state.captcha);
+
+  async function submitLoginForm(e) {
+    e.preventDefault();
+    const payload = { ...loginData, captchaId };
+
+    if (signupReply?.username) payload.username = signupReply?.username;
+
+    await handleLogin(payload);
+  }
+
+  if (showOTPPanel)
+    return (
+      <Container maxWidth="md" sx={{ mx: "auto" }}>
+        <Paper
+          variant="elevation"
+          elevation={4}
+          sx={(theme) => ({
+            padding: { xs: "1.5rem", md: "2.5rem" },
+            borderRadius: "16px",
+            width: "100%",
+            border: `1px solid ${theme.palette.secondary["A50"]}`,
+          })}
+        >
+          <OTPVerification verifyType="login" username={loginData.username} />
+        </Paper>
+      </Container>
+    );
 
   return (
     <Container maxWidth="md" sx={{ mx: "auto" }}>
@@ -56,6 +100,12 @@ function Login() {
           Job Notifier SSO
         </Typography>
 
+        <AppAlert
+          alert={alert}
+          handleAlertOnClose={handleAlertOnClose}
+          type={alert?.type}
+        />
+
         <TextField
           label="Your username"
           placeholder="manish6099"
@@ -66,14 +116,21 @@ function Login() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <AccountCircle fontSize="small" color="primary" />
+                  <AccountCircle
+                    fontSize="small"
+                    color={signupReply?.username ? "disabled" : "primary"}
+                  />
                 </InputAdornment>
               ),
             },
           }}
+          name="username"
+          value={signupReply?.username || loginData?.username}
+          disabled={signupReply?.username}
           required
+          onChange={handleLoginTextBox}
           type="text"
-          autoFocus
+          autoFocus={!signupReply?.username}
         />
 
         <TextField
@@ -100,8 +157,12 @@ function Login() {
               ),
             },
           }}
+          name="password"
+          value={loginData?.password}
+          onChange={handleLoginTextBox}
           required
           type={textfieldType}
+          autoFocus={signupReply?.username}
         />
 
         <Box
@@ -130,6 +191,9 @@ function Login() {
                 ),
               },
             }}
+            name="captchaValue"
+            value={loginData?.captchaValue}
+            onChange={handleLoginTextBox}
             required
             type="text"
           />
@@ -153,8 +217,16 @@ function Login() {
         <Button
           variant="contained"
           color="success"
-          startIcon={<LoginIcon />}
+          startIcon={
+            isLogging ? (
+              <CircularProgress size={16} color="secondary" />
+            ) : (
+              <LoginIcon fontSize="small" />
+            )
+          }
+          onClick={submitLoginForm}
           sx={{ mb: 2 }}
+          disabled={isLogging}
         >
           Login
         </Button>
@@ -186,6 +258,7 @@ function Login() {
             variant="contained"
             color="success"
             startIcon={<Create fontSize="small" />}
+            href="/register"
           >
             Register yourself
           </Button>

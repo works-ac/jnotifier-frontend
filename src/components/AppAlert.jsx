@@ -33,7 +33,7 @@ function AppAlert({
         {...(typeof handleAlertOnClose === "function"
           ? { onClose: handleAlertOnClose }
           : {})}
-        {...(severity === "error" ? { icon: <Cancel fontSize="small" /> } : {})}
+        icon={severity === "error" ? <Cancel fontSize="small" /> : null}
       >
         {alert.message}
       </Alert>
