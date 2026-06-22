@@ -1,5 +1,12 @@
 import React from "react";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import useAccounts from "../hooks/useAccounts";
 import useAppCss from "../hooks/useAppCss";
 import { useSelector } from "react-redux";
@@ -32,6 +39,8 @@ function AccountsPage() {
         User Profile
       </Typography>
 
+      <Divider sx={{ mb: 3 }} />
+
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}
@@ -42,8 +51,46 @@ function AccountsPage() {
         <CircluarProgressLoader text="We're loading your profile please wait..." />
       )}
 
-      <Box>
-        <TextField value={profile?.fullName} disabled />
+      <Box component="div" sx={{ my: 2 }}>
+        <TextField
+          value={profile?.fullName}
+          disabled
+          fullWidth
+          sx={{ mb: 2 }}
+          label="Name"
+        />
+
+        <TextField
+          value={profile?.email}
+          disabled
+          fullWidth
+          sx={{ mb: 2 }}
+          label="Email"
+        />
+
+        <TextField
+          value={profile?.category}
+          disabled
+          fullWidth
+          sx={{ mb: 2 }}
+          label="Category"
+        />
+
+        <TextField
+          value={profile?.dob}
+          disabled
+          fullWidth
+          sx={{ mb: 2 }}
+          label="D.O.B"
+        />
+
+        <TextField
+          value={profile?.gender}
+          disabled
+          fullWidth
+          sx={{ mb: 2 }}
+          label="Gender"
+        />
       </Box>
 
       <Box

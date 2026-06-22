@@ -56,7 +56,8 @@ function useAccounts() {
   }, [authStatus]);
 
   useEffect(() => {
-    if (authStatus === AppConstants.USER_AUTH_STATUS) {
+    const status = authStatus?.trim()?.toLowerCase();
+    if (status === AppConstants.USER_AUTH_STATUS) {
       setIsProfileLoading(true);
       reset();
       loadProfile();
