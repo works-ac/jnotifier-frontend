@@ -1,11 +1,18 @@
 import React from "react";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Avatar,
   Box,
   Button,
+  Container,
   Divider,
+  InputAdornment,
   Paper,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import useAccounts from "../hooks/useAccounts";
 import useAppCss from "../hooks/useAppCss";
@@ -14,12 +21,25 @@ import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { AppConstants } from "../app/AppConstants";
 import Login from "../views/Login";
-import { Logout } from "@mui/icons-material";
+import {
+  AlternateEmail,
+  Cake,
+  Category,
+  Edit,
+  ExpandMore,
+  Logout,
+  Male,
+  Person,
+} from "@mui/icons-material";
+import { getInitials } from "../helpers";
+import Heading from "../components/Heading";
+import Notes from "../components/Notes";
 
 function AccountsPage() {
+  const theme = useTheme();
   const { alert, handleAlertOnClose, isLoading, isProfileLoading, profile } =
     useAccounts();
-  const { GlobalPaperCss } = useAppCss();
+  const { GlobalPaperCss, GlobalAccordianCss } = useAppCss();
   const { userAuthStatus } = useSelector((state) => state.auth);
 
   if (isLoading)
@@ -30,86 +50,268 @@ function AccountsPage() {
       />
     );
 
-  if (userAuthStatus?.trim()?.toLowerCase() !== AppConstants.USER_AUTH_STATUS)
+  if (
+    userAuthStatus &&
+    userAuthStatus.trim().toLowerCase() !== AppConstants.USER_AUTH_STATUS
+  )
     return <Login />;
 
   return (
-    <Paper variant="elevation" elevation={4} sx={GlobalPaperCss}>
-      <Typography variant="h4" sx={{ fontWeight: 700 }}>
-        User Profile
-      </Typography>
-
-      <Divider sx={{ mb: 3 }} />
-
-      <AppAlert
-        alert={alert}
-        handleAlertOnClose={handleAlertOnClose}
-        type={alert?.type}
-      />
-
-      {isProfileLoading && (
-        <CircluarProgressLoader text="We're loading your profile please wait..." />
-      )}
-
-      <Box component="div" sx={{ my: 2 }}>
-        <TextField
-          value={profile?.fullName}
-          disabled
-          fullWidth
-          sx={{ mb: 2 }}
-          label="Name"
+    <Container maxWidth="lg" sx={{ mx: "auto" }}>
+      <Paper variant="elevation" elevation={4} sx={GlobalPaperCss}>
+        <Heading
+          Icon={Person}
+          color={theme.palette.primary.main}
+          iconColor={theme.palette.warning.main}
+          text="User Profile"
         />
 
-        <TextField
-          value={profile?.email}
-          disabled
-          fullWidth
-          sx={{ mb: 2 }}
-          label="Email"
+        <Divider />
+
+        <AppAlert
+          alert={alert}
+          handleAlertOnClose={handleAlertOnClose}
+          type={alert?.type}
         />
 
-        <TextField
-          value={profile?.category}
-          disabled
-          fullWidth
-          sx={{ mb: 2 }}
-          label="Category"
-        />
+        {isProfileLoading && (
+          <CircluarProgressLoader text="We're loading your profile please wait..." />
+        )}
 
-        <TextField
-          value={profile?.dob}
-          disabled
-          fullWidth
-          sx={{ mb: 2 }}
-          label="D.O.B"
-        />
+        {!isProfileLoading && (
+          <>
+            <Box component="div" sx={{ mb: 4 }}>
+              <Box
+                component="div"
+                sx={{
+                  display: "flex",
+                  gap: 1,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <Avatar
+                  sx={(theme) => ({
+                    backgroundColor: theme.palette.warning.main,
+                    p: 5,
+                    my: 2,
+                    fontWeight: 700,
+                    fontSize: "2rem",
+                  })}
+                >
+                  {getInitials(profile.fullName)}
+                </Avatar>
 
-        <TextField
-          value={profile?.gender}
-          disabled
-          fullWidth
-          sx={{ mb: 2 }}
-          label="Gender"
-        />
-      </Box>
+                <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
+                  {profile?.fullName?.toWellFormed()?.toUpperCase() ?? ""}
+                </Typography>
+              </Box>
 
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <Button
-          variant="outlined"
-          color="error"
-          startIcon={<Logout fontSize="small" />}
-        >
-          Logout
-        </Button>
-      </Box>
-    </Paper>
+              <Divider sx={{ mb: 2 }} />
+
+              <Accordion sx={GlobalAccordianCss}>
+                <AccordionSummary
+                  aria-controls={`basic-info-content`}
+                  id={`basic-info-header`}
+                  expandIcon={<ExpandMore fontSize="small" />}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      textTransform: "uppercase",
+                      fontWeight: 700,
+                      color: theme.palette.primary.A700,
+                    }}
+                  >
+                    Basic Info
+                  </Typography>
+                </AccordionSummary>
+
+                <AccordionDetails>
+                  <TextField
+                    value={profile?.username}
+                    disabled
+                    fullWidth
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment>
+                            <Person
+                              fontSize="small"
+                              color="secondary"
+                              sx={{ mr: 1 }}
+                            />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{ mb: 2 }}
+                    label="Username"
+                  />
+
+                  <TextField
+                    value={profile?.email}
+                    disabled
+                    fullWidth
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment>
+                            <AlternateEmail
+                              fontSize="small"
+                              color="secondary"
+                              sx={{ mr: 1 }}
+                            />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    sx={{ mb: 2 }}
+                    label="Email"
+                  />
+
+                  <TextField
+                    value={profile?.category}
+                    disabled
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment>
+                            <Category
+                              fontSize="small"
+                              color="secondary"
+                              sx={{ mr: 1 }}
+                            />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    label="Category"
+                  />
+
+                  <TextField
+                    value={profile?.dob}
+                    disabled
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment>
+                            <Cake
+                              fontSize="small"
+                              color="secondary"
+                              sx={{ mr: 1 }}
+                            />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    label="D.O.B"
+                  />
+
+                  <TextField
+                    value={profile?.gender === "M" ? "Male" : "Female"}
+                    disabled
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    slotProps={{
+                      input: {
+                        startAdornment: (
+                          <InputAdornment>
+                            <Male
+                              fontSize="small"
+                              color="secondary"
+                              sx={{ mr: 1 }}
+                            />
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                    label="Gender"
+                  />
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion sx={GlobalAccordianCss}>
+                <AccordionSummary
+                  aria-controls={`disability-info-content`}
+                  id={`disability-info-header`}
+                  expandIcon={<ExpandMore fontSize="small" />}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      textTransform: "uppercase",
+                      fontWeight: 700,
+                      color: theme.palette.primary.A700,
+                    }}
+                  >
+                    Disability Info
+                  </Typography>
+                </AccordionSummary>
+
+                <AccordionDetails>
+                  {profile.isPwd === "false" && (
+                    <Typography
+                      variant="body1"
+                      color="secondary"
+                      sx={{ textAlign: "justify" }}
+                    >
+                      {AppConstants.NON_DISABLE_TEXT}
+                    </Typography>
+                  )}
+                </AccordionDetails>
+              </Accordion>
+            </Box>
+
+            <Notes
+              note="Candidates having more than 40% disability are considered to be physically challenged people."
+              noteColor={theme.palette.secondary.main}
+            />
+
+            <Notes
+              note="Sensitive information like passwords etc are not displayed here due to security reasons."
+              noteColor={theme.palette.secondary.main}
+            />
+
+            <Notes
+              note="Date of birth is non-editable."
+              noteColor={theme.palette.secondary.main}
+            />
+
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Button
+                variant="contained"
+                color="success"
+                startIcon={<Edit fontSize="small" />}
+              >
+                Edit
+              </Button>
+
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={<Logout fontSize="small" />}
+              >
+                Logout
+              </Button>
+            </Box>
+          </>
+        )}
+      </Paper>
+    </Container>
   );
 }
 

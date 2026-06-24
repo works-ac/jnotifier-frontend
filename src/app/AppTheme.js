@@ -13,6 +13,15 @@ const AppTheme = createTheme({
     body2: {
       fontSize: "13px",
     },
+    h1: {
+      fontSize: "36px",
+    },
+    h2: {
+      fontSize: "32px",
+    },
+    h3: {
+      fontSize: "28px",
+    },
     h4: {
       fontSize: "24px",
     },

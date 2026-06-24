@@ -23,7 +23,23 @@ function useAppCss() {
     border: `1px solid ${theme.palette.secondary["A50"]}`,
   }));
 
-  return { RequiredFieldCss, RequiredSwitchCss, GlobalPaperCss };
+  const GlobalAccordianCss = useMemo(
+    () => ({
+      mb: 1,
+      border: 1,
+      borderColor: theme.palette.primary.A700,
+      borderRadius: 2,
+      "&::before": { display: "none" },
+    }),
+    [],
+  );
+
+  return {
+    RequiredFieldCss,
+    RequiredSwitchCss,
+    GlobalPaperCss,
+    GlobalAccordianCss,
+  };
 }
 
 export default useAppCss;
