@@ -31,3 +31,7 @@ export async function login(payload) {
 export async function refreshToken() {
   return await ApplicationApi.post(AUTH_SERVICE_BASE_URI + "refresh-token");
 }
+
+export async function logout() {
+  return await ApplicationApi.post(AUTH_SERVICE_BASE_URI + "logout");
+}

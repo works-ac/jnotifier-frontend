@@ -5,12 +5,18 @@ import Notes from "./Notes";
 import useOTPVerification from "../hooks/useOTPVerification";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import AppAlert from "./AppAlert";
 
 function OTPVerification({ verifyType = "email_verification", username = "" }) {
   const theme = useTheme();
   const { signupReply } = useSelector((state) => state.auth);
-  const { handleResendOTP, handleVerifyOTP, isVerifying } =
-    useOTPVerification();
+  const {
+    handleResendOTP,
+    handleVerifyOTP,
+    isVerifying,
+    alert,
+    handleAlertOnClose,
+  } = useOTPVerification();
 
   async function submitOTP(otp) {
     const payload = {
@@ -35,6 +41,12 @@ function OTPVerification({ verifyType = "email_verification", username = "" }) {
       >
         Please enter the OTP we just sent to your email.
       </Typography>
+
+      <AppAlert
+        alert={alert}
+        handleAlertOnClose={handleAlertOnClose}
+        type={alert?.type}
+      />
 
       <Box
         component="div"

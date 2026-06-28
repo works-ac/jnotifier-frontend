@@ -209,7 +209,11 @@ function Login() {
             justifyContent: "flex-end",
           }}
         >
-          <Button variant="text" startIcon={<Password fontSize="small" />}>
+          <Button
+            variant="text"
+            startIcon={<Password fontSize="small" />}
+            disabled
+          >
             Forgot your password?
           </Button>
         </Box>

@@ -2,18 +2,25 @@ import { useCallback, useState } from "react";
 import { resendOTP, verifyOTP } from "../services/SignupService";
 import { useNavigate } from "react-router-dom";
 import { AppConstants } from "../app/AppConstants";
+import useAppAlert from "./useAppAlert";
+
 function useOTPVerification() {
   const [isVerifying, setIsVerifying] = useState(false);
+  const { alert, handleAlertOnClose, reset, showErrorMsg } = useAppAlert();
   const navigate = useNavigate();
 
   const handleResendOTP = useCallback(async function (payload) {
     try {
+      reset();
       await resendOTP(payload);
-    } catch {}
+    } catch (err) {
+      showErrorMsg(err);
+    }
   }, []);
 
   const handleVerifyOTP = useCallback(async function (payload) {
     setIsVerifying(true);
+    reset();
 
     try {
       await verifyOTP(payload);
@@ -26,13 +33,20 @@ function useOTPVerification() {
       }
 
       await navigate("/account");
-    } catch {
+    } catch (error) {
+      showErrorMsg(error);
     } finally {
       setIsVerifying(false);
     }
   }, []);
 
-  return { handleResendOTP, handleVerifyOTP, isVerifying };
+  return {
+    handleResendOTP,
+    handleVerifyOTP,
+    handleAlertOnClose,
+    isVerifying,
+    alert,
+  };
 }
 
 export default useOTPVerification;

@@ -12,8 +12,8 @@ import React from "react";
 import Heading from "./Heading";
 import BeenhereIcon from "@mui/icons-material/Beenhere";
 import CancelIcon from "@mui/icons-material/Cancel";
-import PaperComponent from "./PaperComponent";
-import useAppCss from "../../hooks/AppCss";
+import useAppCss from "../hooks/useAppCss";
+import PaperComponent from "./core/PaperComponent";
 
 function ConfirmationDialog({
   open,

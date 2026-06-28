@@ -1,4 +1,4 @@
-import { Visibility } from "@mui/icons-material";
+import { InfoOutlineRounded, Visibility } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React from "react";
+import Markdown from "react-markdown";
 
 function JobListingCard({
   applicationId,
@@ -42,9 +43,9 @@ function JobListingCard({
           </Typography>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
-            {tags?.map((tag) => (
+            {tags?.split(",")?.map((tag) => (
               <Chip
-                label={tag}
+                label={tag?.trim()}
                 key={tag}
                 sx={(theme) => ({
                   mr: 1,
@@ -52,6 +53,7 @@ function JobListingCard({
                   borderRadius: "8px",
                 })}
                 color="success"
+                icon={<InfoOutlineRounded fontSize="small" />}
               />
             ))}
           </Box>
@@ -76,11 +78,23 @@ function JobListingCard({
 
           <Divider />
 
-          <Box
-            component="div"
-            dangerouslySetInnerHTML={{ __html: shortDescription }}
-            sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
-          ></Box>
+          <Box sx={{ textAlign: "justify", p: 1 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                my: 1,
+                py: 1,
+                textTransform: "uppercase",
+                fontWeight: 700,
+                textDecoration: "underline",
+                textUnderlineOffset: 4,
+              }}
+            >
+              Description
+            </Typography>
+
+            <Markdown>{shortDescription}</Markdown>
+          </Box>
         </CardContent>
 
         <CardActionArea

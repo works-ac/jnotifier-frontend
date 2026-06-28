@@ -1,19 +1,18 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getCaptcha } from "../services/SignupService";
-import useAppAlert from "./useAppAlert";
 import { useDispatch } from "react-redux";
 import { setCaptcha } from "../redux/slices/CaptchaSlice";
+import { getErrorMsg, getToastNotification } from "../helpers";
+import { toast } from "react-toastify";
 
 function useCaptcha() {
   const [captchaUri, setCaptchaUri] = useState();
   const [captchaId, setCaptchaId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { showErrorMsg, reset, alert, handleAlertOnClose } = useAppAlert();
   const dispatch = useDispatch();
+  const appToastOptions = useMemo(() => getToastNotification(), []);
 
   const loadCaptcha = useCallback(async function () {
-    reset();
-
     try {
       const response = await getCaptcha();
       const uri = response.data?.data?.captchaImage;
@@ -21,7 +20,8 @@ function useCaptcha() {
       setCaptchaUri(uri);
       setCaptchaId(response.data?.data?.captchaId);
     } catch (error) {
-      showErrorMsg(error);
+      const message = getErrorMsg(error);
+      toast.error(message, appToastOptions);
     } finally {
       setIsLoading(false);
     }
@@ -29,7 +29,6 @@ function useCaptcha() {
 
   const reloadCaptcha = useCallback(
     async function () {
-      reset();
       setIsLoading(true);
 
       try {
@@ -39,7 +38,8 @@ function useCaptcha() {
         setCaptchaUri(uri);
         setCaptchaId(response.data?.data?.captchaId);
       } catch (error) {
-        showErrorMsg(error);
+        const message = getErrorMsg(error);
+        toast.error(message, appToastOptions);
       } finally {
         setIsLoading(false);
       }
@@ -58,8 +58,6 @@ function useCaptcha() {
 
   return {
     isLoading,
-    alert,
-    handleAlertOnClose,
     reloadCaptcha,
   };
 }

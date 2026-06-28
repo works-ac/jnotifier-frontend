@@ -1,12 +1,11 @@
 import React from "react";
 import useCaptcha from "../hooks/useCaptcha";
 import { Box, CircularProgress, IconButton } from "@mui/material";
-import AppAlert from "./AppAlert";
 import { RotateLeft } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 function Captcha() {
-  const { alert, handleAlertOnClose, isLoading, reloadCaptcha } = useCaptcha();
+  const { isLoading, reloadCaptcha } = useCaptcha();
   const { captchaImage } = useSelector((state) => state.captcha);
 
   return (
@@ -21,12 +20,6 @@ function Captcha() {
         margin: "auto",
       }}
     >
-      <AppAlert
-        alert={alert}
-        handleAlertOnClose={handleAlertOnClose}
-        type={alert?.type}
-      />
-
       {isLoading ? (
         <Box
           sx={{

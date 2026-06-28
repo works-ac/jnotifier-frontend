@@ -23,6 +23,13 @@ function useAppCss() {
     border: `1px solid ${theme.palette.secondary["A50"]}`,
   }));
 
+  const GlobalDialogDividerCss = useMemo(
+    () => ({
+      borderTop: `1px solid ${theme.palette.secondary[100]}`,
+    }),
+    [],
+  );
+
   const GlobalAccordianCss = useMemo(
     () => ({
       mb: 1,
@@ -39,6 +46,7 @@ function useAppCss() {
     RequiredSwitchCss,
     GlobalPaperCss,
     GlobalAccordianCss,
+    GlobalDialogDividerCss,
   };
 }
 

@@ -39,8 +39,7 @@ function Heading({ text, Icon, color, iconColor, mb, hideAnimation = true }) {
       )}
       <Typography
         ref={headingRef}
-        variant={!isMobile ? "h5" : "h6"}
-        component="h1"
+        variant="h5"
         sx={{ fontWeight: "bold", color }}
       >
         {text}

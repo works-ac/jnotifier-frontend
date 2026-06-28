@@ -5,9 +5,11 @@ import { useDispatch } from "react-redux";
 import { setAuthUser, setUserAuthStatus } from "../redux/slices/AuthSlice";
 import { UserProfile } from "../data/UserProfile";
 import { AppConstants } from "../app/AppConstants";
+import { logout } from "../services/SignupService";
 
 function useAccounts() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [authStatus, setAuthStatus] = useState();
   const [profile, setProfile] = useState(UserProfile);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
@@ -25,7 +27,9 @@ function useAccounts() {
 
         setAuthStatus(message);
       } catch (error) {
+        const message = error?.response?.data?.error;
         showErrorMsg(error);
+        setAuthStatus(message);
       } finally {
         setIsLoading(false);
       }
@@ -47,6 +51,18 @@ function useAccounts() {
     }
   }, []);
 
+  const handleLogout = useCallback(async function () {
+    setIsLoggingOut(true);
+
+    try {
+      await logout();
+      globalThis.location.reload();
+    } catch {
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }, []);
+
   useEffect(() => {
     checkUserAuthStatus();
   }, []);
@@ -64,7 +80,15 @@ function useAccounts() {
     }
   }, [authStatus]);
 
-  return { alert, handleAlertOnClose, isLoading, isProfileLoading, profile };
+  return {
+    alert,
+    handleAlertOnClose,
+    isLoading,
+    isProfileLoading,
+    profile,
+    isLoggingOut,
+    handleLogout,
+  };
 }
 
 export default useAccounts;

@@ -4,7 +4,7 @@ export const JobListings = [
     title: "UPSC RECRUITMENT 2026",
     applicationStartDate: "13-06-2026",
     applicationEndDate: "03-07-2026",
-    tags: ["Government", "UPSC Technical Cadre", "Permanent"],
+    tags: ["Government", "UPSC Technical Cadre", "Permanent"].join(",").trim(),
     shortDescription: `<p>
       <strong>(Vacancy No. 26060650613)</strong> Fifteen vacancies for the post of 
       <strong>Assistant Director (IT)</strong> in Office of the Registrar General &amp; 
@@ -25,7 +25,9 @@ export const JobListings = [
       "Permanent",
       "2026",
       "Total 12256 vacancies",
-    ],
+    ]
+      .join(",")
+      .trim(),
     shortDescription: `<p>
       <strong>The Staff Selection Commission (SSC)</strong>, under 
       <em>Notice F. No. HQ-C11018/1/2026-C-1</em>, announces the commencement of the 

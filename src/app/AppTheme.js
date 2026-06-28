@@ -25,6 +25,9 @@ const AppTheme = createTheme({
     h4: {
       fontSize: "24px",
     },
+    h5: {
+      fontSize: "20px",
+    },
     h6: {
       fontSize: "16px",
     },

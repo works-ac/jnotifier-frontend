@@ -1,33 +1,58 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { JobDetails } from "../data/JobDetailsPageData";
 import JobDetailsCard from "../views/JobDetailsCard";
+import useHome from "../hooks/useHome";
+import AppAlert from "../components/AppAlert";
+import CircluarProgressLoader from "../components/CircluarProgressLoader";
 
 function JobDetailsPage() {
   const { applicationId } = useParams();
-  const job = JobDetails.find(
-    (job) => job.applicationId === Number(applicationId),
-  );
+  const {
+    alert,
+    fetchJobByApplicationId,
+    handleAlertOnClose,
+    isJobDetailsLoading,
+    jobDetails,
+  } = useHome();
 
   useEffect(() => {
-    document.title = `Job Notifier || ${job.title}`;
-  }, [job]);
+    document.title = `Job Notifier || ${jobDetails.title}`;
+  }, [jobDetails]);
+
+  useEffect(() => {
+    fetchJobByApplicationId(applicationId);
+  }, []);
 
   return (
     <>
-      {
-        <JobDetailsCard
-          advNo={job.advNo}
-          applicationEndDate={job.applicationEndDate}
-          applicationStartDate={job.applicationStartDate}
-          applicationId={job.applicationId}
-          applyLink={job.applyLink}
-          components={job.components}
-          shortDescription={job.shortDescription}
-          tags={job.tags}
-          title={job.title}
+      <AppAlert
+        alert={alert}
+        handleAlertOnClose={handleAlertOnClose}
+        type={alert?.type}
+      />
+
+      {isJobDetailsLoading && (
+        <CircluarProgressLoader
+          text={`We're loading up the details of job bearing id ${applicationId}, please wait....`}
+          takeHeight
         />
-      }
+      )}
+
+      {!isJobDetailsLoading && (
+        <JobDetailsCard
+          advNo={jobDetails.advNo}
+          applicationEndDate={jobDetails.applicationEndDate}
+          applicationStartDate={jobDetails.applicationStartDate}
+          applicationId={jobDetails.applicationId}
+          applyLink={jobDetails.applyLink}
+          components={jobDetails.components}
+          shortDescription={jobDetails.shortDescription}
+          tags={jobDetails.tags}
+          title={jobDetails.title}
+          viewPageDescription={jobDetails.viewPageDescription}
+          advFilePath={jobDetails.advFilePath}
+        />
+      )}
     </>
   );
 }

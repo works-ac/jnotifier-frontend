@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -34,11 +34,20 @@ import {
 import { getInitials } from "../helpers";
 import Heading from "../components/Heading";
 import Notes from "../components/Notes";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 
 function AccountsPage() {
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const theme = useTheme();
-  const { alert, handleAlertOnClose, isLoading, isProfileLoading, profile } =
-    useAccounts();
+  const {
+    alert,
+    handleAlertOnClose,
+    isLoading,
+    isProfileLoading,
+    profile,
+    handleLogout,
+    isLoggingOut,
+  } = useAccounts();
   const { GlobalPaperCss, GlobalAccordianCss } = useAppCss();
   const { userAuthStatus } = useSelector((state) => state.auth);
 
@@ -296,6 +305,7 @@ function AccountsPage() {
                 variant="contained"
                 color="success"
                 startIcon={<Edit fontSize="small" />}
+                disabled
               >
                 Edit
               </Button>
@@ -304,6 +314,8 @@ function AccountsPage() {
                 variant="outlined"
                 color="error"
                 startIcon={<Logout fontSize="small" />}
+                disabled={isLoggingOut}
+                onClick={() => setLogoutDialogOpen(true)}
               >
                 Logout
               </Button>
@@ -311,6 +323,19 @@ function AccountsPage() {
           </>
         )}
       </Paper>
+
+      <ConfirmationDialog
+        open={logoutDialogOpen}
+        heading="Confirm Logout"
+        Icon={Logout}
+        text="Are you sure you want to logout?"
+        isLoading={isLoggingOut}
+        onSuccess={() => {
+          setLogoutDialogOpen(false);
+          handleLogout();
+        }}
+        onCancel={() => setLogoutDialogOpen(false)}
+      />
     </Container>
   );
 }
