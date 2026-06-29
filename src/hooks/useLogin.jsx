@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { UserLogin } from "../data/UserLogin";
 import { login } from "../services/SignupService";
 import useAppAlert from "./useAppAlert";
+import useCaptcha from "./useCaptcha";
 
 function useLogin() {
   const [isPwdVisible, setIsPwdVisible] = useState(false);
@@ -10,6 +11,7 @@ function useLogin() {
   const [isLogging, setIsLogging] = useState(false);
   const [showOTPPanel, setShowOTPPanel] = useState(false);
   const { reset, showErrorMsg, alert, handleAlertOnClose } = useAppAlert();
+  const { reloadCaptcha } = useCaptcha();
 
   const togglePwdVisibility = useCallback(
     function () {
@@ -38,6 +40,7 @@ function useLogin() {
         setShowOTPPanel(true);
       } catch (error) {
         showErrorMsg(error);
+        reloadCaptcha();
       } finally {
         setIsLogging(false);
       }

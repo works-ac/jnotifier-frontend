@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AppVariables } from "../app/AppVariables";
-import { refreshToken } from "../services/SignupService";
+import { refreshToken, clearCookies } from "../services/SignupService";
 
 // 2. Initialize Axios Client
 const apiClient = axios.create({
@@ -33,40 +33,51 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Check for 401 Unauthorized and ensure we haven't already retried this request
-    if (error.response?.status === 403 && !originalRequest._retry) {
-      if (isRefreshing) {
-        // Queue the request until the refresh completes
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then(() => {
-            // Once resolved, retry the request. The browser will automatically attach the new cookie.
-            return apiClient(originalRequest);
-          })
-          .catch((err) => Promise.reject(err));
+    if (error.response?.status === 403) {
+      if (error.response?.data?.error?.code === "TOKEN_REFRESH_EXPIRED") {
+        try {
+          await clearCookies();
+        } catch {}
+
+        globalThis.location.href = "/account";
+        return Promise.reject(error);
       }
 
-      originalRequest._retry = true;
-      isRefreshing = true;
+      // Check for 403 and ensure we haven't already retried this request
+      if (!originalRequest._retry && !originalRequest.url.includes("/clear")) {
+        if (isRefreshing) {
+          // Queue the request until the refresh completes
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then(() => {
+              // Once resolved, retry the request. The browser will automatically attach the new cookie.
+              return apiClient(originalRequest);
+            })
+            .catch((err) => Promise.reject(err));
+        }
 
-      try {
-        // Call your refresh token API
-        await refreshToken();
+        originalRequest._retry = true;
+        isRefreshing = true;
 
-        // The API response sets the new cookie automatically.
-        // We just need to process the queue and retry the original request.
-        processQueue(null);
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        // If the refresh token api fails (e.g., refresh token is also expired)
-        processQueue(refreshError);
+        try {
+          // Call your refresh token API
+          await refreshToken();
 
-        // Redirect to login or emit a logout event
-        globalThis.location.href = "/account";
-        return Promise.reject(refreshError);
-      } finally {
-        isRefreshing = false;
+          // The API response sets the new cookie automatically.
+          // We just need to process the queue and retry the original request.
+          processQueue(null);
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          // If the refresh token api fails (e.g., refresh token is also expired)
+          processQueue(refreshError);
+
+          // Redirect to login or emit a logout event
+          globalThis.location.href = "/account";
+          return Promise.reject(refreshError);
+        } finally {
+          isRefreshing = false;
+        }
       }
     }
 

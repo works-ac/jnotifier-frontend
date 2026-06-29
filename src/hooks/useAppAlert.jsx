@@ -28,6 +28,7 @@ function useAppAlert() {
       const message =
         error?.response?.data?.msg ??
         error?.response?.data?.error?.message ??
+        error?.response?.data?.message ??
         error?.message ??
         "Something went wrong while processing your request, please try again!!!";
 

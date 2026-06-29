@@ -18,7 +18,7 @@ function useOTPVerification() {
     }
   }, []);
 
-  const handleVerifyOTP = useCallback(async function (payload) {
+  const handleVerifyOTP = useCallback(async function (payload, onSuccess) {
     setIsVerifying(true);
     reset();
 
@@ -29,6 +29,11 @@ function useOTPVerification() {
         payload.verificationType === AppConstants.OTP_VERIFICATION_TYPE.LOGIN
       ) {
         globalThis.location.reload();
+        return;
+      }
+
+      if (onSuccess) {
+        onSuccess();
         return;
       }
 

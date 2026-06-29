@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import AppAlert from "./AppAlert";
 
-function OTPVerification({ verifyType = "email_verification", username = "" }) {
+function OTPVerification({ verifyType = "email_verification", username = "", onSuccess }) {
   const theme = useTheme();
   const { signupReply } = useSelector((state) => state.auth);
   const {
@@ -25,7 +25,7 @@ function OTPVerification({ verifyType = "email_verification", username = "" }) {
       verificationType: verifyType,
     };
 
-    await handleVerifyOTP(payload);
+    await handleVerifyOTP(payload, onSuccess);
   }
 
   return (
@@ -83,6 +83,7 @@ function OTPVerification({ verifyType = "email_verification", username = "" }) {
 OTPVerification.propTypes = {
   verifyType: PropTypes.string,
   username: PropTypes.string,
+  onSuccess: PropTypes.func,
 };
 
 export default React.memo(OTPVerification);

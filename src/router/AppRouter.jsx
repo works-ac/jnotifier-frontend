@@ -7,6 +7,7 @@ import JobDetailsPage from "../pages/JobDetailsPage";
 import AccountsPage from "../pages/AccountsPage";
 import AccountRegisterationPage from "../pages/AccountRegisterationPage";
 import CheckAuthStatus from "../components/CheckAuthStatus";
+import RecoverAccountPage from "../pages/RecoverAccountPage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const AppRoutes = createBrowserRouter([
       {
         path: "register",
         element: <AccountRegisterationPage />,
+      },
+      {
+        path: "recover/account",
+        element: <RecoverAccountPage />,
       },
       {
         path: "*",

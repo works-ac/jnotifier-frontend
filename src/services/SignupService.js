@@ -32,6 +32,24 @@ export async function refreshToken() {
   return await ApplicationApi.post(AUTH_SERVICE_BASE_URI + "refresh-token");
 }
 
+export async function clearCookies() {
+  return await ApplicationApi.post(AUTH_SERVICE_BASE_URI + "clear");
+}
+
 export async function logout() {
   return await ApplicationApi.post(AUTH_SERVICE_BASE_URI + "logout");
+}
+
+export async function verifyEmail(payload) {
+  return await ApplicationApi.post(
+    AUTH_SERVICE_BASE_URI + "verify-email",
+    payload,
+  );
+}
+
+export async function forgotPassword(payload) {
+  return await ApplicationApi.post(
+    AUTH_SERVICE_BASE_URI + "forgot-pwd",
+    payload,
+  );
 }

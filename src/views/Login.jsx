@@ -107,8 +107,8 @@ function Login() {
         />
 
         <TextField
-          label="Your username"
-          placeholder="manish6099"
+          label="Username or email"
+          placeholder="xyz54128413 or admin@yopmail.com"
           fullWidth
           helperText="Please enter your username here."
           sx={{ mb: 2, ...RequiredFieldCss }}
@@ -134,7 +134,7 @@ function Login() {
         />
 
         <TextField
-          label="Your password"
+          label="Password"
           placeholder="Ex:- password@123"
           fullWidth
           helperText="Please enter your password here."
@@ -207,12 +207,13 @@ function Login() {
             alignItems: "center",
             flexWrap: "wrap",
             justifyContent: "flex-end",
+            textAlign: "right",
           }}
         >
           <Button
             variant="text"
             startIcon={<Password fontSize="small" />}
-            disabled
+            href="/recover/account"
           >
             Forgot your password?
           </Button>
@@ -237,6 +238,16 @@ function Login() {
 
         <Notes
           note="All fields marked with asterisk (*) are mandatory to fill."
+          noteColor={theme.palette.secondary.main}
+        />
+
+        <Notes
+          note="You can use either username or email to login yourself."
+          noteColor={theme.palette.secondary.main}
+        />
+
+        <Notes
+          note="You can find your username in the welcome email sent by us."
           noteColor={theme.palette.secondary.main}
         />
 
