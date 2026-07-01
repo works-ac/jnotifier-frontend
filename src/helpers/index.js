@@ -20,3 +20,27 @@ export function getErrorMsg(error) {
 
   return message;
 }
+
+export function whatsAppFormatter(markdownText) {
+  if (!markdownText) return "";
+
+  return (
+    markdownText
+      // 1. Convert Headings (e.g., # Heading -> *Heading*)
+      // WhatsApp doesn't support size changes, so making it bold is the best alternative
+      .replace(/^#+\s*(.*)$/gm, "*$1*")
+
+      // 2. Convert Bold (e.g., **text** -> *text*)
+      .replace(/\*\*(.*?)\*\*/g, "*$1*")
+
+      // 3. Convert Markdown Links (e.g., [Google](https://google.com) -> Google: https://google.com)
+      // WhatsApp makes raw URLs clickable automatically
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1: $2")
+
+      // 4. Convert Strikethrough (e.g., ~~text~~ -> ~text~)
+      .replace(/~~(.*?)~~/g, "~$1~")
+
+      // 5. (Optional) Convert asterisks used for lists into dashes to prevent formatting issues
+      .replace(/^\*\s+/gm, "- ")
+  );
+}

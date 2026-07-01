@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
+import { whatsAppFormatter } from "../../helpers";
 
 /**
  * Reusable ShareDialog component.
@@ -40,13 +41,21 @@ function ShareDialog({
 }) {
   const theme = useTheme();
   const shareUrl = url || globalThis.location.href;
-  const content = `${recruitmentTitle}
+  const whatsAppDescription = whatsAppFormatter(recruitmentDesc);
 
-  ${recruitmentDesc}
+  const content = `📢📢📢📢 New Job Update 📢📢📢📢
+  
+  👉👉 *Job Title*
+  
+  ${recruitmentTitle}
 
-  CLICK THE LINK GIVEN BELOW TO APPLY 👇👇👇👇
+  👉👉 *Job Description*
 
-  ${shareUrl}`;
+  ${whatsAppDescription}
+
+  *CLICK THE LINK GIVEN BELOW TO APPLY 👇👇👇👇*
+
+  🔗🔗 Link: *${shareUrl}*`;
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -54,9 +63,7 @@ function ShareDialog({
       await navigator.clipboard.writeText(content);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
-    } catch {
-      // silently fail if clipboard is not available
-    }
+    } catch {}
   };
 
   return (

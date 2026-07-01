@@ -26,7 +26,6 @@ import React from "react";
 import Markdown from "react-markdown";
 import useAppCss from "../hooks/useAppCss";
 import useJobDetails from "../hooks/useJobDetails";
-import { useSelector } from "react-redux";
 import { AppConstants } from "../app/AppConstants";
 import Notes from "../components/Notes";
 import ShareDialog from "../components/core/ShareDialog";
@@ -60,7 +59,6 @@ function JobDetailsCard({
     closeShareDialog,
     downloadAdv,
   } = useJobDetails();
-  const { userAuthStatus } = useSelector((state) => state.auth);
 
   return (
     <Box
@@ -178,12 +176,12 @@ function JobDetailsCard({
             />
 
             <Notes
-              note="Please register and login yourself to use apply now and download advertisement feature"
+              note="Please register and login yourself to get regular notifications regarding new job openings."
               noteColor={theme.palette.secondary.main}
             />
 
             <Notes
-              note="Kindly double check your eligibility before applying in any vacancy."
+              note="Kindly double check your eligibility before applying to any vacancy."
               noteColor={theme.palette.secondary.main}
             />
           </Box>
@@ -203,9 +201,6 @@ function JobDetailsCard({
             href={applyLink}
             target="_blank"
             startIcon={<OpenInNew fontSize="small" />}
-            disabled={
-              userAuthStatus?.toLowerCase() !== AppConstants.USER_AUTH_STATUS
-            }
           >
             Apply
           </Button>
@@ -219,10 +214,7 @@ function JobDetailsCard({
                 <Download fontSize="small" />
               )
             }
-            disabled={
-              userAuthStatus?.toLowerCase() !== AppConstants.USER_AUTH_STATUS ||
-              isDownloading
-            }
+            disabled={isDownloading}
             onClick={async () => await downloadAdv(advFilePath)}
           >
             Download Advertisement
