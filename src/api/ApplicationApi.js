@@ -34,7 +34,10 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
 
     if (error.response?.status === 403) {
-      if (error.response?.data?.error?.code === "TOKEN_REFRESH_EXPIRED") {
+      if (
+        error.response?.data?.error?.code === "TOKEN_REFRESH_EXPIRED" ||
+        error.response?.data?.error?.code === "TOKEN_REFRESH_ERROR"
+      ) {
         try {
           await clearCookies();
         } catch {}

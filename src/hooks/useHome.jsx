@@ -34,6 +34,7 @@ function useHome() {
       setPaginationMetadata(pagination);
     } catch (error) {
       showErrorMsg(error);
+      setJobs([]);
     } finally {
       setIsLoading(false);
     }
