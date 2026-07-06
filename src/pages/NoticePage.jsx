@@ -5,6 +5,7 @@ import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
+import NoJobFoundImage from "../assets/notfound.jpg";
 
 function NoticePage() {
   const {
