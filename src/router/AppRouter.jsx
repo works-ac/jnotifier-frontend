@@ -9,6 +9,7 @@ import AccountRegisterationPage from "../pages/AccountRegisterationPage";
 import RecoverAccountPage from "../pages/RecoverAccountPage";
 import NoticePage from "../pages/NoticePage";
 import NoticeDetailsPage from "../pages/NoticeDetailsPage";
+import PostView from "../components/wrapper/PostView";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -17,39 +18,75 @@ const AppRoutes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: (
+          <PostView>
+            <HomePage />
+          </PostView>
+        ),
       },
       {
         path: "/jobs/:applicationId",
-        element: <JobDetailsPage />,
+        element: (
+          <PostView>
+            <JobDetailsPage />
+          </PostView>
+        ),
       },
       {
         path: "results",
-        element: <ResultsPage />,
+        element: (
+          <PostView>
+            <ResultsPage />
+          </PostView>
+        ),
       },
       {
         path: "notices",
-        element: <NoticePage />,
+        element: (
+          <PostView>
+            <NoticePage />
+          </PostView>
+        ),
       },
       {
         path: "/notice/:noticeId",
-        element: <NoticeDetailsPage />,
+        element: (
+          <PostView>
+            <NoticeDetailsPage />
+          </PostView>
+        ),
       },
       {
         path: "account",
-        element: <AccountsPage />,
+        element: (
+          <PostView>
+            <AccountsPage />
+          </PostView>
+        ),
       },
       {
         path: "register",
-        element: <AccountRegisterationPage />,
+        element: (
+          <PostView>
+            <AccountRegisterationPage />
+          </PostView>
+        ),
       },
       {
         path: "recover/account",
-        element: <RecoverAccountPage />,
+        element: (
+          <PostView>
+            <RecoverAccountPage />
+          </PostView>
+        ),
       },
       {
         path: "*",
-        element: <NotFoundPage />,
+        element: (
+          <PostView>
+            <NotFoundPage />
+          </PostView>
+        ),
       },
     ],
   },
