@@ -92,7 +92,7 @@ function NoticePage() {
               />
 
               <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                Sorry, currently no active job postings are available.
+                Sorry, currently no active notice(s) are available.
               </Typography>
             </Container>
           )}
