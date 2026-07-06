@@ -3,4 +3,5 @@ export const AppPaginationMetadata = {
   totalPages: -1,
   last: true,
   totalElements: -1,
+  first: true,
 };

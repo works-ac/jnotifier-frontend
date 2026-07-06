@@ -6,6 +6,12 @@ export const AppNavData = [
     id: "home",
   },
   {
+    name: "Notice",
+    href: "/notices",
+    color: "inherit",
+    id: "notices",
+  },
+  {
     name: "Account",
     href: "/account",
     color: "inherit",

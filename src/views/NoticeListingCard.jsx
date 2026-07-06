@@ -1,0 +1,85 @@
+import { Sell, Visibility } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  Chip,
+  Divider,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import React from "react";
+import Markdown from "react-markdown";
+
+function NoticeListingCard({ id, title, tags, noticeDescription }) {
+  const theme = useTheme();
+  const md = theme.breakpoints.values.md;
+
+  return (
+    <Box
+      component="div"
+      sx={{ minHeight: "223px", maxWidth: `${md}px`, mx: "auto", mb: 2 }}
+    >
+      <Card variant="elevation" elevation={4}>
+        <CardContent>
+          <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
+            {title}
+          </Typography>
+
+          <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
+            {tags?.split(",")?.map((tag) => (
+              <Chip
+                label={tag?.trim()}
+                key={tag}
+                sx={(theme) => ({
+                  mr: 1,
+                  mb: 1,
+                  borderRadius: "8px",
+                })}
+                color="success"
+                icon={<Sell fontSize="small" />}
+              />
+            ))}
+          </Box>
+
+          <Divider />
+
+          <Box sx={{ textAlign: "justify", p: 1 }}>
+            <Typography
+              variant="body1"
+              sx={{
+                my: 1,
+                py: 1,
+                textTransform: "uppercase",
+                fontWeight: 700,
+                textDecoration: "underline",
+                textUnderlineOffset: 4,
+              }}
+            >
+              Description
+            </Typography>
+
+            <Markdown>{noticeDescription}</Markdown>
+          </Box>
+        </CardContent>
+
+        <CardActionArea
+          sx={{ display: "flex", justifyContent: "flex-end", p: 0.5 }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<Visibility fontSize="small" />}
+            href={`/notice/${id}`}
+            target="_blank"
+          >
+            View
+          </Button>
+        </CardActionArea>
+      </Card>
+    </Box>
+  );
+}
+
+export default NoticeListingCard;

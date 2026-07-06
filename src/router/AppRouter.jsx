@@ -7,6 +7,8 @@ import JobDetailsPage from "../pages/JobDetailsPage";
 import AccountsPage from "../pages/AccountsPage";
 import AccountRegisterationPage from "../pages/AccountRegisterationPage";
 import RecoverAccountPage from "../pages/RecoverAccountPage";
+import NoticePage from "../pages/NoticePage";
+import NoticeDetailsPage from "../pages/NoticeDetailsPage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ const AppRoutes = createBrowserRouter([
       {
         path: "results",
         element: <ResultsPage />,
+      },
+      {
+        path: "notices",
+        element: <NoticePage />,
+      },
+      {
+        path: "/notice/:noticeId",
+        element: <NoticeDetailsPage />,
       },
       {
         path: "account",

@@ -7,8 +7,8 @@ import { AppPaginationMetadata } from "../data/PaginationMetadata";
 
 function useHome() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isJobDetailsLoading, setIsJobDetailsLoading] = useState(false);
   const [jobs, setJobs] = useState(JobListings);
+  const [isJobDetailsLoading, setIsJobDetailsLoading] = useState(false);
   const [paginationMetadata, setPaginationMetadata] = useState(
     AppPaginationMetadata,
   );
