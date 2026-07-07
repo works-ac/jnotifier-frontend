@@ -10,6 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import PropTypes from "prop-types";
 import React from "react";
 import Markdown from "react-markdown";
 
@@ -82,4 +83,11 @@ function NoticeListingCard({ id, title, tags, noticeDescription }) {
   );
 }
 
-export default NoticeListingCard;
+NoticeListingCard.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  noticeDescription: PropTypes.string.isRequired,
+};
+
+export default React.memo(NoticeListingCard);

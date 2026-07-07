@@ -19,6 +19,7 @@ import Markdown from "react-markdown";
 import useAppCss from "../hooks/useAppCss";
 import ShareDialog from "../components/core/ShareDialog";
 import useJobDetails from "../hooks/useJobDetails";
+import PropTypes from "prop-types";
 
 function NoticeDetailsCard({
   id,
@@ -86,49 +87,71 @@ function NoticeDetailsCard({
             <Markdown>{noticeDescription}</Markdown>
           </Box>
 
-          <Accordion sx={GlobalAccordianCss} defaultExpanded>
-            <AccordionSummary
-              aria-controls={`detailed-notice-content`}
-              id={`detailed-notice-header`}
-              expandIcon={<ExpandMore fontSize="small" />}
+          {noticeDetailedAdv && (
+            <Accordion sx={GlobalAccordianCss} defaultExpanded>
+              <AccordionSummary
+                aria-controls={`detailed-notice-content`}
+                id={`detailed-notice-header`}
+                expandIcon={<ExpandMore fontSize="small" />}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    color: theme.palette.primary.A700,
+                  }}
+                >
+                  Detailed Notice
+                </Typography>
+              </AccordionSummary>
+
+              <AccordionDetails>
+                <Box
+                  component="div"
+                  sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
+                >
+                  <Markdown>{noticeDetailedAdv}</Markdown>
+                </Box>
+              </AccordionDetails>
+
+              <AccordionActions>
+                <Button
+                  variant="outlined"
+                  startIcon={
+                    isCopying ? (
+                      <CircularProgress size={16} color="secondary" />
+                    ) : (
+                      <ContentCopy fontSize="small" />
+                    )
+                  }
+                  onClick={() => copyDetailedAdv(noticeDetailedAdv)}
+                  disabled={isCopying}
+                >
+                  Copy
+                </Button>
+
+                <Button
+                  variant="outlined"
+                  startIcon={<Share fontSize="small" />}
+                  onClick={openShareDialog}
+                >
+                  Share
+                </Button>
+              </AccordionActions>
+            </Accordion>
+          )}
+
+          {!noticeDetailedAdv && (
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                my: 1,
+              }}
             >
-              <Typography
-                variant="h6"
-                sx={{
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                  color: theme.palette.primary.A700,
-                }}
-              >
-                Detailed Notice
-              </Typography>
-            </AccordionSummary>
-
-            <AccordionDetails>
-              <Box
-                component="div"
-                sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
-              >
-                <Markdown>{noticeDetailedAdv}</Markdown>
-              </Box>
-            </AccordionDetails>
-
-            <AccordionActions>
-              <Button
-                variant="outlined"
-                startIcon={
-                  isCopying ? (
-                    <CircularProgress size={16} color="secondary" />
-                  ) : (
-                    <ContentCopy fontSize="small" />
-                  )
-                }
-                onClick={() => copyDetailedAdv(noticeDetailedAdv)}
-                disabled={isCopying}
-              >
-                Copy
-              </Button>
-
               <Button
                 variant="outlined"
                 startIcon={<Share fontSize="small" />}
@@ -136,8 +159,8 @@ function NoticeDetailsCard({
               >
                 Share
               </Button>
-            </AccordionActions>
-          </Accordion>
+            </Box>
+          )}
         </CardContent>
       </Card>
 
@@ -152,5 +175,13 @@ function NoticeDetailsCard({
     </Box>
   );
 }
+
+NoticeDetailsCard.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  noticeDescription: PropTypes.string.isRequired,
+  noticeDetailedAdv: PropTypes.string,
+};
 
 export default NoticeDetailsCard;
