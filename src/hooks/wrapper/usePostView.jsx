@@ -6,11 +6,11 @@ import { getToastNotification } from "../../helpers";
 function usePostView() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handlePostView = useCallback(async function () {
+  const handlePostView = useCallback(async function (details) {
     setIsLoading(true);
 
     try {
-      await postView();
+      await postView(details);
     } catch (error) {
       const message =
         error?.response?.data?.error?.message ??
