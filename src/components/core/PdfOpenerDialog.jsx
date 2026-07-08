@@ -57,7 +57,7 @@ function PdfOpenerDialog({
         <PdfViewer
           file={pdfBlob}
           disableDownloadable={!isDownloadable}
-          fileName={title}
+          fileName={`${title?.split(" ")?.join("-")?.toLowerCase()}.pdf`}
         />
       </DialogContent>
     </Dialog>
