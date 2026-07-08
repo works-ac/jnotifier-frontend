@@ -237,6 +237,7 @@ function JobDetailsCard({
           onClose={handlePdfDialogOnClose}
           pdfBlob={advertisement}
           title={title}
+          isDownloadable
         />
       )}
     </Box>
