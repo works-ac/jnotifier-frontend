@@ -113,10 +113,11 @@ function PDFViewer({
 
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = file;
+    link.href = URL.createObjectURL(file);
     link.download = fileName;
     document.body.appendChild(link);
     link.click();
+
     document.body.removeChild(link);
   };
 
