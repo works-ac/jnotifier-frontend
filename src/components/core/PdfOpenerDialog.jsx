@@ -54,7 +54,11 @@ function PdfOpenerDialog({
       </DialogTitle>
 
       <DialogContent>
-        <PdfViewer file={pdfBlob} disableDownloadable={!isDownloadable} />
+        <PdfViewer
+          file={pdfBlob}
+          disableDownloadable={!isDownloadable}
+          fileName={title}
+        />
       </DialogContent>
     </Dialog>
   );
