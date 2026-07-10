@@ -17,18 +17,6 @@ function PostView({ children }) {
   const deviceVendor = clientInfo.device.vendor;
 
   useEffect(() => {
-    console.log(
-      {
-        visitedPage,
-        browserName,
-        browserVersion,
-        osName,
-        deviceType,
-        deviceVendor,
-      },
-      "client info",
-    );
-
     handlePostView({
       visitedPage,
       browserName,
