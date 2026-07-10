@@ -113,8 +113,8 @@ function useHome() {
       const content = response.data?.data || {};
 
       setJobDetails(content);
-    } catch (error) {
-      showErrorMsg(error);
+    } catch {
+      setJobDetails(null);
     } finally {
       setIsJobDetailsLoading(false);
     }

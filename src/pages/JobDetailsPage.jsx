@@ -4,9 +4,15 @@ import JobDetailsCard from "../views/JobDetailsCard";
 import useHome from "../hooks/useHome";
 import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
+import { Container, Paper, Typography } from "@mui/material";
+import useAppCss from "../hooks/useAppCss";
+import DogPic from "../assets/dog.png";
+import FlexBox from "../components/styled/FlexBox";
+import ResponsiveImage from "../components/core/ResponsiveImage";
 
 function JobDetailsPage() {
   const { applicationId } = useParams();
+  const { GlobalPaperCss } = useAppCss();
   const {
     alert,
     fetchJobByApplicationId,
@@ -16,7 +22,7 @@ function JobDetailsPage() {
   } = useHome();
 
   useEffect(() => {
-    document.title = `Job Notifier || ${jobDetails.title}`;
+    if (jobDetails) document.title = `Job Notifier || ${jobDetails.title}`;
   }, [jobDetails]);
 
   useEffect(() => {
@@ -38,7 +44,7 @@ function JobDetailsPage() {
         />
       )}
 
-      {!isJobDetailsLoading && (
+      {!isJobDetailsLoading && jobDetails && (
         <JobDetailsCard
           advNo={jobDetails.advNo}
           applicationEndDate={jobDetails.applicationEndDate}
@@ -52,6 +58,33 @@ function JobDetailsPage() {
           viewPageDescription={jobDetails.viewPageDescription}
           advFilePath={jobDetails.advFilePath}
         />
+      )}
+
+      {!isJobDetailsLoading && !jobDetails && (
+        <Container>
+          <Paper variant="elevation" elevation={2} sx={GlobalPaperCss}>
+            <FlexBox
+              sx={{
+                gap: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ResponsiveImage
+                src={DogPic}
+                alt="dog"
+                aspectRatio="16/9"
+                maxWidth="45%"
+                objectFit="cover"
+              />
+
+              <Typography variant="h2" sx={{ fontWeight: 700 }} color="error">
+                No such job exists !!!
+              </Typography>
+            </FlexBox>
+          </Paper>
+        </Container>
       )}
     </>
   );

@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Tooltip,
 } from "@mui/material";
 import React, { useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
@@ -21,6 +22,7 @@ import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { AppNavData } from "../data/HeaderData";
 import { Close } from "@mui/icons-material";
 import useHeader from "../hooks/useHeader";
+import FlexBox from "./styled/FlexBox";
 
 function Header() {
   const theme = useTheme();
@@ -33,8 +35,8 @@ function Header() {
   };
 
   const getConnectivityText = (appConnectivity) => {
-    if (appConnectivity === "pong") return "ONLINE";
-    return "Offline";
+    if (appConnectivity?.toLowerCase() === "pong") return "ONLINE";
+    return "OFFLINE";
   };
 
   return (
@@ -50,45 +52,76 @@ function Header() {
           borderBottom: "1px solid",
           borderColor: "divider",
           color: "text.primary",
+          overflow: "visible",
         }}
       >
+        {!isLoading && (
+          <Tooltip
+            title={
+              getConnectivityText(appConnectivity) === "ONLINE"
+                ? "The server is healthy and up and running."
+                : "Server Offline"
+            }
+            placement="left"
+            arrow
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: { xs: 6, sm: 8 },
+                right: { xs: 8, sm: 12 },
+                width: { xs: 8, sm: 10, md: 12 },
+                height: { xs: 8, sm: 10, md: 12 },
+                borderRadius: "50%",
+                bgcolor:
+                  getConnectivityText(appConnectivity) === "ONLINE"
+                    ? "#22c55e"
+                    : "#ef4444",
+                boxShadow:
+                  getConnectivityText(appConnectivity) === "ONLINE"
+                    ? "0 0 0 0 rgba(34, 197, 94, 0.7)"
+                    : "none",
+                animation:
+                  getConnectivityText(appConnectivity) === "ONLINE"
+                    ? "ping 1.4s ease-in-out infinite"
+                    : "none",
+                "@keyframes ping": {
+                  "0%": {
+                    boxShadow: "0 0 0 0 rgba(34, 197, 94, 0.7)",
+                  },
+                  "70%": {
+                    boxShadow: "0 0 0 6px rgba(34, 197, 94, 0)",
+                  },
+                  "100%": {
+                    boxShadow: "0 0 0 0 rgba(34, 197, 94, 0)",
+                  },
+                },
+                cursor: "pointer",
+                zIndex: 10,
+              }}
+            />
+          </Tooltip>
+        )}
+
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-            <Box sx={{ display: "flex", alignItems: "center", rowGap: 1 }}>
-              <Box component="div" sx={{ maxWidth: "5rem", maxHeight: "5rem" }}>
-                <Box
-                  component="img"
-                  src="/logo.png"
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                    borderRadius: "50%",
-                  }}
-                />
-              </Box>
-
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography
-                  variant="h4"
-                  component="span"
-                  sx={{ fontWeight: 700, lineHeight: 1.2, mt: 2 }}
-                >
-                  Job Notifier
-                </Typography>
-
-                <Typography
-                  variant="caption"
-                  color="secondary"
-                  sx={{
-                    fontWeight: 500,
-                    maxWidth: "200px",
-                  }}
-                >
-                  your one-stop solution for government and private job updates
-                </Typography>
-              </Box>
-            </Box>
+            <Box
+              component="img"
+              src="/logo.png"
+              alt="Job Notifier Logo"
+              sx={{
+                width: { xs: "5rem", sm: "7rem", md: "7rem" },
+                height: { xs: "5rem", sm: "7rem", md: "7rem" },
+                objectFit: "cover",
+                imageRendering: "auto",
+                display: "block",
+                background: "none",
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              onClick={() => (window.location.href = "/")}
+            />
 
             {isMobile ? (
               <IconButton
@@ -114,6 +147,7 @@ function Header() {
                         color: "white",
                       },
                     }}
+                    startIcon={<element.icon fontSize="small" />}
                   >
                     {element.name}
                   </Button>
@@ -121,22 +155,6 @@ function Header() {
               </Stack>
             )}
           </Toolbar>
-
-          <Box
-            component="div"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Typography variant="caption" sx={{ fontWeight: 700 }}>
-              Connectivity:{" "}
-              {isLoading
-                ? "Ensuring Connectivity..."
-                : getConnectivityText(appConnectivity)}
-            </Typography>
-          </Box>
         </Container>
       </AppBar>
 
