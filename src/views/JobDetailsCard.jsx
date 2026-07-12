@@ -30,6 +30,7 @@ import { AppConstants } from "../app/AppConstants";
 import Notes from "../components/Notes";
 import ShareDialog from "../components/core/ShareDialog";
 import PdfOpenerDialog from "../components/core/PdfOpenerDialog";
+import remarkGfm from "remark-gfm";
 
 function JobDetailsCard({
   applicationId,
@@ -113,7 +114,7 @@ function JobDetailsCard({
             component="div"
             sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
           >
-            <Markdown>{shortDescription}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{shortDescription}</Markdown>
           </Box>
 
           <Accordion sx={GlobalAccordianCss} defaultExpanded>
@@ -139,7 +140,7 @@ function JobDetailsCard({
                 component="div"
                 sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
               >
-                <Markdown>{viewPageDescription}</Markdown>
+                <Markdown remarkPlugins={[remarkGfm]}>{viewPageDescription}</Markdown>
               </Box>
             </AccordionDetails>
 

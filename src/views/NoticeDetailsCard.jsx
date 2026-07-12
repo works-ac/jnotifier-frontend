@@ -20,6 +20,7 @@ import useAppCss from "../hooks/useAppCss";
 import ShareDialog from "../components/core/ShareDialog";
 import useJobDetails from "../hooks/useJobDetails";
 import PropTypes from "prop-types";
+import remarkGfm from "remark-gfm";
 
 function NoticeDetailsCard({
   id,
@@ -84,7 +85,7 @@ function NoticeDetailsCard({
               Description
             </Typography>
 
-            <Markdown>{noticeDescription}</Markdown>
+            <Markdown remarkPlugins={[remarkGfm]}>{noticeDescription}</Markdown>
           </Box>
 
           {noticeDetailedAdv && (
@@ -111,7 +112,7 @@ function NoticeDetailsCard({
                   component="div"
                   sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
                 >
-                  <Markdown>{noticeDetailedAdv}</Markdown>
+                  <Markdown remarkPlugins={[remarkGfm]}>{noticeDetailedAdv}</Markdown>
                 </Box>
               </AccordionDetails>
 
