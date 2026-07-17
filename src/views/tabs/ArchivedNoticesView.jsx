@@ -74,33 +74,6 @@ function ArchivedNoticesView() {
                 title={notice.title}
                 key={notice.title}
               />
-
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  variant="outlined"
-                  disabled={paginationMetadata.first}
-                  startIcon={<SkipPrevious fontSize="small" />}
-                  onClick={fetchPreviousArchivedNotice}
-                >
-                  Previous
-                </Button>
-
-                <Button
-                  variant="outlined"
-                  disabled={paginationMetadata.last}
-                  endIcon={<SkipNext fontSize="small" />}
-                  onClick={fetchNextArchivedNotice}
-                >
-                  Next
-                </Button>
-              </Box>
             </>
           ))}
 
@@ -127,6 +100,33 @@ function ArchivedNoticesView() {
               </Typography>
             </Container>
           )}
+
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              disabled={paginationMetadata.first}
+              startIcon={<SkipPrevious fontSize="small" />}
+              onClick={fetchPreviousArchivedNotice}
+            >
+              Previous
+            </Button>
+
+            <Button
+              variant="outlined"
+              disabled={paginationMetadata.last}
+              endIcon={<SkipNext fontSize="small" />}
+              onClick={fetchNextArchivedNotice}
+            >
+              Next
+            </Button>
+          </Box>
         </>
       )}
     </>

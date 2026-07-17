@@ -68,33 +68,6 @@ function ArchivedJobsView() {
           {archivedJobs.map((job) => (
             <>
               <JobListingCard key={job.applicationId} {...job} />
-
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  variant="outlined"
-                  disabled={paginationMetadata.first}
-                  startIcon={<SkipPrevious fontSize="small" />}
-                  onClick={fetchPreviousArchivedJobs}
-                >
-                  Previous
-                </Button>
-
-                <Button
-                  variant="outlined"
-                  disabled={paginationMetadata.last}
-                  endIcon={<SkipNext fontSize="small" />}
-                  onClick={fetchNextArchivedJobs}
-                >
-                  Next
-                </Button>
-              </Box>
             </>
           ))}
 
@@ -121,6 +94,33 @@ function ArchivedJobsView() {
               </Typography>
             </Container>
           )}
+
+          <Box
+            component="div"
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Button
+              variant="outlined"
+              disabled={paginationMetadata.first}
+              startIcon={<SkipPrevious fontSize="small" />}
+              onClick={fetchPreviousArchivedJobs}
+            >
+              Previous
+            </Button>
+
+            <Button
+              variant="outlined"
+              disabled={paginationMetadata.last}
+              endIcon={<SkipNext fontSize="small" />}
+              onClick={fetchNextArchivedJobs}
+            >
+              Next
+            </Button>
+          </Box>
         </>
       )}
     </>
