@@ -14,3 +14,13 @@ export async function getNoticeById(noticeId) {
     NOTICE_SERVICE_BASE_URL + "notice/" + noticeId,
   );
 }
+
+export async function getAllArchivedNotices(payload) {
+  const params = payload ?? { page: 0, size: 10 };
+  return await ApplicationApi.get(
+    NOTICE_SERVICE_BASE_URL + "notices/archived",
+    {
+      params,
+    },
+  );
+}

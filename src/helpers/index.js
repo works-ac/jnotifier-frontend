@@ -44,3 +44,10 @@ export function whatsAppFormatter(markdownText) {
       .replace(/^\*\s+/gm, "- ")
   );
 }
+
+export function a11yProps(index) {
+  return {
+    id: `app-tab-${index}`,
+    "aria-controls": `app-tabpanel-${index}`,
+  };
+}

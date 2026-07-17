@@ -1,4 +1,5 @@
 import { AddAlert, Home, People } from "@mui/icons-material";
+import ArchiveIcon from "@mui/icons-material/Archive";
 
 export const AppNavData = [
   {
@@ -14,6 +15,13 @@ export const AppNavData = [
     color: "inherit",
     id: "notices",
     icon: AddAlert,
+  },
+  {
+    name: "Archives",
+    href: "/archives",
+    color: "inherit",
+    id: "archives",
+    icon: ArchiveIcon,
   },
   {
     name: "Account",

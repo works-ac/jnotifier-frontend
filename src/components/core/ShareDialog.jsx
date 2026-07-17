@@ -45,9 +45,7 @@ function ShareDialog({
 
   const content = `📢📢📢📢 New Job Update 📢📢📢📢
   
-  👉👉 *Job Title*
-  
-  ${recruitmentTitle}
+  👉👉 *Job Title:* ${recruitmentTitle}
 
   👉👉 *Job Description*
 
@@ -55,7 +53,7 @@ function ShareDialog({
 
   *CLICK THE LINK GIVEN BELOW TO APPLY 👇👇👇👇*
 
-  🔗🔗 Link: *${shareUrl}*`;
+  🔗🔗 *${shareUrl}*`;
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {

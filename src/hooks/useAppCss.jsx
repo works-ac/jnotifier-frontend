@@ -41,12 +41,20 @@ function useAppCss() {
     [],
   );
 
+  const GlobalNormalChipCss = useMemo(
+    () => ({
+      borderRadius: "8px",
+    }),
+    [],
+  );
+
   return {
     RequiredFieldCss,
     RequiredSwitchCss,
     GlobalPaperCss,
     GlobalAccordianCss,
     GlobalDialogDividerCss,
+    GlobalNormalChipCss,
   };
 }
 

@@ -19,3 +19,10 @@ export async function downloadAdvertisement(uri) {
     timeout: 0,
   });
 }
+
+export async function getArchivedJobs(payload) {
+  const params = payload ?? { page: 0, size: 10 };
+  return await ApplicationApi.get(HOME_SERVICE_BASE_URL + "jobs/archived", {
+    params,
+  });
+}

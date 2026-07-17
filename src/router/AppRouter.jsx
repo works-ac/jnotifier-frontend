@@ -10,6 +10,7 @@ import RecoverAccountPage from "../pages/RecoverAccountPage";
 import NoticePage from "../pages/NoticePage";
 import NoticeDetailsPage from "../pages/NoticeDetailsPage";
 import PostView from "../components/wrapper/PostView";
+import ArchivesPage from "../pages/ArchivesPage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -53,6 +54,14 @@ const AppRoutes = createBrowserRouter([
         element: (
           <PostView>
             <NoticeDetailsPage />
+          </PostView>
+        ),
+      },
+      {
+        path: "archives",
+        element: (
+          <PostView>
+            <ArchivesPage />
           </PostView>
         ),
       },

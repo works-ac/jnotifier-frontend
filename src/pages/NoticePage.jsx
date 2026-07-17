@@ -2,7 +2,7 @@ import React from "react";
 import useNotices from "../hooks/features/useNotices";
 import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Chip, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
