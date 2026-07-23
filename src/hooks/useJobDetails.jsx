@@ -14,14 +14,20 @@ function useJobDetails() {
     setIsCopying(false);
   }, []);
 
-  const downloadAdv = useCallback(async function (uri) {
-    setIsDownloading(true);
-    const response = await downloadAdvertisement(uri);
+  const downloadAdv = useCallback(
+    async function (uri) {
+      if (!uri) return;
+      if (isDownloading) return;
 
-    setAdvertisement(response.data);
-    setIsDownloading(false);
-    setIsPdfDialogOpen(true);
-  }, []);
+      setIsDownloading(true);
+      const response = await downloadAdvertisement(uri);
+
+      setAdvertisement(response.data);
+      setIsDownloading(false);
+      setIsPdfDialogOpen(true);
+    },
+    [isDownloading],
+  );
 
   const handlePdfDialogOnClose = useCallback(function () {
     setIsPdfDialogOpen((prev) => !prev);

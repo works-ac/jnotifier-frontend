@@ -4,5 +4,7 @@ export const NoticeListings = [
     title: "",
     tags: "",
     noticeDescription: "",
+    createdBy: "",
+    createdAt: "",
   },
 ];

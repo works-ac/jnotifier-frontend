@@ -1,5 +1,11 @@
 Import-Module "$PSScriptRoot\..\helper.psm1"
 
+$confirmDeploy = (Read-Host "Do you really want to deploy the application? (y/n)").ToLower().Trim()
+if ($confirmDeploy -ne "y" -and $confirmDeploy -ne "yes") {
+  Write-Output "Deployment cancelled."
+  exit 0
+}
+
 
 $credentialPath = "$PSScriptRoot\..\..\credentials.json"
 $dockerUsername = ""
@@ -18,12 +24,40 @@ if (Test-Path -Path $credentialPath) {
     Write-Output "Deploying the app, please wait..."
 
     caprover deploy -h "$($credentials.Host)" -p "$($credentials.Password)" --appName "$($credentials.AppName)" --branch "$($credentials.Branch)"
+    CheckCmdStatus -Msg "Deploy failed, exiting..."
     
     return;
   }
+
+  $addMoreArgs = (Read-Host "Do you want to add other build arguments? (y/n)").ToLower().Trim()
+  if ($addMoreArgs -eq "y" -or $addMoreArgs -eq "yes") {
+    while ($true) {
+      $keyName = Read-Host "  Enter build arg key name (or 'q' to finish)"
+      if ($keyName -eq "q") {
+        break
+      }
+      if ($keyName) {
+        $value = Read-Host "  Enter build arg value"
+        $newArg = "--build-arg $keyName=$value"
+        if ($credentials.BuildArgs) {
+          $credentials.BuildArgs = "$($credentials.BuildArgs) $newArg"
+        }
+        else {
+          $credentials.BuildArgs = $newArg
+        }
+      }
+    }
+    $data = $credentials | ConvertTo-Json -Depth 10
+    Set-Content -Path $credentialPath -Value $data -Encoding UTF8
+  }
   
   Write-Output "Preparing the image..."
-  docker build -t $($credentials.ImgName) .
+  if ($credentials.BuildArgs) {
+    Invoke-Expression "docker build $($credentials.BuildArgs) -t $($credentials.ImgName) ."
+  }
+  else {
+    docker build -t $($credentials.ImgName) .
+  }
   CheckCmdStatus -Msg "Build failed, exiting..."
 
   docker push $($credentials.ImgName)
@@ -64,24 +98,45 @@ else {
   $hashedPwd = Read-Host "Enter your caprover password" -AsSecureString
   $appName = Read-Host "Enter your app name" 
   $imgName = Read-Host "Enter your docker image name (without docker username)"
+  
+  Write-Output "Enter docker image build args:"
+  $viteApiBaseUrl = Read-Host "  VITE_API_BASE_URL"
+  $port = Read-Host "  PORT"
+  $viteWhatsappLink = Read-Host "  VITE_WHATSAPP_CHANNEL_LINK"
+  $viteTelegramLink = Read-Host "  VITE_TELEGRAM_CHANNEL_LINK"
+  $viteProdAdminPanelUrl = Read-Host "  VITE_PRODUCTION_ADMIN_PANEL_URL"
 
-  docker build -t "$dockerUsername/$imgName" .
+  $buildArgsList = @()
+  if ($viteApiBaseUrl) { $buildArgsList += "--build-arg VITE_API_BASE_URL=$viteApiBaseUrl" }
+  if ($port) { $buildArgsList += "--build-arg PORT=$port" }
+  if ($viteWhatsappLink) { $buildArgsList += "--build-arg VITE_WHATSAPP_CHANNEL_LINK=$viteWhatsappLink" }
+  if ($viteTelegramLink) { $buildArgsList += "--build-arg VITE_TELEGRAM_CHANNEL_LINK=$viteTelegramLink" }
+  if ($viteProdAdminPanelUrl) { $buildArgsList += "--build-arg VITE_PRODUCTION_ADMIN_PANEL_URL=$viteProdAdminPanelUrl" }
+  $buildArgs = $buildArgsList -join " "
+
+  if ($buildArgs) {
+    Invoke-Expression "docker build $buildArgs -t `"$dockerUsername/$imgName`" ."
+  }
+  else {
+    docker build -t "$dockerUsername/$imgName" .
+  }
   CheckCmdStatus -Msg "Build failed, exiting..."
 
   docker push "$dockerUsername/$imgName"
   CheckCmdStatus -Msg "Build upload, exiting..."
   
   Write-Output "Deploying the app, please wait..."
-  $plainPwd = $plainPwd = Convert-SecureStringToPlainText -SecureString $hashedPwd
+  $plainPwd = Convert-SecureStringToPlainText -SecureString $hashedPwd
   
   caprover deploy -h "$uri" -p "$plainPwd" -i "$dockerUsername/$imgName" --appName "$appName"
   CheckCmdStatus -Msg "Deploy failed, exiting..."
 
   $fileContents = @{
-    Host     = $uri
-    Password = $plainPwd
-    AppName  = $appName
-    ImgName  = "$dockerUsername/$imgName"
+    Host      = $uri
+    Password  = $plainPwd
+    AppName   = $appName
+    ImgName   = "$dockerUsername/$imgName"
+    BuildArgs = $buildArgs
   }
   $data = $fileContents | ConvertTo-Json -Depth 10
 

@@ -38,9 +38,11 @@ function JobListingCard({
             {title}
           </Typography>
 
-          <Typography variant="caption" color="secondary">
-            Advertisement No: {advNo}
-          </Typography>
+          {advNo && (
+            <Typography variant="caption" color="secondary">
+              Advertisement No: {advNo}
+            </Typography>
+          )}
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (

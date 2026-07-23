@@ -70,6 +70,8 @@ function NoticePage() {
               tags={notice.tags}
               title={notice.title}
               key={notice.title}
+              createdBy={notice.createdBy}
+              createdAt={notice.createdAt}
             />
           ))}
 

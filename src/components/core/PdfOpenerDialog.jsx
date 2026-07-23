@@ -58,6 +58,7 @@ function PdfOpenerDialog({
           file={pdfBlob}
           disableDownloadable={!isDownloadable}
           fileName={`${title?.split(" ")?.join("-")?.toLowerCase()}.pdf`}
+          colorizeToolbar
         />
       </DialogContent>
     </Dialog>

@@ -13,8 +13,17 @@ import {
 import PropTypes from "prop-types";
 import React from "react";
 import Markdown from "react-markdown";
+import FlexBox from "../components/styled/FlexBox";
+import dayjs from "dayjs";
 
-function NoticeListingCard({ id, title, tags, noticeDescription }) {
+function NoticeListingCard({
+  id,
+  title,
+  tags,
+  noticeDescription,
+  createdBy,
+  createdAt,
+}) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
 
@@ -44,6 +53,16 @@ function NoticeListingCard({ id, title, tags, noticeDescription }) {
               />
             ))}
           </Box>
+
+          <FlexBox sx={{ flexDirection: "column", alignItems: "flex-end" }}>
+            <Typography variant="caption" color="secondary">
+              Posted By: {createdBy}
+            </Typography>
+
+            <Typography variant="caption" color="secondary">
+              Posted On: {dayjs(createdAt).format("DD/MM/YYYY")}
+            </Typography>
+          </FlexBox>
 
           <Divider />
 
@@ -88,6 +107,8 @@ NoticeListingCard.propTypes = {
   title: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
   noticeDescription: PropTypes.string.isRequired,
+  createdBy: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
 };
 
 export default React.memo(NoticeListingCard);

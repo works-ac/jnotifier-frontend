@@ -18,6 +18,7 @@ import {
   CardContent,
   Chip,
   CircularProgress,
+  Divider,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -72,9 +73,11 @@ function JobDetailsCard({
             {title}
           </Typography>
 
-          <Typography variant="caption" color="secondary">
-            Advertisement No: {advNo}
-          </Typography>
+          {advNo && (
+            <Typography variant="caption" color="secondary">
+              Advertisement No: {advNo}
+            </Typography>
+          )}
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
@@ -110,65 +113,85 @@ function JobDetailsCard({
             </Typography>
           </Box>
 
+          <Divider />
+
           <Box
             component="div"
             sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
           >
+            <Typography
+              variant="body1"
+              sx={{
+                my: 1,
+                py: 1,
+                textTransform: "uppercase",
+                fontWeight: 700,
+                textDecoration: "underline",
+                textUnderlineOffset: 4,
+              }}
+            >
+              Description
+            </Typography>
+
             <Markdown remarkPlugins={[remarkGfm]}>{shortDescription}</Markdown>
           </Box>
 
-          <Accordion sx={GlobalAccordianCss} defaultExpanded>
-            <AccordionSummary
-              aria-controls={`detailed-adv-content`}
-              id={`detailed-adv-header`}
-              expandIcon={<ExpandMore fontSize="small" />}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                  color: theme.palette.primary.A700,
-                }}
+          {viewPageDescription && (
+            <Accordion sx={GlobalAccordianCss} defaultExpanded>
+              <AccordionSummary
+                aria-controls={`detailed-adv-content`}
+                id={`detailed-adv-header`}
+                expandIcon={<ExpandMore fontSize="small" />}
               >
-                Detailed Advertisement
-              </Typography>
-            </AccordionSummary>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    textTransform: "uppercase",
+                    fontWeight: 700,
+                    color: theme.palette.primary.A700,
+                  }}
+                >
+                  Detailed Advertisement
+                </Typography>
+              </AccordionSummary>
 
-            <AccordionDetails>
-              <Box
-                component="div"
-                sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
-              >
-                <Markdown remarkPlugins={[remarkGfm]}>{viewPageDescription}</Markdown>
-              </Box>
-            </AccordionDetails>
+              <AccordionDetails>
+                <Box
+                  component="div"
+                  sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
+                >
+                  <Markdown remarkPlugins={[remarkGfm]}>
+                    {viewPageDescription}
+                  </Markdown>
+                </Box>
+              </AccordionDetails>
 
-            <AccordionActions>
-              <Button
-                variant="outlined"
-                startIcon={
-                  isCopying ? (
-                    <CircularProgress size={16} color="secondary" />
-                  ) : (
-                    <ContentCopy fontSize="small" />
-                  )
-                }
-                onClick={() => copyDetailedAdv(viewPageDescription)}
-                disabled={isCopying}
-              >
-                Copy
-              </Button>
+              <AccordionActions>
+                <Button
+                  variant="outlined"
+                  startIcon={
+                    isCopying ? (
+                      <CircularProgress size={16} color="secondary" />
+                    ) : (
+                      <ContentCopy fontSize="small" />
+                    )
+                  }
+                  onClick={() => copyDetailedAdv(viewPageDescription)}
+                  disabled={isCopying}
+                >
+                  Copy
+                </Button>
 
-              <Button
-                variant="outlined"
-                startIcon={<Share fontSize="small" />}
-                onClick={openShareDialog}
-              >
-                Share
-              </Button>
-            </AccordionActions>
-          </Accordion>
+                <Button
+                  variant="outlined"
+                  startIcon={<Share fontSize="small" />}
+                  onClick={openShareDialog}
+                >
+                  Share
+                </Button>
+              </AccordionActions>
+            </Accordion>
+          )}
 
           <Box sx={{ mt: 4 }}>
             <Notes
@@ -215,7 +238,7 @@ function JobDetailsCard({
                 <Download fontSize="small" />
               )
             }
-            disabled={isDownloading}
+            disabled={isDownloading || !advFilePath}
             onClick={async () => await downloadAdv(advFilePath)}
           >
             Download Advertisement
