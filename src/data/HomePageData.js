@@ -38,5 +38,7 @@ export const JobListings = [
     </p>`,
     viewMoreLink: "/jobs/2",
     advNo: "HQ-C11018/1/2026-C-1",
+    createdBy: "",
+    createdAt: "",
   },
 ];

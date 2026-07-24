@@ -13,6 +13,8 @@ import {
 import PropTypes from "prop-types";
 import React from "react";
 import Markdown from "react-markdown";
+import FlexBox from "../components/styled/FlexBox";
+import dayjs from "dayjs";
 
 function JobListingCard({
   applicationId,
@@ -23,6 +25,8 @@ function JobListingCard({
   shortDescription,
   viewMoreLink,
   advNo,
+  createdBy,
+  createdAt,
 }) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
@@ -78,6 +82,16 @@ function JobListingCard({
             </Typography>
           </Box>
 
+          <FlexBox sx={{ flexDirection: "column", alignItems: "flex-end" }}>
+            <Typography variant="caption" color="secondary">
+              Posted By: {createdBy}
+            </Typography>
+
+            <Typography variant="caption" color="secondary">
+              Posted On: {dayjs(createdAt).format("DD/MM/YYYY")}
+            </Typography>
+          </FlexBox>
+
           <Divider />
 
           <Box sx={{ textAlign: "justify", p: 1 }}>
@@ -125,6 +139,8 @@ JobListingCard.propTypes = {
   shortDescription: PropTypes.string,
   viewMoreLink: PropTypes.string,
   advNo: PropTypes.string.isRequired,
+  createdBy: PropTypes.string.isRequired,
+  createdAt: PropTypes.string.isRequired,
 };
 
 export default React.memo(JobListingCard);

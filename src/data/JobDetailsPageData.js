@@ -13,4 +13,6 @@ export const JobDetails = {
   advNo: "06/2026",
   viewPageDescription: "",
   advFilePath: "",
+  createdBy: "",
+  createdAt: "",
 };

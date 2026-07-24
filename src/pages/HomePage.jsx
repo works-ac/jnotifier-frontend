@@ -74,6 +74,8 @@ function HomePage() {
               viewMoreLink={`/jobs/${job.applicationId}`}
               advNo={job.advNo}
               key={job.applicationId}
+              createdBy={job.createdBy}
+              createdAt={job.createdAt}
             />
           ))}
 

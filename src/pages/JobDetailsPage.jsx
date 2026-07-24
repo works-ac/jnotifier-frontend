@@ -80,7 +80,8 @@ function JobDetailsPage() {
               />
 
               <Typography variant="h2" sx={{ fontWeight: 700 }} color="error">
-                No such job exists !!!
+                Sorry, we're currently facing some technical issues right now,
+                please try again later.
               </Typography>
             </FlexBox>
           </Paper>
