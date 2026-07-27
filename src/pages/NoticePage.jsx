@@ -2,7 +2,7 @@ import React from "react";
 import useNotices from "../hooks/features/useNotices";
 import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
-import { Box, Button, Chip, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
@@ -63,6 +63,36 @@ function NoticePage() {
             </Typography>
           </Box>
 
+          {notices.length && (
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                my: 1,
+              }}
+            >
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.first}
+                startIcon={<SkipPrevious fontSize="small" />}
+                onClick={fetchPreviousNotice}
+              >
+                Previous
+              </Button>
+
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.last}
+                endIcon={<SkipNext fontSize="small" />}
+                onClick={fetchNextNotice}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
+
           {notices.map((notice) => (
             <NoticeListingCard
               id={notice.id}
@@ -74,6 +104,35 @@ function NoticePage() {
               createdAt={notice.createdAt}
             />
           ))}
+
+          {notices.length && (
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.first}
+                startIcon={<SkipPrevious fontSize="small" />}
+                onClick={fetchPreviousNotice}
+              >
+                Previous
+              </Button>
+
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.last}
+                endIcon={<SkipNext fontSize="small" />}
+                onClick={fetchNextNotice}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
 
           {!notices.length && (
             <Container
@@ -98,33 +157,6 @@ function NoticePage() {
               </Typography>
             </Container>
           )}
-
-          <Box
-            component="div"
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              variant="outlined"
-              disabled={paginationMetadata.first}
-              startIcon={<SkipPrevious fontSize="small" />}
-              onClick={fetchPreviousNotice}
-            >
-              Previous
-            </Button>
-
-            <Button
-              variant="outlined"
-              disabled={paginationMetadata.last}
-              endIcon={<SkipNext fontSize="small" />}
-              onClick={fetchNextNotice}
-            >
-              Next
-            </Button>
-          </Box>
         </>
       )}
     </>

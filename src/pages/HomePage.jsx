@@ -63,6 +63,36 @@ function HomePage() {
             </Typography>
           </Box>
 
+          {jobs.length && (
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                my: 1,
+              }}
+            >
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.pageNo === 0}
+                startIcon={<SkipPrevious fontSize="small" />}
+                onClick={fetchPreviousJob}
+              >
+                Previous
+              </Button>
+
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.last}
+                endIcon={<SkipNext fontSize="small" />}
+                onClick={fetchNextJob}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
+
           {jobs.map((job) => (
             <JobListingCard
               applicationId={job.applicationId}
@@ -78,6 +108,35 @@ function HomePage() {
               createdAt={job.createdAt}
             />
           ))}
+
+          {jobs.length && (
+            <Box
+              component="div"
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.pageNo === 0}
+                startIcon={<SkipPrevious fontSize="small" />}
+                onClick={fetchPreviousJob}
+              >
+                Previous
+              </Button>
+
+              <Button
+                variant="outlined"
+                disabled={paginationMetadata.last}
+                endIcon={<SkipNext fontSize="small" />}
+                onClick={fetchNextJob}
+              >
+                Next
+              </Button>
+            </Box>
+          )}
 
           {!jobs.length && (
             <Container
@@ -102,33 +161,6 @@ function HomePage() {
               </Typography>
             </Container>
           )}
-
-          <Box
-            component="div"
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Button
-              variant="outlined"
-              disabled={paginationMetadata.pageNo === 0}
-              startIcon={<SkipPrevious fontSize="small" />}
-              onClick={fetchPreviousJob}
-            >
-              Previous
-            </Button>
-
-            <Button
-              variant="outlined"
-              disabled={paginationMetadata.last}
-              endIcon={<SkipNext fontSize="small" />}
-              onClick={fetchNextJob}
-            >
-              Next
-            </Button>
-          </Box>
         </>
       )}
     </>
