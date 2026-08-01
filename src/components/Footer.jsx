@@ -8,10 +8,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import IndianFlag from "../assets/ind-flag.svg";
-import CWLogo from "../assets/cw.jpeg";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import useFooter from "../hooks/useFooter";
+import AppToolTip from "./core/AppToolTip";
+import { Mail } from "@mui/icons-material";
 
 function Footer() {
   const theme = useTheme();
@@ -64,7 +65,7 @@ function Footer() {
             align="center"
             sx={{ fontWeight: 700 }}
           >
-            &copy; 2026 Coding Works
+            &copy; 2026 Gaurav Sahitya
           </Typography>
 
           <Typography
@@ -91,78 +92,26 @@ function Footer() {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-end",
+            justifyContent: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              align="right"
-              sx={{ fontStyle: "oblique" }}
-            >
-              A product of Coding Works
-            </Typography>
+          <AppToolTip title="Follow us on WhatsApp" placement="top">
+            <IconButton onClick={handleWhatsAppBtnClick}>
+              <WhatsAppIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
 
-            <Box
-              component="img"
-              src={CWLogo}
-              width={32}
-              height={32}
-              sx={{ borderRadius: 50 }}
-            ></Box>
-          </Box>
-        </Box>
+          <AppToolTip title="Follow us on Telegram" placement="top">
+            <IconButton onClick={handleTelegramBtnClick}>
+              <TelegramIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
 
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique" }}
-          >
-            This portal is best viewable at desktop and mobile devices.
-          </Typography>
-        </Box>
-
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique", mr: 1 }}
-          >
-            Follow us on:
-          </Typography>
-
-          <IconButton onClick={handleWhatsAppBtnClick}>
-            <WhatsAppIcon sx={{ fontSize: "24px" }} />
-          </IconButton>
-
-          <IconButton onClick={handleTelegramBtnClick}>
-            <TelegramIcon sx={{ fontSize: "24px" }} />
-          </IconButton>
+          <AppToolTip title="Send us an email" placement="top">
+            <IconButton onClick={handleTelegramBtnClick}>
+              <Mail sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
         </Box>
       </Container>
     </Box>
