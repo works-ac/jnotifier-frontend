@@ -17,7 +17,11 @@ import { Mail } from "@mui/icons-material";
 function Footer() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { handleTelegramBtnClick, handleWhatsAppBtnClick } = useFooter();
+  const {
+    handleTelegramBtnClick,
+    handleWhatsAppBtnClick,
+    handleEmailBtnClick,
+  } = useFooter();
 
   return (
     <Box
@@ -108,7 +112,7 @@ function Footer() {
           </AppToolTip>
 
           <AppToolTip title="Send us an email" placement="top">
-            <IconButton onClick={handleTelegramBtnClick}>
+            <IconButton onClick={handleEmailBtnClick}>
               <Mail sx={{ fontSize: "24px" }} />
             </IconButton>
           </AppToolTip>

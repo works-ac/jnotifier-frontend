@@ -16,13 +16,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { AppNavData } from "../data/HeaderData";
 import { Close } from "@mui/icons-material";
 import useHeader from "../hooks/useHeader";
 import AppToolTip from "./core/AppToolTip";
+import { AppConstants } from "../app/AppConstants";
 
 function Header() {
   const theme = useTheme();
@@ -38,6 +39,14 @@ function Header() {
     if (appConnectivity?.toLowerCase() === "pong") return "ONLINE";
     return "OFFLINE";
   };
+
+  useEffect(() => {
+    if (
+      appConnectivity &&
+      getConnectivityText(appConnectivity) === AppConstants.STRINGS.OFFLINE
+    )
+      globalThis.location.href = "/offline";
+  }, [appConnectivity]);
 
   return (
     <>
