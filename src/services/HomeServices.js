@@ -7,6 +7,12 @@ export async function getJobs(payload) {
   return await ApplicationApi.get(HOME_SERVICE_BASE_URL + "jobs", { params });
 }
 
+export async function getJobsByCategory(payload) {
+  return await ApplicationApi.get(HOME_SERVICE_BASE_URL + "jobs/search", {
+    params: { ...payload },
+  });
+}
+
 export async function getJobById(applicationId) {
   return await ApplicationApi.get(
     HOME_SERVICE_BASE_URL + "applications/" + applicationId,

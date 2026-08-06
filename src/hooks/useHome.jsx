@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { getJobById, getJobs } from "../services/HomeServices";
+import {
+  getJobById,
+  getJobs,
+  getJobsByCategory,
+} from "../services/HomeServices";
 import useAppAlert from "./useAppAlert";
 import { JobListings } from "../data/HomePageData";
 import { JobDetails } from "../data/JobDetailsPageData";
@@ -15,6 +19,8 @@ function useHome() {
   const [pagination, setPagination] = useState({ page: 0, size: 10 });
   const [jobDetails, setJobDetails] = useState(JobDetails);
   const { alert, handleAlertOnClose, reset, showErrorMsg } = useAppAlert();
+  const [isFilterMode, setIsFilterMode] = useState(false);
+  const [category, setCategory] = useState();
 
   const fetchAllJobs = useCallback(async function () {
     setIsLoading(true);
@@ -32,6 +38,40 @@ function useHome() {
 
       setJobs(content);
       setPaginationMetadata(pagination);
+      setIsFilterMode(false);
+    } catch (error) {
+      showErrorMsg(error);
+      setJobs([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const fetchAllJobsByCategory = useCallback(async function (category) {
+    if (!category) return;
+
+    setIsLoading(true);
+    reset();
+
+    try {
+      const payload = {
+        search: category,
+        page: 0,
+        size: 10,
+      };
+      const response = await getJobsByCategory(payload);
+      const content = response.data?.data?.content || [];
+      const pagination = {
+        pageNo: response.data?.data?.pageNo ?? -1,
+        totalPages: response.data?.data?.totalPages ?? -1,
+        last: response.data?.data?.last ?? true,
+        totalElements: response.data?.data?.totalElements ?? -1,
+      };
+
+      setJobs(content);
+      setCategory(category);
+      setPaginationMetadata(pagination);
+      setIsFilterMode(true);
     } catch (error) {
       showErrorMsg(error);
       setJobs([]);
@@ -72,6 +112,42 @@ function useHome() {
     [pagination],
   );
 
+  const fetchNextJobByCategory = useCallback(
+    async function () {
+      if (!category) return;
+
+      setIsLoading(true);
+      reset();
+
+      const payload = {
+        page: pagination.page + 1,
+        size: 10,
+        search: category,
+      };
+
+      try {
+        const response = await getJobsByCategory(payload);
+        const content = response.data?.data?.content || [];
+        const paginationData = {
+          pageNo: response.data?.data?.pageNo ?? -1,
+          totalPages: response.data?.data?.totalPages ?? -1,
+          last: response.data?.data?.last ?? true,
+          totalElements: response.data?.data?.totalElements ?? -1,
+        };
+
+        setJobs(content);
+        setPagination((prev) => ({ ...prev, page: prev.page + 1 }));
+        setPaginationMetadata(paginationData);
+        setIsFilterMode(true);
+      } catch (error) {
+        showErrorMsg(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [pagination, category],
+  );
+
   const fetchPreviousJob = useCallback(
     async function () {
       setIsLoading(true);
@@ -104,6 +180,42 @@ function useHome() {
     [pagination],
   );
 
+  const fetchPreviousJobByCategory = useCallback(
+    async function () {
+      if (!category) return;
+
+      setIsLoading(true);
+      reset();
+
+      const payload = {
+        page: pagination.page - 1,
+        size: 10,
+        search: category,
+      };
+
+      try {
+        const response = await getJobsByCategory(payload);
+        const content = response.data?.data?.content || [];
+        const paginationData = {
+          pageNo: response.data?.data?.pageNo ?? -1,
+          totalPages: response.data?.data?.totalPages ?? -1,
+          last: response.data?.data?.last ?? true,
+          totalElements: response.data?.data?.totalElements ?? -1,
+        };
+
+        setJobs(content);
+        setPagination((prev) => ({ ...prev, page: prev.page - 1 }));
+        setPaginationMetadata(paginationData);
+        setIsFilterMode(true);
+      } catch (error) {
+        showErrorMsg(error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [pagination, category],
+  );
+
   const fetchJobByApplicationId = useCallback(async function (applicationId) {
     setIsJobDetailsLoading(true);
     reset();
@@ -129,12 +241,17 @@ function useHome() {
     fetchJobByApplicationId,
     fetchNextJob,
     fetchPreviousJob,
+    fetchAllJobs,
+    fetchAllJobsByCategory,
+    fetchNextJobByCategory,
+    fetchPreviousJobByCategory,
     jobs,
     isLoading,
     alert,
     isJobDetailsLoading,
     jobDetails,
     paginationMetadata,
+    isFilterMode,
   };
 }
 

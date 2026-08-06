@@ -6,16 +6,22 @@ import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { Box, Button, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoJobFoundImage from "../assets/notfound.jpg";
+import ListFilters from "../components/core/ListFilters";
 
 function HomePage() {
   const {
     alert,
-    handleAlertOnClose,
     isLoading,
     jobs,
     paginationMetadata,
+    isFilterMode,
+    fetchAllJobsByCategory,
+    fetchNextJobByCategory,
+    fetchPreviousJobByCategory,
+    handleAlertOnClose,
     fetchNextJob,
     fetchPreviousJob,
+    fetchAllJobs,
   } = useHome();
 
   return (
@@ -35,7 +41,7 @@ function HomePage() {
 
       {!isLoading && (
         <>
-          {jobs.length && (
+          {!!jobs.length && (
             <Box
               component="div"
               sx={{
@@ -63,7 +69,12 @@ function HomePage() {
             </Typography>
           </Box>
 
-          {jobs.length && (
+          <ListFilters
+            onReset={fetchAllJobs}
+            onSubmit={fetchAllJobsByCategory}
+          />
+
+          {!!jobs.length && (
             <Box
               component="div"
               sx={{
@@ -77,7 +88,9 @@ function HomePage() {
                 variant="outlined"
                 disabled={paginationMetadata.pageNo === 0}
                 startIcon={<SkipPrevious fontSize="small" />}
-                onClick={fetchPreviousJob}
+                onClick={
+                  isFilterMode ? fetchPreviousJobByCategory : fetchPreviousJob
+                }
               >
                 Previous
               </Button>
@@ -86,7 +99,7 @@ function HomePage() {
                 variant="outlined"
                 disabled={paginationMetadata.last}
                 endIcon={<SkipNext fontSize="small" />}
-                onClick={fetchNextJob}
+                onClick={isFilterMode ? fetchNextJobByCategory : fetchNextJob}
               >
                 Next
               </Button>
@@ -109,7 +122,7 @@ function HomePage() {
             />
           ))}
 
-          {jobs.length && (
+          {!!jobs.length && (
             <Box
               component="div"
               sx={{
@@ -122,7 +135,9 @@ function HomePage() {
                 variant="outlined"
                 disabled={paginationMetadata.pageNo === 0}
                 startIcon={<SkipPrevious fontSize="small" />}
-                onClick={fetchPreviousJob}
+                onClick={
+                  isFilterMode ? fetchPreviousJobByCategory : fetchPreviousJob
+                }
               >
                 Previous
               </Button>
@@ -131,7 +146,7 @@ function HomePage() {
                 variant="outlined"
                 disabled={paginationMetadata.last}
                 endIcon={<SkipNext fontSize="small" />}
-                onClick={fetchNextJob}
+                onClick={isFilterMode ? fetchNextJobByCategory : fetchNextJob}
               >
                 Next
               </Button>

@@ -6,14 +6,20 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
+import ListFilters from "../components/core/ListFilters";
 
 function NoticePage() {
   const {
-    alert,
     fetchNextNotice,
     fetchPreviousNotice,
     handleAlertOnClose,
+    fetchAllNotices,
+    fetchAllNoticesByCategory,
+    fetchNextNoticeByCategory,
+    fetchPreviousNoticeByCategory,
+    isFilterMode,
     isLoading,
+    alert,
     notices,
     paginationMetadata,
   } = useNotices();
@@ -35,7 +41,7 @@ function NoticePage() {
 
       {!isLoading && (
         <>
-          {notices.length && (
+          {!!notices.length && (
             <Box
               component="div"
               sx={{
@@ -63,7 +69,12 @@ function NoticePage() {
             </Typography>
           </Box>
 
-          {notices.length && (
+          <ListFilters
+            onReset={fetchAllNotices}
+            onSubmit={fetchAllNoticesByCategory}
+          />
+
+          {!!notices.length && (
             <Box
               component="div"
               sx={{
@@ -77,7 +88,11 @@ function NoticePage() {
                 variant="outlined"
                 disabled={paginationMetadata.first}
                 startIcon={<SkipPrevious fontSize="small" />}
-                onClick={fetchPreviousNotice}
+                onClick={
+                  isFilterMode
+                    ? fetchPreviousNoticeByCategory
+                    : fetchPreviousNotice
+                }
               >
                 Previous
               </Button>
@@ -86,7 +101,9 @@ function NoticePage() {
                 variant="outlined"
                 disabled={paginationMetadata.last}
                 endIcon={<SkipNext fontSize="small" />}
-                onClick={fetchNextNotice}
+                onClick={
+                  isFilterMode ? fetchAllNoticesByCategory : fetchNextNotice
+                }
               >
                 Next
               </Button>
@@ -99,13 +116,13 @@ function NoticePage() {
               noticeDescription={notice.noticeDescription}
               tags={notice.tags}
               title={notice.title}
-              key={notice.title}
+              key={notice.id}
               createdBy={notice.createdBy}
               createdAt={notice.createdAt}
             />
           ))}
 
-          {notices.length && (
+          {!!notices.length && (
             <Box
               component="div"
               sx={{
@@ -118,7 +135,11 @@ function NoticePage() {
                 variant="outlined"
                 disabled={paginationMetadata.first}
                 startIcon={<SkipPrevious fontSize="small" />}
-                onClick={fetchPreviousNotice}
+                onClick={
+                  isFilterMode
+                    ? fetchPreviousNoticeByCategory
+                    : fetchPreviousNotice
+                }
               >
                 Previous
               </Button>
@@ -127,7 +148,9 @@ function NoticePage() {
                 variant="outlined"
                 disabled={paginationMetadata.last}
                 endIcon={<SkipNext fontSize="small" />}
-                onClick={fetchNextNotice}
+                onClick={
+                  isFilterMode ? fetchNextNoticeByCategory : fetchNextNotice
+                }
               >
                 Next
               </Button>
