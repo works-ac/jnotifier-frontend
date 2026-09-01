@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Avatar,
   Box,
   Button,
+  Card,
+  CardContent,
   Container,
-  Divider,
-  InputAdornment,
+  Grid,
   Paper,
-  TextField,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -21,23 +17,16 @@ import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { AppConstants } from "../app/AppConstants";
 import Login from "../views/Login";
-import {
-  AlternateEmail,
-  Cake,
-  Category,
-  Edit,
-  ExpandMore,
-  Logout,
-  Male,
-  Person,
-} from "@mui/icons-material";
-import { getInitials } from "../helpers";
-import Heading from "../components/Heading";
-import Notes from "../components/Notes";
+import { Logout, Person, Work, ArrowBack } from "@mui/icons-material";
 import ConfirmationDialog from "../components/ConfirmationDialog";
+import EditProfileDialog from "../components/EditProfileDialog";
+import AppliedJobsList from "../components/AppliedJobsList";
+import ProfileView from "../views/ProfileView";
 
 function AccountsPage() {
+  const [activeTab, setActiveTab] = useState(null);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const theme = useTheme();
   const {
     alert,
@@ -47,6 +36,7 @@ function AccountsPage() {
     profile,
     handleLogout,
     isLoggingOut,
+    loadProfile,
   } = useAccounts();
   const { GlobalPaperCss, GlobalAccordianCss } = useAppCss();
   const { userAuthStatus } = useSelector((state) => state.auth);
@@ -67,262 +57,115 @@ function AccountsPage() {
 
   return (
     <Container maxWidth="lg" sx={{ mx: "auto" }}>
-      <Paper variant="elevation" elevation={4} sx={GlobalPaperCss}>
-        <Heading
-          Icon={Person}
-          color={theme.palette.primary.main}
-          iconColor={theme.palette.warning.main}
-          text="User Profile"
-        />
-
-        <Divider />
-
-        <AppAlert
-          alert={alert}
-          handleAlertOnClose={handleAlertOnClose}
-          type={alert?.type}
-        />
-
-        {isProfileLoading && (
-          <CircluarProgressLoader text="We're loading your profile please wait..." />
-        )}
-
-        {!isProfileLoading && (
-          <>
-            <Box component="div" sx={{ mb: 4 }}>
-              <Box
-                component="div"
-                sx={{
-                  display: "flex",
-                  gap: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                }}
-              >
-                <Avatar
-                  sx={(theme) => ({
-                    backgroundColor: theme.palette.warning.main,
-                    p: 5,
-                    my: 2,
-                    fontWeight: 700,
-                    fontSize: "2rem",
-                  })}
-                >
-                  {getInitials(profile.fullName)}
-                </Avatar>
-
-                <Typography variant="h3" sx={{ fontWeight: 700, mb: 2 }}>
-                  {profile?.fullName?.toWellFormed()?.toUpperCase() ?? ""}
-                </Typography>
-              </Box>
-
-              <Divider sx={{ mb: 2 }} />
-
-              <Accordion sx={GlobalAccordianCss}>
-                <AccordionSummary
-                  aria-controls={`basic-info-content`}
-                  id={`basic-info-header`}
-                  expandIcon={<ExpandMore fontSize="small" />}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      textTransform: "uppercase",
-                      fontWeight: 700,
-                      color: theme.palette.primary.A700,
-                    }}
-                  >
-                    Basic Info
-                  </Typography>
-                </AccordionSummary>
-
-                <AccordionDetails>
-                  <TextField
-                    value={profile?.username}
-                    disabled
-                    fullWidth
-                    slotProps={{
-                      input: {
-                        startAdornment: (
-                          <InputAdornment>
-                            <Person
-                              fontSize="small"
-                              color="secondary"
-                              sx={{ mr: 1 }}
-                            />
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    sx={{ mb: 2 }}
-                    label="Username"
-                  />
-
-                  <TextField
-                    value={profile?.email}
-                    disabled
-                    fullWidth
-                    slotProps={{
-                      input: {
-                        startAdornment: (
-                          <InputAdornment>
-                            <AlternateEmail
-                              fontSize="small"
-                              color="secondary"
-                              sx={{ mr: 1 }}
-                            />
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    sx={{ mb: 2 }}
-                    label="Email"
-                  />
-
-                  <TextField
-                    value={profile?.category}
-                    disabled
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    slotProps={{
-                      input: {
-                        startAdornment: (
-                          <InputAdornment>
-                            <Category
-                              fontSize="small"
-                              color="secondary"
-                              sx={{ mr: 1 }}
-                            />
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    label="Category"
-                  />
-
-                  <TextField
-                    value={profile?.dob}
-                    disabled
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    slotProps={{
-                      input: {
-                        startAdornment: (
-                          <InputAdornment>
-                            <Cake
-                              fontSize="small"
-                              color="secondary"
-                              sx={{ mr: 1 }}
-                            />
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    label="D.O.B"
-                  />
-
-                  <TextField
-                    value={profile?.gender === "M" ? "Male" : "Female"}
-                    disabled
-                    fullWidth
-                    sx={{ mb: 2 }}
-                    slotProps={{
-                      input: {
-                        startAdornment: (
-                          <InputAdornment>
-                            <Male
-                              fontSize="small"
-                              color="secondary"
-                              sx={{ mr: 1 }}
-                            />
-                          </InputAdornment>
-                        ),
-                      },
-                    }}
-                    label="Gender"
-                  />
-                </AccordionDetails>
-              </Accordion>
-
-              <Accordion sx={GlobalAccordianCss}>
-                <AccordionSummary
-                  aria-controls={`disability-info-content`}
-                  id={`disability-info-header`}
-                  expandIcon={<ExpandMore fontSize="small" />}
-                >
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      textTransform: "uppercase",
-                      fontWeight: 700,
-                      color: theme.palette.primary.A700,
-                    }}
-                  >
-                    Disability Info
-                  </Typography>
-                </AccordionSummary>
-
-                <AccordionDetails>
-                  {profile.isPwd === "false" && (
-                    <Typography
-                      variant="body1"
-                      color="secondary"
-                      sx={{ textAlign: "justify" }}
-                    >
-                      {AppConstants.NON_DISABLE_TEXT}
-                    </Typography>
-                  )}
-                </AccordionDetails>
-              </Accordion>
-            </Box>
-
-            <Notes
-              note="Candidates having more than 40% disability are considered to be physically challenged people."
-              noteColor={theme.palette.secondary.main}
-            />
-
-            <Notes
-              note="Sensitive information like passwords etc are not displayed here due to security reasons."
-              noteColor={theme.palette.secondary.main}
-            />
-
-            <Notes
-              note="Date of birth is non-editable."
-              noteColor={theme.palette.secondary.main}
-            />
-
-            <Box
-              component="div"
+      {activeTab === null ? (
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid item xs={12} sm={6} md={5}>
+            <Card
+              variant="elevation"
+              elevation={4}
               sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "center",
-                gap: 1,
+                cursor: "pointer",
+                textAlign: "center",
+                py: 4,
+                transition: "0.3s",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: theme.shadows[8],
+                },
+                width: "100%",
               }}
+              onClick={() => setActiveTab("profile")}
             >
-              <Button
-                variant="contained"
-                color="success"
-                startIcon={<Edit fontSize="small" />}
-                disabled
-              >
-                Edit
-              </Button>
+              <CardContent>
+                <Person
+                  sx={{
+                    fontSize: 80,
+                    color: theme.palette.primary.main,
+                    mb: 2,
+                  }}
+                />
 
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<Logout fontSize="small" />}
-                disabled={isLoggingOut}
-                onClick={() => setLogoutDialogOpen(true)}
-              >
-                Logout
-              </Button>
-            </Box>
-          </>
-        )}
-      </Paper>
+                <Typography variant="h5" color="primary" fontWeight="bold">
+                  Profile
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  Manage your personal details and account settings
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={6} md={5}>
+            <Card
+              variant="elevation"
+              elevation={4}
+              sx={{
+                cursor: "pointer",
+                textAlign: "center",
+                py: 4,
+                transition: "0.3s",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: theme.shadows[8],
+                },
+              }}
+              onClick={() => setActiveTab("applied-jobs")}
+            >
+              <CardContent>
+                <Work
+                  sx={{
+                    fontSize: 80,
+                    color: theme.palette.primary.main,
+                    mb: 2,
+                  }}
+                />
+                <Typography variant="h5" color="primary" fontWeight="bold">
+                  Applied Jobs
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  View all the job vacancies you have applied for
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      ) : (
+        <Box>
+          <Button
+            variant="outlined"
+            onClick={() => setActiveTab(null)}
+            startIcon={<ArrowBack fontSize="small" />}
+            sx={{ mb: 2 }}
+          >
+            Back to Menu
+          </Button>
+
+          <Paper variant="elevation" elevation={4} sx={GlobalPaperCss}>
+            {activeTab === "profile" ? (
+              <ProfileView
+                profile={profile}
+                isProfileLoading={isProfileLoading}
+                alert={alert}
+                handleAlertOnClose={handleAlertOnClose}
+                setEditDialogOpen={setEditDialogOpen}
+                setLogoutDialogOpen={setLogoutDialogOpen}
+                isLoggingOut={isLoggingOut}
+              />
+            ) : (
+              <AppliedJobsList />
+            )}
+          </Paper>
+        </Box>
+      )}
 
       <ConfirmationDialog
         open={logoutDialogOpen}
@@ -335,6 +178,16 @@ function AccountsPage() {
           handleLogout();
         }}
         onCancel={() => setLogoutDialogOpen(false)}
+      />
+
+      <EditProfileDialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        profile={profile}
+        onProfileUpdated={() => {
+          setEditDialogOpen(false);
+          loadProfile();
+        }}
       />
     </Container>
   );

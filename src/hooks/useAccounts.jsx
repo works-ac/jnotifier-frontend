@@ -88,6 +88,7 @@ function useAccounts() {
     profile,
     isLoggingOut,
     handleLogout,
+    loadProfile,
   };
 }
 

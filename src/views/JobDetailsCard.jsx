@@ -1,11 +1,14 @@
 import {
+  Close,
   ContentCopy,
+  Done,
   Download,
   ExpandMore,
   InfoOutlined,
   OpenInNew,
   Share,
 } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 import {
   Accordion,
   AccordionActions,
@@ -19,6 +22,7 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -32,6 +36,9 @@ import Notes from "../components/Notes";
 import ShareDialog from "../components/core/ShareDialog";
 import PdfOpenerDialog from "../components/core/PdfOpenerDialog";
 import remarkGfm from "remark-gfm";
+import useAppliedJob from "../hooks/useAppliedJob";
+import AppAlert from "../components/AppAlert";
+import JobApplyPrompt from "../components/JobApplyPrompt";
 
 function JobDetailsCard({
   applicationId,
@@ -44,6 +51,7 @@ function JobDetailsCard({
   advNo,
   viewPageDescription,
   advFilePath,
+  userAuthStatus,
 }) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
@@ -61,6 +69,19 @@ function JobDetailsCard({
     closeShareDialog,
     downloadAdv,
   } = useJobDetails();
+
+  const isUserLoggedIn =
+    userAuthStatus?.trim()?.toLowerCase() === AppConstants.USER_AUTH_STATUS;
+  const {
+    showAppliedPrompt,
+    isMarking,
+    isMarked,
+    alert,
+    handleAlertOnClose,
+    handleApplyClick,
+    handleYesClick,
+    handleNoClick,
+  } = useAppliedJob();
 
   return (
     <Box
@@ -225,6 +246,11 @@ function JobDetailsCard({
             href={applyLink}
             target="_blank"
             startIcon={<OpenInNew fontSize="small" />}
+            onClick={() => {
+              if (isUserLoggedIn) {
+                handleApplyClick();
+              }
+            }}
           >
             Apply
           </Button>
@@ -245,6 +271,45 @@ function JobDetailsCard({
           </Button>
         </CardActionArea>
       </Card>
+
+      {showAppliedPrompt && isUserLoggedIn && (
+        <Paper elevation={4} sx={{ mt: 2, p: 2 }}>
+          <AppAlert
+            alert={alert}
+            handleAlertOnClose={handleAlertOnClose}
+            type={alert?.type}
+          />
+
+          {!isMarked ? (
+            <JobApplyPrompt
+              handleNoClick={handleNoClick}
+              handleYesClick={handleYesClick}
+              isMarking={isMarking}
+              applicationId={applicationId}
+            />
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" color="success.main" gutterBottom>
+                Successfully marked as applied!
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleNoClick}
+                sx={{ mt: 1 }}
+              >
+                Close
+              </Button>
+            </Box>
+          )}
+        </Paper>
+      )}
 
       <ShareDialog
         open={shareDialogOpen}
@@ -279,6 +344,7 @@ JobDetailsCard.propTypes = {
   advNo: PropTypes.string.isRequired,
   viewPageDescription: PropTypes.string.isRequired,
   advFilePath: PropTypes.string,
+  userAuthStatus: PropTypes.string,
 };
 
 export default React.memo(JobDetailsCard);

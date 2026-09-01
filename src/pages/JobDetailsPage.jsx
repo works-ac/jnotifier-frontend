@@ -9,6 +9,8 @@ import useAppCss from "../hooks/useAppCss";
 import DogPic from "../assets/dog.png";
 import FlexBox from "../components/styled/FlexBox";
 import ResponsiveImage from "../components/core/ResponsiveImage";
+import { useSelector } from "react-redux";
+import useLoginStatus from "../hooks/core/useLoginStatus";
 
 function JobDetailsPage() {
   const { applicationId } = useParams();
@@ -20,6 +22,8 @@ function JobDetailsPage() {
     isJobDetailsLoading,
     jobDetails,
   } = useHome();
+  const { isLoading } = useLoginStatus();
+  const { userAuthStatus } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (jobDetails) document.title = `Job Notifier || ${jobDetails.title}`;
@@ -28,6 +32,14 @@ function JobDetailsPage() {
   useEffect(() => {
     fetchJobByApplicationId(applicationId);
   }, []);
+
+  if (isLoading)
+    return (
+      <CircluarProgressLoader
+        text="We're checking your authentication status, please wait..."
+        takeHeight
+      />
+    );
 
   return (
     <>
@@ -57,6 +69,7 @@ function JobDetailsPage() {
           title={jobDetails.title}
           viewPageDescription={jobDetails.viewPageDescription}
           advFilePath={jobDetails.advFilePath}
+          userAuthStatus={userAuthStatus}
         />
       )}
 
