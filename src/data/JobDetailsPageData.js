@@ -15,4 +15,5 @@ export const JobDetails = {
   advFilePath: "",
   createdBy: "",
   createdAt: "",
+  status: false,
 };

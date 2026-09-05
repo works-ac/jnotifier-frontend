@@ -66,9 +66,11 @@ function ArchivedJobsView() {
           </Box>
 
           {archivedJobs.map((job) => (
-            <>
-              <JobListingCard key={job.applicationId} {...job} />
-            </>
+            <JobListingCard
+              key={job.applicationId}
+              {...job}
+              viewMoreLink={`/jobs/${job.applicationId}`}
+            />
           ))}
 
           {!archivedJobs.length && (

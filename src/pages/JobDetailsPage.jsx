@@ -70,6 +70,7 @@ function JobDetailsPage() {
           viewPageDescription={jobDetails.viewPageDescription}
           advFilePath={jobDetails.advFilePath}
           userAuthStatus={userAuthStatus}
+          isArchivedJob={jobDetails.status}
         />
       )}
 

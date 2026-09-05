@@ -1,14 +1,11 @@
 import {
-  Close,
   ContentCopy,
-  Done,
   Download,
   ExpandMore,
   InfoOutlined,
   OpenInNew,
   Share,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
 import {
   Accordion,
   AccordionActions,
@@ -23,6 +20,7 @@ import {
   CircularProgress,
   Divider,
   Paper,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -39,6 +37,7 @@ import remarkGfm from "remark-gfm";
 import useAppliedJob from "../hooks/useAppliedJob";
 import AppAlert from "../components/AppAlert";
 import JobApplyPrompt from "../components/JobApplyPrompt";
+import AppToolTip from "../components/core/AppToolTip";
 
 function JobDetailsCard({
   applicationId,
@@ -52,6 +51,7 @@ function JobDetailsCard({
   viewPageDescription,
   advFilePath,
   userAuthStatus,
+  isArchivedJob = false,
 }) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
@@ -90,15 +90,45 @@ function JobDetailsCard({
     >
       <Card variant="elevation" elevation={4}>
         <CardContent>
+          {!isArchivedJob && (
+            <Stack direction="row" sx={{ mb: 1, justifyContent: "flex-end" }}>
+              <Box
+                component="div"
+                sx={{
+                  backgroundColor: theme.palette.error.main,
+                  p: 1,
+                  borderRadius: 2,
+                  outline: "none",
+                  color: "white",
+                }}
+              >
+                <AppToolTip
+                  title="This job is archived and cannot be applied to."
+                  placement="left"
+                >
+                  <Typography variant="body1">ARCHIVED</Typography>
+                </AppToolTip>
+              </Box>
+            </Stack>
+          )}
+
           <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
             {title}
           </Typography>
 
-          {advNo && (
-            <Typography variant="caption" color="secondary">
-              Advertisement No: {advNo}
-            </Typography>
-          )}
+          <Stack direction="column" sx={{ mb: 1 }}>
+            {advNo && (
+              <Typography variant="caption" color="secondary">
+                Advertisement No: {advNo}
+              </Typography>
+            )}
+
+            {applicationId && (
+              <Typography variant="caption" color="secondary">
+                Application ID: {applicationId}
+              </Typography>
+            )}
+          </Stack>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
@@ -229,6 +259,11 @@ function JobDetailsCard({
               note="Kindly double check your eligibility before applying to any vacancy."
               noteColor={theme.palette.secondary.main}
             />
+
+            <Notes
+              note="Kindly answer to question after applying to any vacancy to get your list of applied jobs updated."
+              noteColor={theme.palette.secondary.main}
+            />
           </Box>
         </CardContent>
 
@@ -251,6 +286,7 @@ function JobDetailsCard({
                 handleApplyClick();
               }
             }}
+            disabled={!isArchivedJob}
           >
             Apply
           </Button>
@@ -345,6 +381,7 @@ JobDetailsCard.propTypes = {
   viewPageDescription: PropTypes.string.isRequired,
   advFilePath: PropTypes.string,
   userAuthStatus: PropTypes.string,
+  isArchivedJob: PropTypes.bool,
 };
 
 export default React.memo(JobDetailsCard);
