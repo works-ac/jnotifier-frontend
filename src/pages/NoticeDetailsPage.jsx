@@ -38,7 +38,12 @@ function NoticeDetailsPage() {
         />
       )}
 
-      {!isNoticeLoading && <NoticeDetailsCard {...noticeDetails} />}
+      {!isNoticeLoading && (
+        <NoticeDetailsCard
+          {...noticeDetails}
+          isArchivedNotice={noticeDetails?.isActive}
+        />
+      )}
     </>
   );
 }

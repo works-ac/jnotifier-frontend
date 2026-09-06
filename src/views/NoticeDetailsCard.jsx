@@ -11,6 +11,7 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -20,7 +21,11 @@ import useAppCss from "../hooks/useAppCss";
 import ShareDialog from "../components/core/ShareDialog";
 import useJobDetails from "../hooks/useJobDetails";
 import PropTypes from "prop-types";
+
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import AppToolTip from "../components/core/AppToolTip";
 
 function NoticeDetailsCard({
   id,
@@ -28,6 +33,7 @@ function NoticeDetailsCard({
   tags,
   noticeDescription,
   noticeDetailedAdv,
+  isArchivedNotice = false,
 }) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
@@ -48,20 +54,45 @@ function NoticeDetailsCard({
     >
       <Card variant="elevation" elevation={4}>
         <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
-            {title}
-          </Typography>
+          {!isArchivedNotice && (
+            <Stack direction="row" sx={{ mb: 1, justifyContent: "flex-end" }}>
+              <Box
+                component="div"
+                sx={{
+                  backgroundColor: theme.palette.error.main,
+                  p: 1,
+                  borderRadius: 2,
+                  outline: "none",
+                  color: "white",
+                }}
+              >
+                <AppToolTip title="This notice is archived." placement="left">
+                  <Typography variant="body1">ARCHIVED</Typography>
+                </AppToolTip>
+              </Box>
+            </Stack>
+          )}
+
+          <Stack direction="column" sx={{ mb: 1 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
+              {title}
+            </Typography>
+
+            <Typography variant="caption" color="secondary">
+              Notice ID: {id}
+            </Typography>
+          </Stack>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
               <Chip
                 label={tag?.trim()}
                 key={tag}
-                sx={(theme) => ({
+                sx={{
                   mr: 1,
                   mb: 1,
                   borderRadius: "8px",
-                })}
+                }}
                 color="success"
                 icon={<Sell fontSize="small" />}
               />
@@ -85,7 +116,50 @@ function NoticeDetailsCard({
               Description
             </Typography>
 
-            <Markdown remarkPlugins={[remarkGfm]}>{noticeDescription}</Markdown>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  {
+                    ...defaultSchema,
+                    // 1. Define exactly which tags you want to allow
+                    tagNames: [
+                      "p",
+                      "br",
+                      "b",
+                      "strong",
+                      "i",
+                      "em",
+                      "table",
+                      "thead",
+                      "tbody",
+                      "tr",
+                      "th",
+                      "td",
+                      "ul",
+                      "ol",
+                      "li",
+                      "a",
+                      "h1",
+                      "h2",
+                      "h3",
+                      "h4",
+                      "h5",
+                      "h6",
+                    ],
+                    // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                    attributes: {
+                      ...defaultSchema.attributes,
+                      "*": ["className"], // allows classes on all permitted tags
+                    },
+                  },
+                ],
+              ]}
+            >
+              {noticeDescription}
+            </Markdown>
           </Box>
 
           {noticeDetailedAdv && (
@@ -112,7 +186,50 @@ function NoticeDetailsCard({
                   component="div"
                   sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
                 >
-                  <Markdown remarkPlugins={[remarkGfm]}>{noticeDetailedAdv}</Markdown>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[
+                      rehypeRaw,
+                      [
+                        rehypeSanitize,
+                        {
+                          ...defaultSchema,
+                          // 1. Define exactly which tags you want to allow
+                          tagNames: [
+                            "p",
+                            "br",
+                            "b",
+                            "strong",
+                            "i",
+                            "em",
+                            "table",
+                            "thead",
+                            "tbody",
+                            "tr",
+                            "th",
+                            "td",
+                            "ul",
+                            "ol",
+                            "li",
+                            "a",
+                            "h1",
+                            "h2",
+                            "h3",
+                            "h4",
+                            "h5",
+                            "h6",
+                          ],
+                          // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                          attributes: {
+                            ...defaultSchema.attributes,
+                            "*": ["className"], // allows classes on all permitted tags
+                          },
+                        },
+                      ],
+                    ]}
+                  >
+                    {noticeDetailedAdv}
+                  </Markdown>
                 </Box>
               </AccordionDetails>
 
@@ -183,6 +300,7 @@ NoticeDetailsCard.propTypes = {
   tags: PropTypes.string.isRequired,
   noticeDescription: PropTypes.string.isRequired,
   noticeDetailedAdv: PropTypes.string,
+  isArchivedNotice: PropTypes.bool,
 };
 
 export default NoticeDetailsCard;

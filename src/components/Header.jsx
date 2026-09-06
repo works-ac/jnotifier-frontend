@@ -115,8 +115,9 @@ function Header() {
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             {isMobile ? (
-              <Typography
-                variant="h1"
+              <Button
+                LinkComponent={RouterLink}
+                variant="text"
                 sx={(theme) => ({
                   fontWeight: 700,
                   color: "primary.main",
@@ -127,31 +128,46 @@ function Header() {
                   borderColor: theme.palette.warning.main,
                   borderStyle: "dashed",
                 })}
+                href="/"
               >
                 JN
-              </Typography>
+              </Button>
             ) : (
-              <AppToolTip title="Job Notifier Logo" placement="right">
-                <Box
-                  component="img"
-                  src="/logo.png"
-                  alt="Job Notifier Logo"
-                  sx={{
-                    width: "5rem",
-                    height: "5rem",
-                    objectFit: "cover",
-                    imageRendering: "auto",
-                    display: "block",
-                    background: "transparent",
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                    my: 0.75,
-                    borderRadius: "50%",
-                  }}
-                  onClick={() => (window.location.href = "/")}
-                />
-              </AppToolTip>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: "center", my: 1 }}
+              >
+                <AppToolTip title="Job Notifier Logo" placement="right">
+                  <Box
+                    component="img"
+                    src="/logo.png"
+                    alt="Job Notifier Logo"
+                    sx={{
+                      width: "5rem",
+                      height: "5rem",
+                      objectFit: "cover",
+                      imageRendering: "auto",
+                      display: "block",
+                      background: "transparent",
+                      "&:hover": {
+                        cursor: "pointer",
+                      },
+                      my: 0.75,
+                      borderRadius: "50%",
+                    }}
+                    onClick={() => (window.location.href = "/")}
+                  />
+                </AppToolTip>
+
+                <Typography
+                  variant="h2"
+                  sx={{ fontWeight: 700, textTransform: "uppercase" }}
+                  color="primary"
+                >
+                  Job Notifier
+                </Typography>
+              </Stack>
             )}
 
             {isMobile ? (

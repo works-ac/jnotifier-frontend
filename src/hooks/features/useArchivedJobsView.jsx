@@ -21,7 +21,7 @@ function useArchivedJobsView() {
       const response = await getArchivedJobs();
       const content = response.data?.data?.content || [];
       const pagination = {
-        pageNo: response.data?.data?.pageable?.pageNumber ?? -1,
+        pageNo: response.data?.data?.pageNo ?? -1,
         totalPages: response.data?.data?.totalPages ?? -1,
         last: response.data?.data?.last ?? true,
         first: response.data?.data?.first ?? true,
@@ -52,7 +52,7 @@ function useArchivedJobsView() {
         const response = await getArchivedJobs(payload);
         const content = response.data?.data?.content || [];
         const paginationData = {
-          pageNo: response.data?.data?.pageable?.pageNumber ?? -1,
+          pageNo: response.data?.data?.pageNo ?? -1,
           totalPages: response.data?.data?.totalPages ?? -1,
           last: response.data?.data?.last ?? true,
           first: response.data?.data?.first ?? true,
@@ -86,7 +86,7 @@ function useArchivedJobsView() {
         const response = await getArchivedJobs(payload);
         const content = response.data?.data?.content || [];
         const paginationData = {
-          pageNo: response.data?.data?.pageable?.pageNumber ?? -1,
+          pageNo: response.data?.data?.pageNo ?? -1,
           totalPages: response.data?.data?.totalPages ?? -1,
           last: response.data?.data?.last ?? true,
           first: response.data?.data?.first ?? true,
@@ -116,7 +116,6 @@ function useArchivedJobsView() {
     pagination,
     paginationMetadata,
     alert,
-    archivedJobs,
     fetchArchivedJobs,
     fetchNextArchivedJobs,
     fetchPreviousArchivedJobs,

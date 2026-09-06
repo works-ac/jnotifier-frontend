@@ -33,11 +33,14 @@ import { AppConstants } from "../app/AppConstants";
 import Notes from "../components/Notes";
 import ShareDialog from "../components/core/ShareDialog";
 import PdfOpenerDialog from "../components/core/PdfOpenerDialog";
-import remarkGfm from "remark-gfm";
 import useAppliedJob from "../hooks/useAppliedJob";
 import AppAlert from "../components/AppAlert";
 import JobApplyPrompt from "../components/JobApplyPrompt";
 import AppToolTip from "../components/core/AppToolTip";
+
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 function JobDetailsCard({
   applicationId,
@@ -135,11 +138,11 @@ function JobDetailsCard({
               <Chip
                 label={tag.trim()}
                 key={tag}
-                sx={(theme) => ({
+                sx={{
                   mr: 1,
                   mb: 1,
                   borderRadius: "8px",
-                })}
+                }}
                 color="success"
                 icon={<InfoOutlined fontSize="small" />}
               />
@@ -159,6 +162,7 @@ function JobDetailsCard({
             <Typography variant="body2">
               Application Start Date: {applicationStartDate}
             </Typography>
+
             <Typography variant="body2">
               Application End Date: {applicationEndDate}
             </Typography>
@@ -184,7 +188,50 @@ function JobDetailsCard({
               Description
             </Typography>
 
-            <Markdown remarkPlugins={[remarkGfm]}>{shortDescription}</Markdown>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  {
+                    ...defaultSchema,
+                    // 1. Define exactly which tags you want to allow
+                    tagNames: [
+                      "p",
+                      "br",
+                      "b",
+                      "strong",
+                      "i",
+                      "em",
+                      "table",
+                      "thead",
+                      "tbody",
+                      "tr",
+                      "th",
+                      "td",
+                      "ul",
+                      "ol",
+                      "li",
+                      "a",
+                      "h1",
+                      "h2",
+                      "h3",
+                      "h4",
+                      "h5",
+                      "h6",
+                    ],
+                    // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                    attributes: {
+                      ...defaultSchema.attributes,
+                      "*": ["className"], // allows classes on all permitted tags
+                    },
+                  },
+                ],
+              ]}
+            >
+              {shortDescription}
+            </Markdown>
           </Box>
 
           {viewPageDescription && (
@@ -211,7 +258,48 @@ function JobDetailsCard({
                   component="div"
                   sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
                 >
-                  <Markdown remarkPlugins={[remarkGfm]}>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[
+                      rehypeRaw,
+                      [
+                        rehypeSanitize,
+                        {
+                          ...defaultSchema,
+                          // 1. Define exactly which tags you want to allow
+                          tagNames: [
+                            "p",
+                            "br",
+                            "b",
+                            "strong",
+                            "i",
+                            "em",
+                            "table",
+                            "thead",
+                            "tbody",
+                            "tr",
+                            "th",
+                            "td",
+                            "ul",
+                            "ol",
+                            "li",
+                            "a",
+                            "h1",
+                            "h2",
+                            "h3",
+                            "h4",
+                            "h5",
+                            "h6",
+                          ],
+                          // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                          attributes: {
+                            ...defaultSchema.attributes,
+                            "*": ["className"], // allows classes on all permitted tags
+                          },
+                        },
+                      ],
+                    ]}
+                  >
                     {viewPageDescription}
                   </Markdown>
                 </Box>
