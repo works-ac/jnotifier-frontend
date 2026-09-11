@@ -86,6 +86,7 @@ function ArchivedJobsView() {
               <Box
                 component="img"
                 src={NoJobFoundImage}
+                alt="No archived jobs found"
                 width="50%"
                 height="50%"
                 sx={{ borderRadius: 10, mb: 2 }}

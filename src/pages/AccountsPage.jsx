@@ -22,8 +22,15 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 import EditProfileDialog from "../components/EditProfileDialog";
 import AppliedJobsList from "../components/AppliedJobsList";
 import ProfileView from "../views/ProfileView";
+import useSEO from "../hooks/useSEO";
 
 function AccountsPage() {
+  useSEO({
+    title: "My Account | Job Notifier",
+    canonicalPath: "/account",
+    noindex: true,
+  });
+
   const [activeTab, setActiveTab] = useState(null);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);

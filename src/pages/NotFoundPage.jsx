@@ -1,8 +1,14 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import NotFoungImg from "../assets/404.jpg";
+import useSEO from "../hooks/useSEO";
 
 function NotFoundPage() {
+  useSEO({
+    title: "Page Not Found | Job Notifier",
+    noindex: true,
+  });
+
   return (
     <Box
       component="div"
@@ -16,6 +22,7 @@ function NotFoundPage() {
       <Box
         component="img"
         src={NotFoungImg}
+        alt="Page Not Found"
         width="50%"
         height="50%"
         sx={{ borderRadius: 10 }}

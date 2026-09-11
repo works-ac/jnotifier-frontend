@@ -7,8 +7,16 @@ import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
 import ListFilters from "../components/core/ListFilters";
+import useSEO from "../hooks/useSEO";
 
 function NoticePage() {
+  useSEO({
+    title: "Official Notices & Recruitment Announcements | Job Notifier",
+    description:
+      "Stay updated with recent government and private job notices, recruitment announcements, examination schedules, admit cards, and result updates on Job Notifier.",
+    canonicalPath: "/notices",
+  });
+
   const {
     fetchNextNotice,
     fetchPreviousNotice,
@@ -170,6 +178,7 @@ function NoticePage() {
               <Box
                 component="img"
                 src={NoJobFoundImage}
+                alt="No active notices found"
                 width="50%"
                 height="50%"
                 sx={{ borderRadius: 10, mb: 2 }}
@@ -186,4 +195,4 @@ function NoticePage() {
   );
 }
 
-export default NoticePage;
+export default React.memo(NoticePage);

@@ -7,8 +7,18 @@ import { Box, Button, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoJobFoundImage from "../assets/notfound.jpg";
 import ListFilters from "../components/core/ListFilters";
+import useSEO from "../hooks/useSEO";
 
 function HomePage() {
+  useSEO({
+    title: "Job Notifier | Latest Government & Private Jobs Alerts",
+    description:
+      "Job Notifier is your trusted job search platform for the latest government jobs, private jobs, Sarkari Naukri alerts, recruitment notifications, syllabus, and vacancies across India.",
+    keywords:
+      "government jobs, private jobs, job search, sarkari naukri, job notifier, employment news, recruitment alerts, latest vacancies, admit card, exam results",
+    canonicalPath: "/",
+  });
+
   const {
     alert,
     isLoading,
@@ -166,6 +176,7 @@ function HomePage() {
               <Box
                 component="img"
                 src={NoJobFoundImage}
+                alt="No active jobs found"
                 width="50%"
                 height="50%"
                 sx={{ borderRadius: 10, mb: 2 }}

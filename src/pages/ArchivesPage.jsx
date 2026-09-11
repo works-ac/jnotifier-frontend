@@ -5,8 +5,16 @@ import { a11yProps } from "../helpers/index";
 import AppTabPanel from "../components/core/AppTabPanel";
 import ArchivedNoticesView from "../views/tabs/ArchivedNoticesView";
 import ArchivedJobsView from "../views/tabs/ArchivedJobsView";
+import useSEO from "../hooks/useSEO";
 
 function ArchivesPage() {
+  useSEO({
+    title: "Archived Jobs & Notices | Job Notifier",
+    description:
+      "Explore archived government and private job postings, past recruitment notices, and historical vacancy details on Job Notifier.",
+    canonicalPath: "/archives",
+  });
+
   const { handleTabChange, value } = useArchives();
 
   return (

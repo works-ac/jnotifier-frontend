@@ -6,8 +6,15 @@ import OfflineImage from "../assets/offline.jpg";
 import FlexBox from "../components/styled/FlexBox";
 import { Home, WifiOff } from "@mui/icons-material";
 import Heading from "../components/Heading";
+import useSEO from "../hooks/useSEO";
 
 function OfflinePage() {
+  useSEO({
+    title: "Offline | Job Notifier",
+    canonicalPath: "/offline",
+    noindex: true,
+  });
+
   const theme = useTheme();
   const { GlobalPaperCss } = useAppCss();
 

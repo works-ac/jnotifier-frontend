@@ -60,7 +60,13 @@ function Footer() {
               Made in India
             </Typography>
 
-            <Box component="img" src={IndianFlag} width={16} height={16}></Box>
+            <Box
+              component="img"
+              src={IndianFlag}
+              alt="Indian Flag"
+              width={16}
+              height={16}
+            ></Box>
           </Box>
 
           <Typography
