@@ -12,6 +12,7 @@ import ResponsiveImage from "../components/core/ResponsiveImage";
 import { useSelector } from "react-redux";
 import useLoginStatus from "../hooks/core/useLoginStatus";
 import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function JobDetailsPage() {
   const { applicationId } = useParams();
@@ -87,6 +88,8 @@ function JobDetailsPage() {
 
   return (
     <>
+      <WhatsAppPromotion />
+
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}

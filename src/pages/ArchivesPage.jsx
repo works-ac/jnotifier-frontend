@@ -6,6 +6,7 @@ import AppTabPanel from "../components/core/AppTabPanel";
 import ArchivedNoticesView from "../views/tabs/ArchivedNoticesView";
 import ArchivedJobsView from "../views/tabs/ArchivedJobsView";
 import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function ArchivesPage() {
   useSEO({
@@ -19,6 +20,8 @@ function ArchivesPage() {
 
   return (
     <Container maxWidth="lg" sx={{ mx: "auto" }}>
+      <WhatsAppPromotion />
+
       <Box sx={{ width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs

@@ -8,6 +8,7 @@ import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
 import ListFilters from "../components/core/ListFilters";
 import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function NoticePage() {
   useSEO({
@@ -34,6 +35,8 @@ function NoticePage() {
 
   return (
     <>
+      <WhatsAppPromotion />
+
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}

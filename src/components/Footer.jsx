@@ -22,6 +22,7 @@ function Footer() {
     handleWhatsAppBtnClick,
     handleEmailBtnClick,
   } = useFooter();
+  const appVersion = import.meta.env.VITE_APP_VERSION || "0.0.0";
 
   return (
     <Box
@@ -85,6 +86,15 @@ function Footer() {
             sx={{ fontWeight: 700 }}
           >
             All Rights are reserved
+          </Typography>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            sx={{ fontWeight: 700 }}
+          >
+            v{appVersion}
           </Typography>
         </Box>
 

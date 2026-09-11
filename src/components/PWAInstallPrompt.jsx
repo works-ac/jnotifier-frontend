@@ -1,4 +1,5 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Button,
@@ -11,18 +12,27 @@ import {
   Typography,
 } from "@mui/material";
 import { Close, GetApp } from "@mui/icons-material";
+import { setPwaInstalled } from "../redux/slices/PwaSlice";
 
 export default function PWAInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const isInstalled = useSelector((state) => state.pwa?.isInstalled);
 
   useEffect(() => {
+    // If already marked as installed in Redux / localStorage, do nothing
+    if (isInstalled) {
+      return;
+    }
+
     // Check if app is already running in standalone mode (installed PWA)
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone === true;
 
     if (isStandalone) {
+      dispatch(setPwaInstalled(true));
       return;
     }
 
@@ -39,6 +49,7 @@ export default function PWAInstallPrompt() {
     };
 
     const handleAppInstalled = () => {
+      dispatch(setPwaInstalled(true));
       setOpen(false);
       setDeferredPrompt(null);
       sessionStorage.removeItem("pwa_install_dismissed");
@@ -50,16 +61,21 @@ export default function PWAInstallPrompt() {
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
-        handleBeforeInstallPrompt,
+        handleBeforeInstallPrompt
       );
       window.removeEventListener("appinstalled", handleAppInstalled);
     };
-  }, []);
+  }, [isInstalled, dispatch]);
 
   const handleInstallClick = async () => {
+    // Update install flag in Redux (which also updates localStorage)
+    dispatch(setPwaInstalled(true));
+
     if (!deferredPrompt) {
+      setOpen(false);
       return;
     }
+
     // Show the native browser install prompt
     deferredPrompt.prompt();
     const choiceResult = await deferredPrompt.userChoice;
@@ -74,7 +90,7 @@ export default function PWAInstallPrompt() {
     sessionStorage.setItem("pwa_install_dismissed", "true");
   };
 
-  if (!open || !deferredPrompt) {
+  if (isInstalled || !open || !deferredPrompt) {
     return null;
   }
 

@@ -8,6 +8,7 @@ import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoJobFoundImage from "../assets/notfound.jpg";
 import ListFilters from "../components/core/ListFilters";
 import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function HomePage() {
   useSEO({
@@ -51,6 +52,8 @@ function HomePage() {
 
       {!isLoading && (
         <>
+          <WhatsAppPromotion />
+
           {!!jobs.length && (
             <Box
               component="div"

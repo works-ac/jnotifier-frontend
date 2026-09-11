@@ -5,6 +5,7 @@ import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import NoticeDetailsCard from "../views/NoticeDetailsCard";
 import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function NoticeDetailsPage() {
   const { noticeId } = useParams();
@@ -56,6 +57,8 @@ function NoticeDetailsPage() {
 
   return (
     <>
+      <WhatsAppPromotion />
+
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}

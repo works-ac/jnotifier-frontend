@@ -13,7 +13,6 @@ import {
 import useAccounts from "../hooks/useAccounts";
 import useAppCss from "../hooks/useAppCss";
 import { useSelector } from "react-redux";
-import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
 import { AppConstants } from "../app/AppConstants";
 import Login from "../views/Login";
@@ -45,7 +44,7 @@ function AccountsPage() {
     isLoggingOut,
     loadProfile,
   } = useAccounts();
-  const { GlobalPaperCss, GlobalAccordianCss } = useAppCss();
+  const { GlobalPaperCss } = useAppCss();
   const { userAuthStatus } = useSelector((state) => state.auth);
 
   if (isLoading)
