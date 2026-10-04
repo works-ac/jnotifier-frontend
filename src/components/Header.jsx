@@ -24,6 +24,7 @@ import { Close } from "@mui/icons-material";
 import useHeader from "../hooks/useHeader";
 import AppToolTip from "./core/AppToolTip";
 import { AppConstants } from "../app/AppConstants";
+import NavbarLogo from "./core/NavbarLogo";
 
 function Header() {
   const theme = useTheme();
@@ -115,23 +116,14 @@ function Header() {
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             {isMobile ? (
-              <Button
-                LinkComponent={RouterLink}
-                variant="text"
-                sx={(theme) => ({
-                  fontWeight: 700,
-                  color: "primary.main",
-                  fontfamily: "Libertinus Math, system-ui, sans-serif",
-                  border: 1,
-                  p: 0.25,
-                  borderRadius: 1,
-                  borderColor: theme.palette.warning.main,
-                  borderStyle: "dashed",
-                })}
-                href="/"
-              >
-                JN
-              </Button>
+              <AppToolTip title="Job Notifier Logo" placement="right">
+                <NavbarLogo
+                  src="/logo-navbar.png"
+                  alt="Job Notifier Logo"
+                  onClick={() => (globalThis.location.href = "/")}
+                  height={64}
+                />
+              </AppToolTip>
             ) : (
               <Stack
                 direction="row"
@@ -139,24 +131,11 @@ function Header() {
                 sx={{ alignItems: "center", my: 1 }}
               >
                 <AppToolTip title="Job Notifier Logo" placement="right">
-                  <Box
-                    component="img"
-                    src="/logo.png"
+                  <NavbarLogo
+                    src="/logo-navbar.png"
                     alt="Job Notifier Logo"
-                    sx={{
-                      width: "5rem",
-                      height: "5rem",
-                      objectFit: "cover",
-                      imageRendering: "auto",
-                      display: "block",
-                      background: "transparent",
-                      "&:hover": {
-                        cursor: "pointer",
-                      },
-                      my: 0.75,
-                      borderRadius: "50%",
-                    }}
-                    onClick={() => (window.location.href = "/")}
+                    onClick={() => (globalThis.location.href = "/")}
+                    height={64}
                   />
                 </AppToolTip>
 

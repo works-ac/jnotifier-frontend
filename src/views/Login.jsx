@@ -6,6 +6,7 @@ import {
   Divider,
   InputAdornment,
   Paper,
+  Stack,
   TextField,
   Typography,
   useTheme,
@@ -27,6 +28,8 @@ import Captcha from "../components/Captcha";
 import { useSelector } from "react-redux";
 import AppAlert from "../components/AppAlert";
 import OTPVerification from "../components/OTPVerification";
+import AppToolTip from "../components/core/AppToolTip";
+import NavbarLogo from "../components/core/NavbarLogo";
 
 function Login() {
   const theme = useTheme();
@@ -85,20 +88,43 @@ function Login() {
           border: `1px solid ${theme.palette.secondary["50"]}`,
         })}
       >
-        <Typography
-          variant="h4"
-          sx={{
-            my: 2,
-            mb: 4,
-            fontWeight: 700,
-            textTransform: "uppercase",
-            textDecoration: "underline",
-            textUnderlineOffset: "4px",
-          }}
-          color="primary"
-        >
-          Job Notifier SSO
-        </Typography>
+        <Stack direction="row" spacing={1} sx={{ alignItems: "center", my: 1 }}>
+          <AppToolTip title="Job Notifier Logo" placement="right">
+            <NavbarLogo
+              src="/logo-navbar.png"
+              alt="Job Notifier Logo"
+              onClick={() => (globalThis.location.href = "/")}
+              height={96}
+            />
+          </AppToolTip>
+
+          <Stack
+            direction="column"
+            spacing={0.5}
+            sx={{ alignItems: "flex-start" }}
+          >
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 700, textTransform: "uppercase" }}
+              color="primary"
+            >
+              Job Notifier
+            </Typography>
+
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                textTransform: "uppercase",
+              }}
+              color="primary"
+            >
+              Single Sign-On (SSO)
+            </Typography>
+          </Stack>
+        </Stack>
+
+        <Divider sx={{ my: 2 }} />
 
         <AppAlert
           alert={alert}
@@ -261,6 +287,11 @@ function Login() {
             </Typography>
           </Divider>
         </Box>
+
+        <Notes
+          note="Do not have an account? Register yourself to get started."
+          noteColor={theme.palette.secondary.main}
+        />
 
         <Box
           sx={{

@@ -36,7 +36,7 @@ function Footer() {
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ textAlign: "center" }}>
         <Box
           component="div"
           sx={{
@@ -99,9 +99,8 @@ function Footer() {
         </Box>
 
         <Typography
-          variant="body2"
-          color="text.secondary"
-          align="center"
+          variant="caption"
+          color="secondary"
           sx={{ fontWeight: 700 }}
         >
           Design developed and maintained by Gaurav Sahitya
