@@ -7,6 +7,7 @@ import {
   CardContent,
   Chip,
   Divider,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -42,22 +43,30 @@ function JobListingCard({
             {title}
           </Typography>
 
-          {advNo && (
-            <Typography variant="caption" color="secondary">
-              Advertisement No: {advNo}
-            </Typography>
-          )}
+          <Stack direction="column" sx={{ mb: 1 }}>
+            {advNo && (
+              <Typography variant="caption" color="secondary">
+                Advertisement No: {advNo}
+              </Typography>
+            )}
+
+            {applicationId && (
+              <Typography variant="caption" color="secondary">
+                Application ID: {applicationId}
+              </Typography>
+            )}
+          </Stack>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
               <Chip
                 label={tag?.trim()}
                 key={tag}
-                sx={(theme) => ({
+                sx={{
                   mr: 1,
                   mb: 1,
                   borderRadius: "8px",
-                })}
+                }}
                 color="success"
                 icon={<InfoOutlineRounded fontSize="small" />}
               />

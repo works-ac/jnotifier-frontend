@@ -8,15 +8,21 @@ import {
 } from "@mui/material";
 import React from "react";
 import IndianFlag from "../assets/ind-flag.svg";
-import CWLogo from "../assets/cw.jpeg";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import useFooter from "../hooks/useFooter";
+import AppToolTip from "./core/AppToolTip";
+import { Mail } from "@mui/icons-material";
 
 function Footer() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { handleTelegramBtnClick, handleWhatsAppBtnClick } = useFooter();
+  const {
+    handleTelegramBtnClick,
+    handleWhatsAppBtnClick,
+    handleEmailBtnClick,
+  } = useFooter();
+  const appVersion = import.meta.env.VITE_APP_VERSION || "0.0.0";
 
   return (
     <Box
@@ -30,7 +36,7 @@ function Footer() {
         borderColor: "divider",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ textAlign: "center" }}>
         <Box
           component="div"
           sx={{
@@ -55,7 +61,13 @@ function Footer() {
               Made in India
             </Typography>
 
-            <Box component="img" src={IndianFlag} width={16} height={16}></Box>
+            <Box
+              component="img"
+              src={IndianFlag}
+              alt="Indian Flag"
+              width={16}
+              height={16}
+            ></Box>
           </Box>
 
           <Typography
@@ -64,7 +76,7 @@ function Footer() {
             align="center"
             sx={{ fontWeight: 700 }}
           >
-            &copy; 2026 Coding Works
+            &copy; 2026 Gaurav Sahitya
           </Typography>
 
           <Typography
@@ -75,12 +87,20 @@ function Footer() {
           >
             All Rights are reserved
           </Typography>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            sx={{ fontWeight: 700 }}
+          >
+            v{appVersion}
+          </Typography>
         </Box>
 
         <Typography
-          variant="body2"
-          color="text.secondary"
-          align="center"
+          variant="caption"
+          color="secondary"
           sx={{ fontWeight: 700 }}
         >
           Design developed and maintained by Gaurav Sahitya
@@ -91,78 +111,26 @@ function Footer() {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-end",
+            justifyContent: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              align="right"
-              sx={{ fontStyle: "oblique" }}
-            >
-              A product of Coding Works
-            </Typography>
+          <AppToolTip title="Follow us on WhatsApp" placement="top">
+            <IconButton onClick={handleWhatsAppBtnClick}>
+              <WhatsAppIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
 
-            <Box
-              component="img"
-              src={CWLogo}
-              width={32}
-              height={32}
-              sx={{ borderRadius: 50 }}
-            ></Box>
-          </Box>
-        </Box>
+          <AppToolTip title="Follow us on Telegram" placement="top">
+            <IconButton onClick={handleTelegramBtnClick}>
+              <TelegramIcon sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
 
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique" }}
-          >
-            This portal is best viewable at desktop and mobile devices.
-          </Typography>
-        </Box>
-
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique", mr: 1 }}
-          >
-            Follow us on:
-          </Typography>
-
-          <IconButton onClick={handleWhatsAppBtnClick}>
-            <WhatsAppIcon sx={{ fontSize: "24px" }} />
-          </IconButton>
-
-          <IconButton onClick={handleTelegramBtnClick}>
-            <TelegramIcon sx={{ fontSize: "24px" }} />
-          </IconButton>
+          <AppToolTip title="Send us an email" placement="top">
+            <IconButton onClick={handleEmailBtnClick}>
+              <Mail sx={{ fontSize: "24px" }} />
+            </IconButton>
+          </AppToolTip>
         </Box>
       </Container>
     </Box>

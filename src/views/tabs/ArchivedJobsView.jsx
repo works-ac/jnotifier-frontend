@@ -66,9 +66,11 @@ function ArchivedJobsView() {
           </Box>
 
           {archivedJobs.map((job) => (
-            <>
-              <JobListingCard key={job.applicationId} {...job} />
-            </>
+            <JobListingCard
+              key={job.applicationId}
+              {...job}
+              viewMoreLink={`/jobs/${job.applicationId}`}
+            />
           ))}
 
           {!archivedJobs.length && (
@@ -84,6 +86,7 @@ function ArchivedJobsView() {
               <Box
                 component="img"
                 src={NoJobFoundImage}
+                alt="No archived jobs found"
                 width="50%"
                 height="50%"
                 sx={{ borderRadius: 10, mb: 2 }}

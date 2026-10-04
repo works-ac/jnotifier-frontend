@@ -1,7 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AppLayout from "../layouts/AppLayout";
-import ResultsPage from "../pages/ResultsPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import JobDetailsPage from "../pages/JobDetailsPage";
 import AccountsPage from "../pages/AccountsPage";
@@ -11,6 +10,7 @@ import NoticePage from "../pages/NoticePage";
 import NoticeDetailsPage from "../pages/NoticeDetailsPage";
 import PostView from "../components/wrapper/PostView";
 import ArchivesPage from "../pages/ArchivesPage";
+import OfflinePage from "../pages/OfflinePage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -30,14 +30,6 @@ const AppRoutes = createBrowserRouter([
         element: (
           <PostView>
             <JobDetailsPage />
-          </PostView>
-        ),
-      },
-      {
-        path: "results",
-        element: (
-          <PostView>
-            <ResultsPage />
           </PostView>
         ),
       },
@@ -98,6 +90,10 @@ const AppRoutes = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "/offline",
+    element: <OfflinePage />,
   },
 ]);
 

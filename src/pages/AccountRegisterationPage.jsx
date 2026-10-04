@@ -35,8 +35,15 @@ import Captcha from "../components/Captcha";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import AppAlert from "../components/AppAlert";
 import OTPVerification from "../components/OTPVerification";
+import useSEO from "../hooks/useSEO";
 
 function AccountRegisterationPage() {
+  useSEO({
+    title: "Register Account | Job Notifier",
+    canonicalPath: "/register",
+    noindex: true,
+  });
+
   const theme = useTheme();
   const {
     isPwdVisible,

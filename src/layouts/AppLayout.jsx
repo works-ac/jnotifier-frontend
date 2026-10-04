@@ -1,8 +1,9 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
 import { Box, Container } from "@mui/material";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import PWAInstallPrompt from "../components/PWAInstallPrompt";
+import OpenInAppBanner from "../components/OpenInAppBanner";
 
 export default function AppLayout() {
   return (
@@ -13,6 +14,7 @@ export default function AppLayout() {
         minHeight: "100vh",
       }}
     >
+      <OpenInAppBanner />
       <Header />
 
       <Box
@@ -28,6 +30,8 @@ export default function AppLayout() {
       </Box>
 
       <Footer />
+
+      <PWAInstallPrompt />
     </Box>
   );
 }

@@ -7,6 +7,7 @@ import {
   CardContent,
   Chip,
   Divider,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -34,20 +35,26 @@ function NoticeListingCard({
     >
       <Card variant="elevation" elevation={4}>
         <CardContent>
-          <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
-            {title}
-          </Typography>
+          <Stack direction="column" sx={{ mb: 1 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
+              {title}
+            </Typography>
+
+            <Typography variant="caption" color="secondary">
+              Notice ID: {id}
+            </Typography>
+          </Stack>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
               <Chip
                 label={tag?.trim()}
                 key={tag}
-                sx={(theme) => ({
+                sx={{
                   mr: 1,
                   mb: 1,
                   borderRadius: "8px",
-                })}
+                }}
                 color="success"
                 icon={<Sell fontSize="small" />}
               />

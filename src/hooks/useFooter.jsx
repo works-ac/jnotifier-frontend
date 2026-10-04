@@ -16,7 +16,20 @@ function useFooter() {
     });
   }, []);
 
-  return { handleWhatsAppBtnClick, handleTelegramBtnClick };
+  const handleEmailBtnClick = useCallback(function () {
+    const link = `mailto:${AppVariables.SUPPORT_EMAIL}`;
+
+    window.open(link, "_blank", {
+      noopener: true,
+      noreferrer: true,
+    });
+  }, []);
+
+  return {
+    handleWhatsAppBtnClick,
+    handleTelegramBtnClick,
+    handleEmailBtnClick,
+  };
 }
 
 export default useFooter;

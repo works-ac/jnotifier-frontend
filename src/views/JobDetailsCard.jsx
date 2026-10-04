@@ -19,6 +19,8 @@ import {
   Chip,
   CircularProgress,
   Divider,
+  Paper,
+  Stack,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -31,7 +33,14 @@ import { AppConstants } from "../app/AppConstants";
 import Notes from "../components/Notes";
 import ShareDialog from "../components/core/ShareDialog";
 import PdfOpenerDialog from "../components/core/PdfOpenerDialog";
+import useAppliedJob from "../hooks/useAppliedJob";
+import AppAlert from "../components/AppAlert";
+import JobApplyPrompt from "../components/JobApplyPrompt";
+import AppToolTip from "../components/core/AppToolTip";
+
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 function JobDetailsCard({
   applicationId,
@@ -44,6 +53,8 @@ function JobDetailsCard({
   advNo,
   viewPageDescription,
   advFilePath,
+  userAuthStatus,
+  isArchivedJob = false,
 }) {
   const theme = useTheme();
   const md = theme.breakpoints.values.md;
@@ -62,6 +73,19 @@ function JobDetailsCard({
     downloadAdv,
   } = useJobDetails();
 
+  const isUserLoggedIn =
+    userAuthStatus?.trim()?.toLowerCase() === AppConstants.USER_AUTH_STATUS;
+  const {
+    showAppliedPrompt,
+    isMarking,
+    isMarked,
+    alert,
+    handleAlertOnClose,
+    handleApplyClick,
+    handleYesClick,
+    handleNoClick,
+  } = useAppliedJob();
+
   return (
     <Box
       component="div"
@@ -69,26 +93,56 @@ function JobDetailsCard({
     >
       <Card variant="elevation" elevation={4}>
         <CardContent>
+          {!isArchivedJob && (
+            <Stack direction="row" sx={{ mb: 1, justifyContent: "flex-end" }}>
+              <Box
+                component="div"
+                sx={{
+                  backgroundColor: theme.palette.error.main,
+                  p: 1,
+                  borderRadius: 2,
+                  outline: "none",
+                  color: "white",
+                }}
+              >
+                <AppToolTip
+                  title="This job is archived and cannot be applied to."
+                  placement="left"
+                >
+                  <Typography variant="body1">ARCHIVED</Typography>
+                </AppToolTip>
+              </Box>
+            </Stack>
+          )}
+
           <Typography variant="h4" sx={{ fontWeight: 700 }} color="primary">
             {title}
           </Typography>
 
-          {advNo && (
-            <Typography variant="caption" color="secondary">
-              Advertisement No: {advNo}
-            </Typography>
-          )}
+          <Stack direction="column" sx={{ mb: 1 }}>
+            {advNo && (
+              <Typography variant="caption" color="secondary">
+                Advertisement No: {advNo}
+              </Typography>
+            )}
+
+            {applicationId && (
+              <Typography variant="caption" color="secondary">
+                Application ID: {applicationId}
+              </Typography>
+            )}
+          </Stack>
 
           <Box component="div" sx={{ display: "flex", flexWrap: "wrap" }}>
             {tags?.split(",")?.map((tag) => (
               <Chip
                 label={tag.trim()}
                 key={tag}
-                sx={(theme) => ({
+                sx={{
                   mr: 1,
                   mb: 1,
                   borderRadius: "8px",
-                })}
+                }}
                 color="success"
                 icon={<InfoOutlined fontSize="small" />}
               />
@@ -108,6 +162,7 @@ function JobDetailsCard({
             <Typography variant="body2">
               Application Start Date: {applicationStartDate}
             </Typography>
+
             <Typography variant="body2">
               Application End Date: {applicationEndDate}
             </Typography>
@@ -133,7 +188,50 @@ function JobDetailsCard({
               Description
             </Typography>
 
-            <Markdown remarkPlugins={[remarkGfm]}>{shortDescription}</Markdown>
+            <Markdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[
+                rehypeRaw,
+                [
+                  rehypeSanitize,
+                  {
+                    ...defaultSchema,
+                    // 1. Define exactly which tags you want to allow
+                    tagNames: [
+                      "p",
+                      "br",
+                      "b",
+                      "strong",
+                      "i",
+                      "em",
+                      "table",
+                      "thead",
+                      "tbody",
+                      "tr",
+                      "th",
+                      "td",
+                      "ul",
+                      "ol",
+                      "li",
+                      "a",
+                      "h1",
+                      "h2",
+                      "h3",
+                      "h4",
+                      "h5",
+                      "h6",
+                    ],
+                    // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                    attributes: {
+                      ...defaultSchema.attributes,
+                      "*": ["className"], // allows classes on all permitted tags
+                    },
+                  },
+                ],
+              ]}
+            >
+              {shortDescription}
+            </Markdown>
           </Box>
 
           {viewPageDescription && (
@@ -160,7 +258,48 @@ function JobDetailsCard({
                   component="div"
                   sx={{ mb: 2, fontFamily: "Arial", textAlign: "justify" }}
                 >
-                  <Markdown remarkPlugins={[remarkGfm]}>
+                  <Markdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[
+                      rehypeRaw,
+                      [
+                        rehypeSanitize,
+                        {
+                          ...defaultSchema,
+                          // 1. Define exactly which tags you want to allow
+                          tagNames: [
+                            "p",
+                            "br",
+                            "b",
+                            "strong",
+                            "i",
+                            "em",
+                            "table",
+                            "thead",
+                            "tbody",
+                            "tr",
+                            "th",
+                            "td",
+                            "ul",
+                            "ol",
+                            "li",
+                            "a",
+                            "h1",
+                            "h2",
+                            "h3",
+                            "h4",
+                            "h5",
+                            "h6",
+                          ],
+                          // 2. Optionally restrict attributes (like allowing 'className' on paragraphs)
+                          attributes: {
+                            ...defaultSchema.attributes,
+                            "*": ["className"], // allows classes on all permitted tags
+                          },
+                        },
+                      ],
+                    ]}
+                  >
                     {viewPageDescription}
                   </Markdown>
                 </Box>
@@ -208,6 +347,11 @@ function JobDetailsCard({
               note="Kindly double check your eligibility before applying to any vacancy."
               noteColor={theme.palette.secondary.main}
             />
+
+            <Notes
+              note="Kindly answer to question after applying to any vacancy to get your list of applied jobs updated."
+              noteColor={theme.palette.secondary.main}
+            />
           </Box>
         </CardContent>
 
@@ -225,6 +369,12 @@ function JobDetailsCard({
             href={applyLink}
             target="_blank"
             startIcon={<OpenInNew fontSize="small" />}
+            onClick={() => {
+              if (isUserLoggedIn) {
+                handleApplyClick();
+              }
+            }}
+            disabled={!isArchivedJob}
           >
             Apply
           </Button>
@@ -245,6 +395,45 @@ function JobDetailsCard({
           </Button>
         </CardActionArea>
       </Card>
+
+      {showAppliedPrompt && isUserLoggedIn && (
+        <Paper elevation={4} sx={{ mt: 2, p: 2 }}>
+          <AppAlert
+            alert={alert}
+            handleAlertOnClose={handleAlertOnClose}
+            type={alert?.type}
+          />
+
+          {!isMarked ? (
+            <JobApplyPrompt
+              handleNoClick={handleNoClick}
+              handleYesClick={handleYesClick}
+              isMarking={isMarking}
+              applicationId={applicationId}
+            />
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Typography variant="h6" color="success.main" gutterBottom>
+                Successfully marked as applied!
+              </Typography>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleNoClick}
+                sx={{ mt: 1 }}
+              >
+                Close
+              </Button>
+            </Box>
+          )}
+        </Paper>
+      )}
 
       <ShareDialog
         open={shareDialogOpen}
@@ -279,6 +468,8 @@ JobDetailsCard.propTypes = {
   advNo: PropTypes.string.isRequired,
   viewPageDescription: PropTypes.string.isRequired,
   advFilePath: PropTypes.string,
+  userAuthStatus: PropTypes.string,
+  isArchivedJob: PropTypes.bool,
 };
 
 export default React.memo(JobDetailsCard);
