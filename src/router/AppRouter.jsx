@@ -11,6 +11,8 @@ import NoticeDetailsPage from "../pages/NoticeDetailsPage";
 import PostView from "../components/wrapper/PostView";
 import ArchivesPage from "../pages/ArchivesPage";
 import OfflinePage from "../pages/OfflinePage";
+import TermsPage from "../pages/TermsPage";
+import PrivacyPolicyPage from "../pages/PrivacyPolicyPage";
 
 const AppRoutes = createBrowserRouter([
   {
@@ -78,6 +80,22 @@ const AppRoutes = createBrowserRouter([
         element: (
           <PostView>
             <RecoverAccountPage />
+          </PostView>
+        ),
+      },
+      {
+        path: "terms",
+        element: (
+          <PostView>
+            <TermsPage />
+          </PostView>
+        ),
+      },
+      {
+        path: "privacy",
+        element: (
+          <PostView>
+            <PrivacyPolicyPage />
           </PostView>
         ),
       },

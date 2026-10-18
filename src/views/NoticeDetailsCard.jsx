@@ -303,4 +303,4 @@ NoticeDetailsCard.propTypes = {
   isArchivedNotice: PropTypes.bool,
 };
 
-export default NoticeDetailsCard;
+export default React.memo(NoticeDetailsCard);

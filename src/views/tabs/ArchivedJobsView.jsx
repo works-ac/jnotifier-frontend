@@ -130,4 +130,4 @@ function ArchivedJobsView() {
   );
 }
 
-export default ArchivedJobsView;
+export default React.memo(ArchivedJobsView);
