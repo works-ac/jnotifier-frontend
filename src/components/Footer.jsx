@@ -14,6 +14,7 @@ import TelegramIcon from "@mui/icons-material/Telegram";
 import useFooter from "../hooks/useFooter";
 import AppToolTip from "./core/AppToolTip";
 import { Mail } from "@mui/icons-material";
+import { AppVariables } from "../app/AppVariables";
 
 function Footer() {
   const theme = useTheme();
@@ -23,7 +24,7 @@ function Footer() {
     handleWhatsAppBtnClick,
     handleEmailBtnClick,
   } = useFooter();
-  const appVersion = import.meta.env.VITE_APP_VERSION || "0.0.0";
+  const appVersion = AppVariables.APP_VERSION;
   const currentYear = new Date().getFullYear();
 
   return (
