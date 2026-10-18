@@ -1,4 +1,4 @@
-const CACHE_NAME = "jnotifier-pwa-v2";
+const CACHE_NAME = "jnotifier-pwa-v3";
 
 const PRECACHE_ASSETS = [
   "/",
