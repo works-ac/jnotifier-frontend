@@ -13,7 +13,7 @@ ARG VITE_TELEGRAM_CHANNEL_LINK
 ARG VITE_API_BASE_URL
 ARG VITE_PRODUCTION_ADMIN_PANEL_URL
 ARG VITE_SUPPORT_EMAIL
-ARG VITE_APP_VERSION=1.0.4
+ARG VITE_APP_VERSION=1.0.5
 
 ENV EXPOSE_PORT=${PORT}
 ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
@@ -29,19 +29,15 @@ FROM nginx:alpine
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh && \
-  touch /var/run/nginx.pid && \
+RUN touch /var/run/nginx.pid && \
   chown -R nginx:nginx \
-    /var/run/nginx.pid \
-    /var/cache/nginx \
-    /var/log/nginx \
-    /etc/nginx/conf.d \
-    /usr/share/nginx/html \
-    /entrypoint.sh
+  /var/run/nginx.pid \
+  /var/cache/nginx \
+  /var/log/nginx \
+  /etc/nginx/conf.d \
+  /usr/share/nginx/html
 USER nginx
 
 EXPOSE ${EXPOSE_PORT}
-ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
