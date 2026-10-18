@@ -32,9 +32,15 @@ if (Test-Path -Path $credentialPath) {
   $credentials = Get-Content -Path $credentialPath -Raw | ConvertFrom-Json
   
   if ($credentials.Branch) {
+    Write-Output "================================="
     Write-Output "Deploying the app, please wait..."
+    Write-Output "================================="
 
-    caprover deploy -h "$($credentials.Host)" -p "$($credentials.Password)" --appName "$($credentials.AppName)" --branch "$($credentials.Branch)"
+    $uri = Read-Host "Enter your caprover host"
+    $hashedPwd = Read-Host "Enter your caprover password" -AsSecureString
+    $plainPwd = Convert-SecureStringToPlainText -SecureString $hashedPwd
+
+    caprover deploy -h "$uri" -p "$plainPwd" --appName "$($credentials.AppName)" --branch "$($credentials.Branch)"
     CheckCmdStatus -Msg "Deploy failed, exiting..."
     
     return;
@@ -57,6 +63,9 @@ if (Test-Path -Path $credentialPath) {
                   $credentials.BuildArgs = $newArg
               }
           }
+      }
+      if ($credentials.PSObject.Properties['Host']) {
+          $credentials.PSObject.Properties.Remove('Host')
       }
       $data = $credentials | ConvertTo-Json -Depth 10
       Set-Content -Path $credentialPath -Value $data -Encoding UTF8
@@ -84,10 +93,11 @@ if (Test-Path -Path $credentialPath) {
   Write-Output "Deploying the app, please wait..."
   Write-Output "================================="
 
+  $uri = Read-Host "Enter your caprover host"
   $hashedPwd = Read-Host "Enter your caprover password" -AsSecureString
   $plainPwd = Convert-SecureStringToPlainText -SecureString $hashedPwd
 
-  caprover deploy -h "$($credentials.Host)" -p "$plainPwd" -i "$($credentials.ImgName)" --appName "$($credentials.AppName)"
+  caprover deploy -h "$uri" -p "$plainPwd" -i "$($credentials.ImgName)" --appName "$($credentials.AppName)"
   CheckCmdStatus -Msg "Deploy failed, exiting..."
 }
 else {
@@ -101,8 +111,6 @@ else {
     CheckCmdStatus -Msg "Deploy failed, exiting..."
 
     $fileContents = @{
-      Host     = $uri
-      Password = $plainPwd
       AppName  = $appName
       Branch   = $branch
     }
@@ -117,8 +125,6 @@ else {
   Write-Output "================================="
   
   $dockerUsername = Read-Host "Enter your docker username"
-  $uri = Read-Host "Enter your caprover host"
-  $hashedPwd = Read-Host "Enter your caprover password" -AsSecureString
   $appName = Read-Host "Enter your app name" 
   $imgName = Read-Host "Enter your docker image name (without docker username)"
   
@@ -159,13 +165,14 @@ else {
   Write-Output "Deploying the app, please wait..."
   Write-Output "================================="
 
+  $uri = Read-Host "Enter your caprover host"
+  $hashedPwd = Read-Host "Enter your caprover password" -AsSecureString
   $plainPwd = Convert-SecureStringToPlainText -SecureString $hashedPwd
   
   caprover deploy -h "$uri" -p "$plainPwd" -i "$dockerUsername/$imgName" --appName "$appName"
   CheckCmdStatus -Msg "Deploy failed, exiting..."
 
   $fileContents = @{
-    Host      = $uri
     AppName   = $appName
     ImgName   = "$dockerUsername/$imgName"
     BuildArgs = $buildArgs

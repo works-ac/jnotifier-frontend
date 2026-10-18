@@ -2,11 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import Sitemap from "vite-plugin-sitemap";
 
-const myAppRoutes = [
-  "/",
-  "/notices",
-  "/archives",
-];
+const myAppRoutes = ["/", "/notices", "/archives", "/terms", "/privacy"];
 
 export default defineConfig({
   plugins: [
