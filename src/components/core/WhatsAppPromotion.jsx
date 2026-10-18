@@ -2,10 +2,11 @@ import { WhatsApp } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 import React, { useMemo } from "react";
 import AppToolTip from "./AppToolTip";
+import { AppVariables } from "../../app/AppVariables";
 
 function WhatsAppPromotion() {
   const whatsappChannelUri = useMemo(
-    () => import.meta.env.VITE_WHATSAPP_CHANNEL_LINK,
+    () => AppVariables.WHATSAPP_CHANNEL_LINK,
     [],
   );
 
