@@ -7,4 +7,8 @@ export const AppConstants = {
   },
   NON_DISABLE_TEXT:
     "You've not any disability.You've identified yourself as a normal candidate therefore you'll be treated as a general candidate (based on only disability status) and will not get any reservation solely based on your disability status.",
+  STRINGS: {
+    ONLINE: "ONLINE",
+    OFFLINE: "OFFLINE",
+  },
 };

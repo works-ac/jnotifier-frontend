@@ -5,7 +5,6 @@ import {
   Container,
   Stack,
   Toolbar,
-  Typography,
   useMediaQuery,
   useTheme,
   Drawer,
@@ -15,14 +14,17 @@ import {
   ListItemButton,
   ListItemText,
   Tooltip,
+  Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink as RouterLink } from "react-router-dom";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { AppNavData } from "../data/HeaderData";
 import { Close } from "@mui/icons-material";
 import useHeader from "../hooks/useHeader";
-import FlexBox from "./styled/FlexBox";
+import AppToolTip from "./core/AppToolTip";
+import { AppConstants } from "../app/AppConstants";
+import NavbarLogo from "./core/NavbarLogo";
 
 function Header() {
   const theme = useTheme();
@@ -38,6 +40,14 @@ function Header() {
     if (appConnectivity?.toLowerCase() === "pong") return "ONLINE";
     return "OFFLINE";
   };
+
+  useEffect(() => {
+    if (
+      appConnectivity &&
+      getConnectivityText(appConnectivity) === AppConstants.STRINGS.OFFLINE
+    )
+      globalThis.location.href = "/offline";
+  }, [appConnectivity]);
 
   return (
     <>
@@ -105,23 +115,39 @@ function Header() {
 
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-            <Box
-              component="img"
-              src="/logo.png"
-              alt="Job Notifier Logo"
-              sx={{
-                width: { xs: "5rem", sm: "7rem", md: "7rem" },
-                height: { xs: "5rem", sm: "7rem", md: "7rem" },
-                objectFit: "cover",
-                imageRendering: "auto",
-                display: "block",
-                background: "none",
-                "&:hover": {
-                  cursor: "pointer",
-                },
-              }}
-              onClick={() => (window.location.href = "/")}
-            />
+            {isMobile ? (
+              <AppToolTip title="Job Notifier Logo" placement="right">
+                <NavbarLogo
+                  src="/logo-navbar.png"
+                  alt="Job Notifier Logo"
+                  onClick={() => (globalThis.location.href = "/")}
+                  height={64}
+                />
+              </AppToolTip>
+            ) : (
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: "center", my: 1 }}
+              >
+                <AppToolTip title="Job Notifier Logo" placement="right">
+                  <NavbarLogo
+                    src="/logo-navbar.png"
+                    alt="Job Notifier Logo"
+                    onClick={() => (globalThis.location.href = "/")}
+                    height={64}
+                  />
+                </AppToolTip>
+
+                <Typography
+                  variant="h2"
+                  sx={{ fontWeight: 700, textTransform: "uppercase" }}
+                  color="primary"
+                >
+                  Job Notifier
+                </Typography>
+              </Stack>
+            )}
 
             {isMobile ? (
               <IconButton

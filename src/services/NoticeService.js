@@ -9,6 +9,12 @@ export async function getNotices(payload) {
   });
 }
 
+export async function getNoticesByCategory(payload) {
+  return await ApplicationApi.get(NOTICE_SERVICE_BASE_URL + "notices/search", {
+    params: payload,
+  });
+}
+
 export async function getNoticeById(noticeId) {
   return await ApplicationApi.get(
     NOTICE_SERVICE_BASE_URL + "notice/" + noticeId,

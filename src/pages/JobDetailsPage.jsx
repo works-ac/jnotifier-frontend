@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import JobDetailsCard from "../views/JobDetailsCard";
 import useHome from "../hooks/useHome";
@@ -9,6 +9,10 @@ import useAppCss from "../hooks/useAppCss";
 import DogPic from "../assets/dog.png";
 import FlexBox from "../components/styled/FlexBox";
 import ResponsiveImage from "../components/core/ResponsiveImage";
+import { useSelector } from "react-redux";
+import useLoginStatus from "../hooks/core/useLoginStatus";
+import useSEO from "../hooks/useSEO";
+import WhatsAppPromotion from "../components/core/WhatsAppPromotion";
 
 function JobDetailsPage() {
   const { applicationId } = useParams();
@@ -20,17 +24,72 @@ function JobDetailsPage() {
     isJobDetailsLoading,
     jobDetails,
   } = useHome();
+  const { isLoading } = useLoginStatus();
+  const { userAuthStatus } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (jobDetails) document.title = `Job Notifier || ${jobDetails.title}`;
-  }, [jobDetails]);
+  const jobPostingSchema = useMemo(() => {
+    if (!jobDetails) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "JobPosting",
+      title: jobDetails.title,
+      description:
+        jobDetails.shortDescription ||
+        jobDetails.viewPageDescription ||
+        jobDetails.title,
+      datePosted: jobDetails.applicationStartDate || undefined,
+      validThrough: jobDetails.applicationEndDate || undefined,
+      employmentType: "FULL_TIME",
+      hiringOrganization: {
+        "@type": "Organization",
+        name: "Job Notifier",
+        sameAs: "https://www.thejobnotifier.in",
+      },
+      jobLocation: {
+        "@type": "Place",
+        address: {
+          "@type": "PostalAddress",
+          addressCountry: "IN",
+        },
+      },
+      identifier: {
+        "@type": "PropertyValue",
+        name: "Advertisement Number",
+        value: jobDetails.advNo || applicationId,
+      },
+      directApply: true,
+      url: `https://www.thejobnotifier.in/jobs/${applicationId}`,
+    };
+  }, [jobDetails, applicationId]);
+
+  useSEO({
+    title: jobDetails?.title
+      ? `Job Notifier || ${jobDetails.title}`
+      : "Job Details | Job Notifier",
+    description:
+      jobDetails?.shortDescription ||
+      `Find eligibility criteria, notification details, and apply online for ${jobDetails?.title || "this vacancy"} on Job Notifier.`,
+    canonicalPath: `/jobs/${applicationId}`,
+    ogType: "article",
+    jsonLd: jobPostingSchema,
+  });
 
   useEffect(() => {
     fetchJobByApplicationId(applicationId);
   }, []);
 
+  if (isLoading)
+    return (
+      <CircluarProgressLoader
+        text="We're checking your authentication status, please wait..."
+        takeHeight
+      />
+    );
+
   return (
     <>
+      <WhatsAppPromotion />
+
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}
@@ -57,6 +116,8 @@ function JobDetailsPage() {
           title={jobDetails.title}
           viewPageDescription={jobDetails.viewPageDescription}
           advFilePath={jobDetails.advFilePath}
+          userAuthStatus={userAuthStatus}
+          isArchivedJob={jobDetails.status}
         />
       )}
 

@@ -27,3 +27,9 @@ export async function postView(clientDetails = {}) {
     },
   );
 }
+
+export async function getJobCategories() {
+  return await ApplicationApi.get(
+    PUBLIC_SERVICE_BASE_URL + "job-categories/list",
+  );
+}

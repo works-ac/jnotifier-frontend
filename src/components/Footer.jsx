@@ -1,170 +1,103 @@
 import {
   Box,
-  Container,
   IconButton,
+  Link,
+  Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React from "react";
 import IndianFlag from "../assets/ind-flag.svg";
-import CWLogo from "../assets/cw.jpeg";
 import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import TelegramIcon from "@mui/icons-material/Telegram";
 import useFooter from "../hooks/useFooter";
+import AppToolTip from "./core/AppToolTip";
+import { Mail } from "@mui/icons-material";
 
 function Footer() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { handleTelegramBtnClick, handleWhatsAppBtnClick } = useFooter();
+  const {
+    handleTelegramBtnClick,
+    handleWhatsAppBtnClick,
+    handleEmailBtnClick,
+  } = useFooter();
+  const appVersion = import.meta.env.VITE_APP_VERSION || "0.0.0";
+  const currentYear = new Date().getFullYear();
 
   return (
     <Box
       component="footer"
       sx={{
-        py: 3,
-        px: 2,
-        mt: "auto",
+        p: 1.5,
         backgroundColor: (theme) => theme.palette.grey["A100"],
         borderTop: "1px solid",
         borderColor: "divider",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <Container maxWidth="xl">
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            gap: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            flexWrap: "wrap",
-            flexDirection: isMobile ? "column" : "row",
-          }}
-        >
-          <Box
-            component="div"
-            sx={{ display: "flex", alignItems: "center", gap: 1 }}
-          >
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              align="center"
-              sx={{ fontWeight: 700 }}
-            >
-              Made in India
-            </Typography>
-
-            <Box component="img" src={IndianFlag} width={16} height={16}></Box>
-          </Box>
-
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: isMobile ? "center" : "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <Box component="div">
           <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            sx={{ fontWeight: 700 }}
+            variant="caption"
+            sx={{ textAlign: "center", fontWeight: 700 }}
           >
-            &copy; 2026 Coding Works
-          </Typography>
-
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            sx={{ fontWeight: 700 }}
-          >
-            All Rights are reserved
+            &copy; {currentYear} Gaurav Sahitya || All rights reserved || v
+            {appVersion}
           </Typography>
         </Box>
 
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          align="center"
-          sx={{ fontWeight: 700 }}
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ fontSize: "12px", fontWeight: 700 }}
         >
-          Design developed and maintained by Gaurav Sahitya
+          <Link href="/terms">Terms & Conditions</Link>
+          <Link href="/privacy">Privacy Policy</Link>
+        </Stack>
+      </Stack>
+
+      <Stack direction="row" sx={{ justifyContent: "center" }} spacing={1}>
+        <Typography variant="caption" sx={{ fontWeight: 700 }}>
+          Made with love in
         </Typography>
 
         <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 1,
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              align="right"
-              sx={{ fontStyle: "oblique" }}
-            >
-              A product of Coding Works
-            </Typography>
+          component="img"
+          src={IndianFlag}
+          alt="Indian Flag"
+          sx={{ width: 20, height: 20 }}
+        />
+      </Stack>
 
-            <Box
-              component="img"
-              src={CWLogo}
-              width={32}
-              height={32}
-              sx={{ borderRadius: 50 }}
-            ></Box>
-          </Box>
-        </Box>
-
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique" }}
-          >
-            This portal is best viewable at desktop and mobile devices.
-          </Typography>
-        </Box>
-
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            align="right"
-            sx={{ fontStyle: "oblique", mr: 1 }}
-          >
-            Follow us on:
-          </Typography>
-
-          <IconButton onClick={handleWhatsAppBtnClick}>
-            <WhatsAppIcon sx={{ fontSize: "24px" }} />
+      <Stack direction="row" sx={{ justifyContent: "center" }} spacing={1}>
+        <AppToolTip title="Follow on WhatsApp">
+          <IconButton onClick={handleWhatsAppBtnClick} size="small">
+            <WhatsAppIcon fontSize="small" />
           </IconButton>
+        </AppToolTip>
 
-          <IconButton onClick={handleTelegramBtnClick}>
-            <TelegramIcon sx={{ fontSize: "24px" }} />
+        <AppToolTip title="Follow on Telegram">
+          <IconButton onClick={handleTelegramBtnClick} size="small">
+            <TelegramIcon fontSize="small" />
           </IconButton>
-        </Box>
-      </Container>
+        </AppToolTip>
+
+        <AppToolTip title="Contact via Email">
+          <IconButton onClick={handleEmailBtnClick} size="small">
+            <Mail fontSize="small" />
+          </IconButton>
+        </AppToolTip>
+      </Stack>
     </Box>
   );
 }

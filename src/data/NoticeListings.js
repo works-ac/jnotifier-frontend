@@ -6,5 +6,6 @@ export const NoticeListings = [
     noticeDescription: "",
     createdBy: "",
     createdAt: "",
+    isActive: false,
   },
 ];

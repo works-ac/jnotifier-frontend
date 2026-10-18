@@ -6,4 +6,5 @@ export const UserProfile = {
   isPwd: "",
   dob: "",
   username: "",
+  mobile: "",
 };

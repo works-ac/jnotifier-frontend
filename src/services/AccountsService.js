@@ -9,3 +9,7 @@ export async function getMe() {
 export async function getUserProfile() {
   return await ApplicationApi.get(ACCOUNTS_BASE_URI + "profile");
 }
+
+export async function editUserProfile(payload) {
+  return await ApplicationApi.put(ACCOUNTS_BASE_URI + "edit-profile", payload);
+}

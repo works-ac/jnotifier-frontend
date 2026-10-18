@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ping } from "../services/AppService";
 import useAppAlert from "./useAppAlert";
+import { AppConstants } from "../app/AppConstants";
 
 function useHeader() {
   const [appConnectivity, setAppConnectivity] = useState();
@@ -17,7 +18,7 @@ function useHeader() {
 
       setAppConnectivity(message);
     } catch (error) {
-      console.error(error, "error");
+      setAppConnectivity(AppConstants.STRINGS.OFFLINE);
       showErrorMsg(error);
     } finally {
       setIsLoading(false);
@@ -31,10 +32,13 @@ function useHeader() {
       checkConnectivity();
     }, 60_000);
 
+    if (appConnectivity && appConnectivity.toLowerCase() !== "pong")
+      clearInterval(intervalId);
+
     return function () {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [appConnectivity]);
 
   return {
     appConnectivity,

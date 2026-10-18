@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /register
+Disallow: /recover
+Disallow: /offline
+
+Sitemap: https://www.thejobnotifier.in/sitemap.xml

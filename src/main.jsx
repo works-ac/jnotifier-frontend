@@ -26,3 +26,32 @@ createRoot(document.getElementById("root")).render(
     <ToastContainer />
   </>,
 );
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .catch((error) => {
+        console.error("PWA Service Worker registration failed:", error);
+      });
+  });
+}
+
+// PWA Link Capturing: handles links clicked from external apps like WhatsApp
+if ("launchQueue" in window) {
+  window.launchQueue.setConsumer((launchParams) => {
+    if (launchParams.targetURL) {
+      const url = new URL(launchParams.targetURL);
+      const targetPath = url.pathname + url.search + url.hash;
+      const currentPath =
+        window.location.pathname +
+        window.location.search +
+        window.location.hash;
+      if (currentPath !== targetPath) {
+        AppRoutes.navigate(targetPath);
+      }
+    }
+  });
+}
+
+

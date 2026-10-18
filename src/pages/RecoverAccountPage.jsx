@@ -22,8 +22,15 @@ import Heading from "../components/Heading";
 import OTPVerification from "../components/OTPVerification";
 import useRecoverAccount from "../hooks/useRecoverAccount";
 import AppAlert from "../components/AppAlert";
+import useSEO from "../hooks/useSEO";
 
 function RecoverAccountPage() {
+  useSEO({
+    title: "Recover Account | Job Notifier",
+    canonicalPath: "/recover/account",
+    noindex: true,
+  });
+
   const theme = useTheme();
   const { GlobalPaperCss } = useAppCss();
   const {
