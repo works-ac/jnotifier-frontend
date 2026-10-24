@@ -256,14 +256,14 @@ function TermsPage() {
             <strong>Copyright Protection &amp; Ownership:</strong> This entire
             website, including but not limited to its source code, architecture,
             software, user interface design, layout, graphics, branding, logos,
-            database structures, content, notifications, alerts, and all
-            related services (collectively, the &ldquo;Platform &amp;
-            Services&rdquo;), are the exclusive intellectual property of{" "}
-            <strong>Gaurav Sahitya</strong> (Coding Works / Job Notifier) and are
-            protected under the <strong>Copyright Act, 1957</strong> (as
-            amended from time to time) and applicable international copyright and
-            intellectual property laws. All rights not expressly granted herein
-            are strictly reserved.
+            database structures, content, notifications, alerts, and all related
+            services (collectively, the &ldquo;Platform &amp; Services&rdquo;),
+            are the exclusive intellectual property of{" "}
+            <strong>Gaurav Sahitya</strong> (Coding Works / Job Notifier) and
+            are protected under the <strong>Copyright Act, 1957</strong> (as
+            amended from time to time) and applicable international copyright
+            and intellectual property laws. All rights not expressly granted
+            herein are strictly reserved.
           </Typography>
           <Typography
             variant="body2"
@@ -283,18 +283,21 @@ function TermsPage() {
             color="text.secondary"
             sx={{ lineHeight: 1.8, mb: 1.5 }}
           >
-            <strong>Strict Prohibition on Sale, Copying, and Distribution:</strong>{" "}
+            <strong>
+              Strict Prohibition on Sale, Copying, and Distribution:
+            </strong>{" "}
             Under no circumstances does any user possess any right, license,
             title, or permission to sell, resell, copy, duplicate, clone,
             reproduce, distribute, redistribute, syndicate, broadcast, license,
             sublicense, rent, lease, modify, translate, create derivative works
             from, reverse engineer, decompile, or otherwise commercially exploit
             any portion of this website, its source code, or any of its related
-            services, in any form or by any means whatsoever, without the express
-            prior written consent of Gaurav Sahitya. Any unauthorized copying,
-            sale, distribution, or commercial exploitation is a direct violation
-            of the Copyright Act and will lead to immediate revocation of access
-            and strict civil and criminal legal action under applicable laws.
+            services, in any form or by any means whatsoever, without the
+            express prior written consent of Gaurav Sahitya. Any unauthorized
+            copying, sale, distribution, or commercial exploitation is a direct
+            violation of the Copyright Act and will lead to immediate revocation
+            of access and strict civil and criminal legal action under
+            applicable laws.
           </Typography>
           <Typography
             variant="body2"

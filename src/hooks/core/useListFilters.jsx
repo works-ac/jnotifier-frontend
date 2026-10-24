@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAppAlert from "../useAppAlert";
 import { getJobCategories } from "../../services/PublicService";
 
@@ -8,37 +8,51 @@ function useListFilters() {
   const [category, setCategory] = useState("");
   const { alert, handleAlertOnClose, reset, showErrorMsg } = useAppAlert();
 
-  const fetchJobCategories = useCallback(
-    async function () {
-      reset();
+  const fetchJobCategories = useCallback(async () => {
+    reset();
+    setIsLoading(true);
 
-      if (isLoading) return;
-      setIsLoading(true);
+    try {
+      const response = await getJobCategories();
+      const data =
+        response.data?.data?.categories?.map((item) => ({
+          label: item.jobCategoryName,
+        })) ?? [];
 
-      try {
-        const response = await getJobCategories();
+      setJobCategories(data);
+    } catch (error) {
+      showErrorMsg(error);
+      setJobCategories([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [reset, showErrorMsg]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    getJobCategories()
+      .then((response) => {
+        if (!isMounted) return;
         const data =
           response.data?.data?.categories?.map((item) => ({
             label: item.jobCategoryName,
           })) ?? [];
-
         setJobCategories(data);
-      } catch (error) {
+      })
+      .catch((error) => {
+        if (!isMounted) return;
         showErrorMsg(error);
         setJobCategories([]);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [isLoading],
-  );
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [showErrorMsg]);
 
   const handleCategoryOnChange = useCallback(function (event, newVal) {
-    setCategory(newVal?.label);
-  }, []);
-
-  useEffect(() => {
-    fetchJobCategories();
+    setCategory(newVal?.label ?? "");
   }, []);
 
   return {
@@ -46,6 +60,7 @@ function useListFilters() {
     jobCategories,
     alert,
     category,
+    setCategory,
     handleCategoryOnChange,
     fetchJobCategories,
     handleAlertOnClose,
