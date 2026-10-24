@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import JobListingCard from "../views/JobListingCard";
 import useHome from "../hooks/useHome";
 import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Collapse, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoJobFoundImage from "../assets/notfound.jpg";
 import ListFilters from "../components/core/ListFilters";
@@ -19,6 +19,8 @@ function HomePage() {
       "government jobs, private jobs, job search, sarkari naukri, job notifier, employment news, recruitment alerts, latest vacancies, admit card, exam results",
     canonicalPath: "/",
   });
+
+  const [showFilter, setShowFilter] = useState(false);
 
   const {
     alert,
@@ -52,7 +54,19 @@ function HomePage() {
 
       {!isLoading && (
         <>
-          <WhatsAppPromotion />
+          <WhatsAppPromotion
+            onFilterToggle={() => setShowFilter((prev) => !prev)}
+            showFilter={showFilter}
+            isFilterActive={isFilterMode}
+          />
+
+          <Collapse in={showFilter} unmountOnExit>
+            <ListFilters
+              onReset={fetchAllJobs}
+              onSubmit={fetchAllJobsByCategory}
+              onClose={() => setShowFilter(false)}
+            />
+          </Collapse>
 
           {!!jobs.length && (
             <Box
@@ -81,11 +95,6 @@ function HomePage() {
               Total {paginationMetadata.totalElements} active vacancies.
             </Typography>
           </Box>
-
-          <ListFilters
-            onReset={fetchAllJobs}
-            onSubmit={fetchAllJobsByCategory}
-          />
 
           {!!jobs.length && (
             <Box
