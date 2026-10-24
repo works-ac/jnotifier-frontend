@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import useNotices from "../hooks/features/useNotices";
 import AppAlert from "../components/AppAlert";
 import CircluarProgressLoader from "../components/CircluarProgressLoader";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Collapse, Container, Typography } from "@mui/material";
 import { SkipNext, SkipPrevious } from "@mui/icons-material";
 import NoticeListingCard from "../views/NoticeListingCard";
 import NoJobFoundImage from "../assets/notfound.jpg";
@@ -17,6 +17,8 @@ function NoticePage() {
       "Stay updated with recent government and private job notices, recruitment announcements, examination schedules, admit cards, and result updates on Job Notifier.",
     canonicalPath: "/notices",
   });
+
+  const [showFilter, setShowFilter] = useState(false);
 
   const {
     fetchNextNotice,
@@ -35,8 +37,6 @@ function NoticePage() {
 
   return (
     <>
-      <WhatsAppPromotion />
-
       <AppAlert
         alert={alert}
         handleAlertOnClose={handleAlertOnClose}
@@ -52,6 +52,20 @@ function NoticePage() {
 
       {!isLoading && (
         <>
+          <WhatsAppPromotion
+            onFilterToggle={() => setShowFilter((prev) => !prev)}
+            showFilter={showFilter}
+            isFilterActive={isFilterMode}
+          />
+
+          <Collapse in={showFilter} unmountOnExit>
+            <ListFilters
+              onReset={fetchAllNotices}
+              onSubmit={fetchAllNoticesByCategory}
+              onClose={() => setShowFilter(false)}
+            />
+          </Collapse>
+
           {!!notices.length && (
             <Box
               component="div"
@@ -79,11 +93,6 @@ function NoticePage() {
               Total {paginationMetadata.totalElements} active notices.
             </Typography>
           </Box>
-
-          <ListFilters
-            onReset={fetchAllNotices}
-            onSubmit={fetchAllNoticesByCategory}
-          />
 
           {!!notices.length && (
             <Box
